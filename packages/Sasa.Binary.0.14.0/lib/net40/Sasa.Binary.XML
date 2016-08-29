@@ -1,0 +1,811 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Sasa.Binary</name>
+    </assembly>
+    <members>
+        <member name="T:Sasa.Bits">
+            <summary>
+            Bit operations.
+            </summary>
+        </member>
+        <member name="M:Sasa.Bits.Fold(System.UInt32)">
+            <summary>
+            Fold the high order bits into the low order bits.
+            </summary>
+            <param name="value">The value to operate on.</param>
+            <returns>The folded value.</returns>
+        </member>
+        <member name="M:Sasa.Bits.HighestBit(System.UInt32)">
+            <summary>
+            Extract the highest bit.
+            </summary>
+            <param name="value">The bit pattern to use.</param>
+            <returns>The bit pattern with only the highest bit set.</returns>
+            <remarks>
+            Implementation taken from:
+            http://aggregate.org/MAGIC/#Most%20Significant%201%20Bit
+            </remarks>
+        </member>
+        <member name="M:Sasa.Bits.Log2(System.UInt32)">
+            <summary>
+            Computes the base2 logarithm.
+            </summary>
+            <param name="value">The value to compute.</param>
+            <returns>The base2 logarithm.</returns>
+            <remarks>
+            Implementation taken from:
+            http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogDeBruijn
+            </remarks>
+        </member>
+        <member name="M:Sasa.Bits.BitCount(System.UInt32)">
+            <summary>
+            Calculate the number of set bits in <paramref name="value"/>.
+            </summary>
+            <param name="value">The integer whose bits we wish to count.</param>
+            <returns>The number of set bits in <paramref name="value"/>.</returns>
+            <remarks>
+            Implementation taken from:
+            http://graphics.stanford.edu/~seander/bithacks.html#CountBitsSetParallel
+            </remarks>
+        </member>
+        <member name="M:Sasa.Bits.BinaryString(System.UInt64)">
+            <summary>
+            A binary string representationg.
+            </summary>
+            <param name="value">The unsigned long.</param>
+            <returns>A binary string.</returns>
+        </member>
+        <member name="T:Sasa.Endian">
+            <summary>
+            Endian conversions.
+            </summary>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(System.Int16)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(System.UInt16)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(Sasa.Union16)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(Sasa.Union32)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(System.Int32)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(System.UInt32)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(System.Int64)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(Sasa.Union64)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.ToBig(System.UInt64)">
+            <summary>
+            Convert the value to big endian.
+            </summary>
+            <param name="value">The host endian encoded value to convert.</param>
+            <returns>Big endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(Sasa.Union16)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(System.Int16)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(System.UInt16)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(System.Int32)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(Sasa.Union32)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(System.UInt32)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(Sasa.Union64)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(System.Int64)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.FromBig(System.UInt64)">
+            <summary>
+            Convert the value from big endian to host endian encoding.
+            </summary>
+            <param name="value">The big endian encoded value to convert.</param>
+            <returns>Host endian encoded value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(Sasa.Union128)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(Sasa.Union16)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(System.Int16)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(System.UInt16)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(System.UInt32)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(System.Int32)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(Sasa.Union32)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(System.UInt64)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(System.Int64)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="M:Sasa.Endian.Swap(Sasa.Union64)">
+            <summary>
+            Swap upper and lower bytes.
+            </summary>
+            <param name="value">The value being swapped.</param>
+            <returns>The swapped value.</returns>
+        </member>
+        <member name="T:Sasa.IO.PortableReader">
+            <summary>
+            A BinaryReader that decodes values from big-endian to host encoding.
+            </summary>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.#ctor(System.IO.Stream)">
+            <summary>
+            Construct a PortableReader that reads from the given stream.
+            </summary>
+            <param name="input">The stream to read from.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Construct a PortableReader that reads from the given stream with the given encoding.
+            </summary>
+            <param name="input">The stream to read from.</param>
+            <param name="encoding">The encoding to use when reading.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.Finalize">
+            <summary>
+            The reader's destructor.
+            </summary>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadInt16">
+            <summary>
+            Read a signed 16-bit value.
+            </summary>
+            <returns>A signed 16-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadUInt16">
+            <summary>
+            Read an unsigned 16-bit value.
+            </summary>
+            <returns>An unsigned 16-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadInt32">
+            <summary>
+            Read a signed 32-bit value.
+            </summary>
+            <returns>A signed 32-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadUInt32">
+            <summary>
+            Read an unsigned 32-bit value.
+            </summary>
+            <returns>An unsigned 32-bit value</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadInt64">
+            <summary>
+            Read a signed 64-bit value.
+            </summary>
+            <returns>A signed 64-bit value</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadUInt64">
+            <summary>
+            Read an unsigned 64-bit value.
+            </summary>
+            <returns>An unsigned 64-bit value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.ReadDecimal">
+            <summary>
+            Read a 128-bit decimal value.
+            </summary>
+            <returns>A 128-bit decimal value.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.Read7Bit">
+            <summary>
+            Read a 7-bit encoded int.
+            </summary>
+            <returns>The encoded integer.</returns>
+        </member>
+        <member name="M:Sasa.IO.PortableReader.Dispose">
+            <summary>
+            Dispose of only unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:Sasa.IUniversalHash`1">
+            <summary>
+            Interface for computing universal hash codes on integeral numbers.
+            </summary>
+            <typeparam name="T">The numeric type.</typeparam>
+        </member>
+        <member name="M:Sasa.IUniversalHash`1.GetHashCode(`0,`0,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+        <member name="T:Sasa.IO.PortableWriter">
+            <summary>
+            A BinaryWriter that encodes values from host to big-endian encoding.
+            </summary>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.#ctor(System.IO.Stream)">
+            <summary>
+            Construct a PortableWriter given the output stream.
+            </summary>
+            <param name="output">The output stream to write to.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.#ctor(System.IO.Stream,System.Text.Encoding)">
+            <summary>
+            Construct a PortableWriter given an output stream and an encoding.
+            </summary>
+            <param name="output">The output stream to write to.</param>
+            <param name="encoding">The character encoding to use.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Finalize">
+            <summary>
+            The writer's destructor.
+            </summary>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Int16)">
+            <summary>
+            Write a 16-bit signed value.
+            </summary>
+            <param name="value">A 16-bit signed value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.UInt16)">
+            <summary>
+            Write a 16-bit unsigned value.
+            </summary>
+            <param name="value">A 16-bit unsigned value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Int32)">
+            <summary>
+            Write a 32-bit signed value.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.UInt32)">
+            <summary>
+            Write a 32-bit unsigned value.
+            </summary>
+            <param name="value">Write a 32-bit unsigned value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Int64)">
+            <summary>
+            Write a 64-bit signed value.
+            </summary>
+            <param name="value">The 64-bit signed value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.UInt64)">
+            <summary>
+            Write a 64-bit unsigned value.
+            </summary>
+            <param name="value">A 64-bit unsigned value.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write(System.Decimal)">
+            <summary>
+            Write a 128-bit decimal value.
+            </summary>
+            <param name="value">The decimal to write.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Write7Bit(System.Int32)">
+            <summary>
+            Write a 7-bit encoded integer value.
+            </summary>
+            <param name="value">The integer to write.</param>
+        </member>
+        <member name="M:Sasa.IO.PortableWriter.Dispose">
+            <summary>
+            Dispose of only unmanaged resources.
+            </summary>
+        </member>
+        <member name="T:Sasa.Union16">
+            <summary>
+            Represents a 16-bit union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union16.Unsigned">
+            <summary>
+            The unsigned fragment of the union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union16.Signed">
+            <summary>
+            The signed fragment of the union.
+            </summary>
+        </member>
+        <member name="M:Sasa.Union16.#ctor(System.Int16)">
+            <summary>
+            Construct a flat 16-bit union from a signed value.
+            </summary>
+            <param name="value">The signed value.</param>
+        </member>
+        <member name="M:Sasa.Union16.#ctor(System.UInt16)">
+            <summary>
+            Construct a flat 16-bit union from an unsigned value.
+            </summary>
+            <param name="value">The unsigned value.</param>
+        </member>
+        <member name="M:Sasa.Union16.GetHashCode(Sasa.Union16,Sasa.Union16,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+        <member name="M:Sasa.Union16.Equals(Sasa.Union16)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="other">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union16.Equals(System.Object)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="obj">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union16.GetHashCode">
+            <summary>
+            Compute a hash code.
+            </summary>
+            <returns>The hash code for this value.</returns>
+        </member>
+        <member name="M:Sasa.Union16.op_Equality(Sasa.Union16,Sasa.Union16)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union16.op_Inequality(Sasa.Union16,Sasa.Union16)">
+            <summary>
+            Compare for inequality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if not equal.</returns>
+        </member>
+        <member name="T:Sasa.Union32">
+            <summary>
+            Represents a 32-bit union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union32.Unsigned">
+            <summary>
+            The unsigned fragment of the union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union32.Signed">
+            <summary>
+            The signed fragment of the union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union32.Single">
+            <summary>
+            The single fragment of the union.
+            </summary>
+        </member>
+        <member name="M:Sasa.Union32.#ctor(System.Int32)">
+            <summary>
+            Construct a flat 32-bit union from a signed value.
+            </summary>
+            <param name="value">The signed value.</param>
+        </member>
+        <member name="M:Sasa.Union32.#ctor(System.UInt32)">
+            <summary>
+            Construct a flat 32-bit union from an unsigned value.
+            </summary>
+            <param name="value">The unsigned value.</param>
+        </member>
+        <member name="M:Sasa.Union32.#ctor(System.Single)">
+            <summary>
+            Construct a flat 32-bit union from an unsigned value.
+            </summary>
+            <param name="value">The single-precision floating point value.</param>
+        </member>
+        <member name="M:Sasa.Union32.Equals(Sasa.Union32)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="other">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union32.Equals(System.Object)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="obj">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union32.GetHashCode(Sasa.Union32,Sasa.Union32,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+        <member name="M:Sasa.Union32.GetHashCode">
+            <summary>
+            Compute a hash code.
+            </summary>
+            <returns>The hash code for this value.</returns>
+        </member>
+        <member name="M:Sasa.Union32.op_Equality(Sasa.Union32,Sasa.Union32)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union32.op_Inequality(Sasa.Union32,Sasa.Union32)">
+            <summary>
+            Compare for inequality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if not equal.</returns>
+        </member>
+        <member name="T:Sasa.Union64">
+            <summary>
+            Represents a 64-bit union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union64.Unsigned">
+            <summary>
+            The unsigned fragment of the union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union64.Signed">
+            <summary>
+            The signed fragment of the union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union64.Double">
+            <summary>
+            The double-precision floating point fragment of the union.
+            </summary>
+        </member>
+        <member name="M:Sasa.Union64.#ctor(System.Int64)">
+            <summary>
+            Construct a flat 64-bit union from a signed value.
+            </summary>
+            <param name="value">The signed value.</param>
+        </member>
+        <member name="M:Sasa.Union64.#ctor(System.UInt64)">
+            <summary>
+            Construct a flat 64-bit union from an unsigned value.
+            </summary>
+            <param name="value">The unsigned value.</param>
+        </member>
+        <member name="M:Sasa.Union64.#ctor(System.Double)">
+            <summary>
+            Construct a flat 64-bit union from a double-precision floating point value.
+            </summary>
+            <param name="value">The double-precision floating point value.</param>
+        </member>
+        <member name="M:Sasa.Union64.GetHashCode(Sasa.Union64,Sasa.Union64,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+        <member name="M:Sasa.Union64.Equals(Sasa.Union64)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="other">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union64.Equals(System.Object)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="obj">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union64.GetHashCode">
+            <summary>
+            Compute a hash code.
+            </summary>
+            <returns>The hash code for this value.</returns>
+        </member>
+        <member name="M:Sasa.Union64.op_Equality(Sasa.Union64,Sasa.Union64)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union64.op_Inequality(Sasa.Union64,Sasa.Union64)">
+            <summary>
+            Compare for inequality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if not equal.</returns>
+        </member>
+        <member name="T:Sasa.Union128">
+            <summary>
+            Represents a 128-bit decimal union.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union128.First64">
+            <summary>
+            The first 64-bits of the decimal.
+            </summary>
+        </member>
+        <member name="F:Sasa.Union128.Second64">
+            <summary>
+            The second 64-bits of the decimal.
+            </summary>
+        </member>
+        <member name="M:Sasa.Union128.#ctor(System.UInt64,System.UInt64)">
+            <summary>
+            Construct a flat 128-bit union from two unsigned 64-bit values.
+            </summary>
+            <param name="first64">The first 64-bits.</param>
+            <param name="second64">The second 64-bits.</param>
+        </member>
+        <member name="M:Sasa.Union128.Equals(Sasa.Union128)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="other">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union128.Equals(System.Object)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="obj">The instance to compare.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union128.GetHashCode">
+            <summary>
+            Compute a hash code.
+            </summary>
+            <returns>The hash code for this value.</returns>
+        </member>
+        <member name="M:Sasa.Union128.op_Equality(Sasa.Union128,Sasa.Union128)">
+            <summary>
+            Compare for equality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if equal.</returns>
+        </member>
+        <member name="M:Sasa.Union128.op_Inequality(Sasa.Union128,Sasa.Union128)">
+            <summary>
+            Compare for inequality.
+            </summary>
+            <param name="left">The left value.</param>
+            <param name="right">The right value.</param>
+            <returns>True if not equal.</returns>
+        </member>
+        <member name="T:Sasa.Union">
+            <summary>
+            Bit-level conversions.
+            </summary>
+        </member>
+        <member name="M:Sasa.Union.ToUInt32(System.Int32)">
+            <summary>
+            Convert a signed 32 value to an unsigned 32 bit value.
+            </summary>
+            <param name="value">The signed value.</param>
+            <returns>The unsigned value.</returns>
+        </member>
+        <member name="M:Sasa.Union.ToInt32(System.UInt32)">
+            <summary>
+            Convert a signed 32 value to an unsigned 32 bit value.
+            </summary>
+            <param name="value">The signed value.</param>
+            <returns>The unsigned value.</returns>
+        </member>
+        <member name="M:Sasa.Union.ToUInt64(System.Int64)">
+            <summary>
+            Convert a signed 32 value to an unsigned 32 bit value.
+            </summary>
+            <param name="value">The signed value.</param>
+            <returns>The unsigned value.</returns>
+        </member>
+        <member name="M:Sasa.Union.ToInt64(System.UInt64)">
+            <summary>
+            Convert a signed 32 value to an unsigned 32 bit value.
+            </summary>
+            <param name="value">The signed value.</param>
+            <returns>The unsigned value.</returns>
+        </member>
+        <member name="M:Sasa.Union.ToUInt16(System.Int16)">
+            <summary>
+            Convert a signed 32 value to an unsigned 32 bit value.
+            </summary>
+            <param name="value">The signed value.</param>
+            <returns>The unsigned value.</returns>
+        </member>
+        <member name="M:Sasa.Union.ToInt16(System.UInt16)">
+            <summary>
+            Convert a signed 32 value to an unsigned 32 bit value.
+            </summary>
+            <param name="value">The signed value.</param>
+            <returns>The unsigned value.</returns>
+        </member>
+        <member name="M:Sasa.Union.GetHashCode(System.UInt32,System.UInt32,System.UInt32,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="value">The value to hash.</param>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+        <member name="M:Sasa.Union.GetHashCode(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="value">The value to hash.</param>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+        <member name="M:Sasa.Union.GetHashCode(System.UInt64,System.UInt64,System.UInt64,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="value">The value to hash.</param>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+        <member name="M:Sasa.Union.GetHashCode(System.Int64,System.Int64,System.Int64,System.Int32)">
+            <summary>
+            Computes a universal hash code.
+            </summary>
+            <param name="value">The value to hash.</param>
+            <param name="scalingFactor">The multiplicative constant.</param>
+            <param name="additiveConstant">The additive constant.</param>
+            <param name="bitCount">The number of bits in the resulting hash.</param>
+            <returns>An integral universal hash code.</returns>
+        </member>
+    </members>
+</doc>
