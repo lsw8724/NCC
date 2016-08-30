@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
-using complex = TSICommon.NadaMath.complex;
-using COMPLEX = TSICommon.NadaMath.complex;
+using complex = NCCCommon.NadaMath.complex;
+using COMPLEX = NCCCommon.NadaMath.complex;
 using Real = System.Single;
 
-namespace TSICommon
+namespace NCCCommon
 {
     public static class CmsMath
     {

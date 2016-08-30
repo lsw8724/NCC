@@ -10,6 +10,8 @@ using DevExpress.XtraEditors;
 using NCCCommon.ModuleProtocol;
 using Steema.TeeChart.Styles;
 using NADACommonCalibrator.ConfigControl;
+using NCCCommon.ModuleProtocol.Daq5509Protocol;
+using NCCCommon;
 
 namespace NADACommonCalibrator.PlotControl
 {
@@ -17,20 +19,19 @@ namespace NADACommonCalibrator.PlotControl
     {
         private ChartCursor Cursor;
         private float[] Resolutions;
+        private int FMax;
         public SpectrumControl(int count, XtraForm owner, List<object> items = null)
         {
             InitializeComponent();
             (owner as MainForm).WavesReceived += Waves_Received;
-            for (int i = 0; i < count; i++)
-                tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + i+1, Active = (items[i] as IGettableItemProperty).GetActive() });
             Cursor = new ChartCursor(tChart_Spectrum);
+
             if (items != null)
-                Resolutions = items.Select(x => (x as IGettableItemProperty).GetResolution()).ToArray();
-            else
             {
-                Resolutions = new float[count];
                 for (int i = 0; i < count; i++)
-                    Resolutions[i] = 1;
+                    tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + i + 1, Active = (items[i] as IGettableItemProperty).GetActive() });
+                Resolutions = items.Select(x => (x as IGettableItemProperty).GetResolution()).ToArray();
+                FMax = items.Select(x => (x as IGettableItemProperty).GetAsyncFMax()).First();
             }
         }
 
@@ -41,11 +42,12 @@ namespace NADACommonCalibrator.PlotControl
 
             for (int ch = 0; ch < waves.Length; ch++)
             {
+                var fftData = new SpectrumData(Resolutions[ch], waves[ch]);
                 tChart_Spectrum.Series[ch].BeginUpdate();
-                for (int i = 0; i < waves[ch].AsyncDataCount; i++)
-                    tChart_Spectrum.Series[ch].Add(i * Resolutions[ch] / (double)waves[ch].AsyncDataCount, waves[ch].AsyncData[i]);
+                for (int i = 0; i < FMax; i++)
+                    tChart_Spectrum.Series[ch].Add(fftData.XValues[i], fftData.YValues[i]);
                 tChart_Spectrum.Series[ch].EndUpdate();
-            }    
+            }
         }
 
         private void tChart_Spectrum_Click(object sender, EventArgs e)
@@ -58,5 +60,19 @@ namespace NADACommonCalibrator.PlotControl
             else
                 Cursor.SetRefSerise();
         }   
-    } 
+    }
+
+    public class SpectrumData
+    {
+        public DateTime TimeStamp { get; set; }
+        public float[] XValues { get; set; }
+        public float[] YValues { get; set; }
+
+        public SpectrumData(float res, WaveData wave)
+        {
+            YValues= Array.ConvertAll(NadaMath.PositiveFFT(wave.AsyncData), x=> (float)x);
+            XValues = YValues.Select((x, i) => (float)i / res).ToArray();
+            TimeStamp = wave.DateTime;
+        }
+    }
 }

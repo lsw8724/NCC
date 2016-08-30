@@ -5,7 +5,7 @@ using System.Text;
 //using AxTeeChart;
 //using MathNet.Numerics.Transformations;
 
-namespace TSICommon
+namespace NCCCommon
 {
     public class MathEx
     {

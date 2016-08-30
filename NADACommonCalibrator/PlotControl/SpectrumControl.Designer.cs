@@ -220,6 +220,7 @@
             // 
             // 
             this.tChart_Spectrum.Axes.Top.Ticks.Color = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
+            this.tChart_Spectrum.Cursor = System.Windows.Forms.Cursors.Default;
             this.tChart_Spectrum.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // 
@@ -374,6 +375,7 @@
             // 
             // 
             this.tChart_Spectrum.Walls.Right.Pen.Visible = false;
+            this.tChart_Spectrum.Click += new System.EventHandler(this.tChart_Spectrum_Click);
             // 
             // SpectrumControl
             // 

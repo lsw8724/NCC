@@ -47,6 +47,7 @@ namespace NADACommonCalibrator.ConfigControl
     public interface IGettableItemProperty
     {
         float GetResolution();
+        int GetAsyncFMax();
         bool GetActive();
     }
 
@@ -84,6 +85,7 @@ namespace NADACommonCalibrator.ConfigControl
         }
 
         public float GetResolution() { return AsyncLine / (float)AsyncFMax; }
+        public int GetAsyncFMax() { return AsyncFMax; }
         public bool GetActive(){ return Active;}
     }
 

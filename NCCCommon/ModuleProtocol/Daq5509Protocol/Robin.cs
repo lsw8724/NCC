@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using TraceTool;
-using TSICommon;
+using NCCCommon;
 
 namespace NCCCommon.ModuleProtocol.Daq5509Protocol
 {

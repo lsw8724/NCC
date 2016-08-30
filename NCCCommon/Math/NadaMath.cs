@@ -10,15 +10,15 @@ using Real = System.Single;
 using MathNet.Numerics.Transformations;
 
 #if USE_VIBEC
-using Complex = TSICommon.NadaMath.complex;
-using Complex32 = TSICommon.NadaMath.complex;
+using Complex = NCCCommon.NadaMath.complex;
+using Complex32 = NCCCommon.NadaMath.complex;
 
 #else
 using Complex = MathNet.Numerics.Complex;
 using Complex32 = MathNet.Numerics.Complex;
 #endif
 
-namespace TSICommon
+namespace NCCCommon
 {
     public enum WindowFunction
     {

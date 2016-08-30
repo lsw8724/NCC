@@ -99,16 +99,18 @@ namespace NADACommonCalibrator
             dockPanel.Text = "TimeBase";
             dockPanel.Controls.Add(timebasePlot);
             dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(timebasePlot);
+            dockPanel.Height = 300;
             OpenedPlotControl.Add(timebasePlot);
         }
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var spectrumPlot = new SpectrumControl(8,this) { Dock = DockStyle.Fill};
+            var spectrumPlot = new SpectrumControl(8,this, lb_ModuleList.SelectedItem == null? null : (lb_ModuleList.SelectedItem as IConvertableItems).ToItems()) { Dock = DockStyle.Fill};
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "Spectrum";
             dockPanel.Controls.Add(spectrumPlot);
             dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(spectrumPlot);
+            dockPanel.Height = 300;
             OpenedPlotControl.Add(spectrumPlot);
         }
 
@@ -143,11 +145,13 @@ namespace NADACommonCalibrator
         {
             if (lb_ModuleList.SelectedItem != null)
                 lb_ModuleList.Items.Remove(lb_ModuleList.SelectedItem);
+            if (lb_ModuleList.ItemCount == 0) dockPanel_5509Config.Hide();
         }
 
         private void lb_ModuleList_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listBox = (ListBoxControl)sender;
+            if(listBox.SelectedItem == null) return;
             switch (((IGettableReceiverType)listBox.SelectedItem).GetReceiverType())
             {
                 case ReceiverType.Daq5509: break;

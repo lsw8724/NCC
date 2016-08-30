@@ -22,16 +22,13 @@ namespace NADACommonCalibrator.PlotControl
         {
             InitializeComponent();
             (owner as MainForm).WavesReceived += Waves_Received;
-            for (int i = 0; i < count; i++)
-                tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + i+1, Active = (items[i] as IGettableItemProperty).GetActive() });
             Cursor = new ChartCursor(tChart_timeBase);
+
             if (items != null)
-                Resolutions = items.Select(x => (x as IGettableItemProperty).GetResolution()).ToArray();
-            else
             {
-                Resolutions = new float[count];
                 for (int i = 0; i < count; i++)
-                    Resolutions[i] = 1;
+                    tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + i + 1, Active = (items[i] as IGettableItemProperty).GetActive() });
+                Resolutions = items.Select(x => (x as IGettableItemProperty).GetResolution()).ToArray();
             }
         }
 
