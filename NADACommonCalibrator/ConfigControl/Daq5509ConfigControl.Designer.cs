@@ -39,6 +39,7 @@
             this.cbHWGain = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
             this.pgcDaq5509 = new DevExpress.XtraVerticalGrid.PropertyGridControl();
+            this.gcActive = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gcDaq5509)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDaq5509)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbHWGain)).BeginInit();
@@ -66,7 +67,8 @@
             this.gcLine_5509,
             this.gcSensitivity_5509,
             this.gcICP_5509,
-            this.gcHWGain});
+            this.gcHWGain,
+            this.gcActive});
             this.gvDaq5509.GridControl = this.gcDaq5509;
             this.gvDaq5509.Name = "gvDaq5509";
             this.gvDaq5509.OptionsSelection.MultiSelect = true;
@@ -132,17 +134,25 @@
             // 
             this.splitterControl1.Location = new System.Drawing.Point(452, 0);
             this.splitterControl1.Name = "splitterControl1";
-            this.splitterControl1.Size = new System.Drawing.Size(7, 402);
+            this.splitterControl1.Size = new System.Drawing.Size(5, 402);
             this.splitterControl1.TabIndex = 1;
             this.splitterControl1.TabStop = false;
             // 
             // pgcDaq5509
             // 
             this.pgcDaq5509.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgcDaq5509.Location = new System.Drawing.Point(459, 0);
+            this.pgcDaq5509.Location = new System.Drawing.Point(457, 0);
             this.pgcDaq5509.Name = "pgcDaq5509";
-            this.pgcDaq5509.Size = new System.Drawing.Size(265, 402);
+            this.pgcDaq5509.Size = new System.Drawing.Size(267, 402);
             this.pgcDaq5509.TabIndex = 2;
+            // 
+            // gcActive
+            // 
+            this.gcActive.Caption = "Active";
+            this.gcActive.FieldName = "Active";
+            this.gcActive.Name = "gcActive";
+            this.gcActive.Visible = true;
+            this.gcActive.VisibleIndex = 6;
             // 
             // Daq5509ConfigControl
             // 
@@ -174,5 +184,6 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit cbHWGain;
         private DevExpress.XtraEditors.SplitterControl splitterControl1;
         private DevExpress.XtraVerticalGrid.PropertyGridControl pgcDaq5509;
+        private DevExpress.XtraGrid.Columns.GridColumn gcActive;
     }
 }

@@ -44,7 +44,13 @@ namespace NADACommonCalibrator.ConfigControl
         }
     }
 
-    public class Daq5509ChannelItem
+    public interface IGettableItemProperty
+    {
+        float GetResolution();
+        bool GetActive();
+    }
+
+    public class Daq5509ChannelItem : IGettableItemProperty
     {
         private Daq5509Receiver Rcv;
         private RobinChannel Ch;
@@ -68,6 +74,8 @@ namespace NADACommonCalibrator.ConfigControl
         public bool ICP { get { return Ch.ICP; } set { Ch.ICP = value; } }
         [Category("Channel")]
         public float Sensitivity { get { return Ch.Sensitivity; } set { Ch.Sensitivity = value; } }
+        [Category("Channel")]
+        public bool Active { get { return Ch.Active; } set { Ch.Active = value; } }
 
         public Daq5509ChannelItem(IWavesReceiver receiver, RobinChannel ch)
         {
@@ -75,6 +83,8 @@ namespace NADACommonCalibrator.ConfigControl
             this.Ch = ch;
         }
 
+        public float GetResolution() { return AsyncLine / (float)AsyncFMax; }
+        public bool GetActive(){ return Active;}
     }
 
     public class OmapChannelItem

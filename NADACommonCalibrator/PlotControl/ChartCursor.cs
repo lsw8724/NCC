@@ -26,5 +26,10 @@ namespace NADACommonCalibrator.PlotControl
         {
             InitializeComponent(tchart);
         }
+
+        public void SetRefSerise(Steema.TeeChart.Styles.Series s = null)
+        {
+             GuideCursor.Series = s;
+        }
     }
 }

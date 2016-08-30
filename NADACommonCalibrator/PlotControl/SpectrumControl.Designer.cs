@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.tChart_Spectrum = new Steema.TeeChart.TChart();
-            this.Ch1 = new Steema.TeeChart.Styles.FastLine();
             this.SuspendLayout();
             // 
             // tChart_Spectrum
@@ -299,7 +298,6 @@
             this.tChart_Spectrum.Panel.Brush.Gradient.SigmaScale = 0F;
             this.tChart_Spectrum.Panel.Brush.Gradient.StartColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.tChart_Spectrum.Panel.Brush.Gradient.UseMiddle = false;
-            this.tChart_Spectrum.Series.Add(this.Ch1);
             this.tChart_Spectrum.Size = new System.Drawing.Size(654, 307);
             this.tChart_Spectrum.TabIndex = 0;
             // 
@@ -377,26 +375,6 @@
             // 
             this.tChart_Spectrum.Walls.Right.Pen.Visible = false;
             // 
-            // Ch1
-            // 
-            this.Ch1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(102)))), ((int)(((byte)(163)))));
-            this.Ch1.ColorEach = false;
-            // 
-            // 
-            // 
-            this.Ch1.LinePen.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.Ch1.Title = "Ch1";
-            this.Ch1.TreatNulls = Steema.TeeChart.Styles.TreatNullsStyle.Ignore;
-            // 
-            // 
-            // 
-            this.Ch1.XValues.DataMember = "X";
-            this.Ch1.XValues.Order = Steema.TeeChart.Styles.ValueListOrder.Ascending;
-            // 
-            // 
-            // 
-            this.Ch1.YValues.DataMember = "Y";
-            // 
             // SpectrumControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -404,15 +382,13 @@
             this.Controls.Add(this.tChart_Spectrum);
             this.Name = "SpectrumControl";
             this.Size = new System.Drawing.Size(654, 307);
+            this.Click += new System.EventHandler(this.tChart_Spectrum_Click);
             this.ResumeLayout(false);
-            Cursor = new ChartCursor(tChart_Spectrum);
 
         }
 
         #endregion
 
         private Steema.TeeChart.TChart tChart_Spectrum;
-        private Steema.TeeChart.Styles.FastLine Ch1;
-        private ChartCursor Cursor;
     }
 }

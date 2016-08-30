@@ -32,10 +32,7 @@
             this.navBarControl = new DevExpress.XtraNavBar.NavBarControl();
             this.AutomationGroup = new DevExpress.XtraNavBar.NavBarGroup();
             this.organizerGroup = new DevExpress.XtraNavBar.NavBarGroup();
-            this.calendarItem = new DevExpress.XtraNavBar.NavBarItem();
-            this.tasksItem = new DevExpress.XtraNavBar.NavBarItem();
             this.navItem_connect = new DevExpress.XtraNavBar.NavBarItem();
-            this.navItem_Config = new DevExpress.XtraNavBar.NavBarItem();
             this.navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
             this.navItem_Timebase = new DevExpress.XtraNavBar.NavBarItem();
             this.navItem_spectrum = new DevExpress.XtraNavBar.NavBarItem();
@@ -64,6 +61,7 @@
             this.barBtn_wifi = new DevExpress.XtraBars.BarButtonItem();
             this.barBtn_bt = new DevExpress.XtraBars.BarButtonItem();
             this.barBtn_remove = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barManager = new DevExpress.XtraBars.BarManager();
             this.mainBar = new DevExpress.XtraBars.Bar();
             this.barItem_file = new DevExpress.XtraBars.BarSubItem();
@@ -75,7 +73,6 @@
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.document1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document();
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeImageCollection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.smallImageCollection)).BeginInit();
@@ -105,12 +102,9 @@
             this.navBarGroup1,
             this.navBarGroup2});
             this.navBarControl.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] {
-            this.calendarItem,
-            this.tasksItem,
             this.navItem_Timebase,
             this.navItem_spectrum,
-            this.navItem_connect,
-            this.navItem_Config});
+            this.navItem_connect});
             this.navBarControl.LargeImages = this.largeImageCollection;
             this.navBarControl.Location = new System.Drawing.Point(0, 0);
             this.navBarControl.Name = "navBarControl";
@@ -131,9 +125,9 @@
             this.AutomationGroup.AppearanceHotTracked.Options.UseFont = true;
             this.AutomationGroup.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
             this.AutomationGroup.AppearancePressed.Options.UseFont = true;
-            this.AutomationGroup.Caption = "자동화 작업";
+            this.AutomationGroup.Caption = "자동화";
             this.AutomationGroup.Expanded = true;
-            this.AutomationGroup.LargeImageIndex = 0;
+            this.AutomationGroup.LargeImageIndex = 3;
             this.AutomationGroup.Name = "AutomationGroup";
             // 
             // organizerGroup
@@ -147,37 +141,10 @@
             this.organizerGroup.Caption = "측정 모듈";
             this.organizerGroup.Expanded = true;
             this.organizerGroup.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] {
-            new DevExpress.XtraNavBar.NavBarItemLink(this.calendarItem),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.tasksItem),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_connect),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_Config)});
-            this.organizerGroup.LargeImageIndex = 2;
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_connect)});
+            this.organizerGroup.LargeImageIndex = 1;
             this.organizerGroup.Name = "organizerGroup";
             this.organizerGroup.SmallImageIndex = 9;
-            // 
-            // calendarItem
-            // 
-            this.calendarItem.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.calendarItem.Appearance.Options.UseFont = true;
-            this.calendarItem.AppearanceHotTracked.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.calendarItem.AppearanceHotTracked.Options.UseFont = true;
-            this.calendarItem.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.calendarItem.AppearancePressed.Options.UseFont = true;
-            this.calendarItem.Caption = "설정 저장";
-            this.calendarItem.Name = "calendarItem";
-            this.calendarItem.SmallImageIndex = 3;
-            // 
-            // tasksItem
-            // 
-            this.tasksItem.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.tasksItem.Appearance.Options.UseFont = true;
-            this.tasksItem.AppearanceHotTracked.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.tasksItem.AppearanceHotTracked.Options.UseFont = true;
-            this.tasksItem.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.tasksItem.AppearancePressed.Options.UseFont = true;
-            this.tasksItem.Caption = "설정 불러오기";
-            this.tasksItem.Name = "tasksItem";
-            this.tasksItem.SmallImageIndex = 2;
             // 
             // navItem_connect
             // 
@@ -190,18 +157,7 @@
             this.navItem_connect.Caption = "연결";
             this.navItem_connect.Name = "navItem_connect";
             this.navItem_connect.SmallImageIndex = 1;
-            // 
-            // navItem_Config
-            // 
-            this.navItem_Config.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_Config.Appearance.Options.UseFont = true;
-            this.navItem_Config.AppearanceHotTracked.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_Config.AppearanceHotTracked.Options.UseFont = true;
-            this.navItem_Config.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_Config.AppearancePressed.Options.UseFont = true;
-            this.navItem_Config.Caption = "모듈 설정";
-            this.navItem_Config.Name = "navItem_Config";
-            this.navItem_Config.SmallImageIndex = 0;
+            this.navItem_connect.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItem_connect_LinkClicked);
             // 
             // navBarGroup1
             // 
@@ -211,12 +167,12 @@
             this.navBarGroup1.AppearanceHotTracked.Options.UseFont = true;
             this.navBarGroup1.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
             this.navBarGroup1.AppearancePressed.Options.UseFont = true;
-            this.navBarGroup1.Caption = "플롯";
+            this.navBarGroup1.Caption = "분석";
             this.navBarGroup1.Expanded = true;
             this.navBarGroup1.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] {
             new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_Timebase),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_spectrum)});
-            this.navBarGroup1.LargeImageIndex = 3;
+            this.navBarGroup1.LargeImageIndex = 2;
             this.navBarGroup1.Name = "navBarGroup1";
             this.navBarGroup1.SmallImageIndex = 8;
             // 
@@ -256,7 +212,7 @@
             this.navBarGroup2.AppearancePressed.Options.UseFont = true;
             this.navBarGroup2.Caption = "기능";
             this.navBarGroup2.Expanded = true;
-            this.navBarGroup2.LargeImageIndex = 1;
+            this.navBarGroup2.LargeImageIndex = 0;
             this.navBarGroup2.Name = "navBarGroup2";
             this.navBarGroup2.SmallImageIndex = 7;
             // 
@@ -264,6 +220,10 @@
             // 
             this.largeImageCollection.ImageSize = new System.Drawing.Size(24, 24);
             this.largeImageCollection.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("largeImageCollection.ImageStream")));
+            this.largeImageCollection.Images.SetKeyName(0, "Feature.png");
+            this.largeImageCollection.Images.SetKeyName(1, "Motherboard-icon.png");
+            this.largeImageCollection.Images.SetKeyName(2, "Plot.png");
+            this.largeImageCollection.Images.SetKeyName(3, "daily.png");
             // 
             // smallImageCollection
             // 
@@ -345,7 +305,7 @@
             this.lb_ModuleList.Name = "lb_ModuleList";
             this.lb_ModuleList.Size = new System.Drawing.Size(179, 489);
             this.lb_ModuleList.TabIndex = 0;
-            this.lb_ModuleList.SelectedIndexChanged += new System.EventHandler(this.listBoxControl1_SelectedIndexChanged);
+            this.lb_ModuleList.SelectedIndexChanged += new System.EventHandler(this.lb_ModuleList_SelectedIndexChanged);
             this.lb_ModuleList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox_MouseClick);
             this.lb_ModuleList.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lb_ModuleList_MouseDoubleClick);
             // 
@@ -449,6 +409,12 @@
             this.barBtn_remove.Name = "barBtn_remove";
             this.barBtn_remove.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtn_remove_ItemClick);
             // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.Caption = "Rename";
+            this.barButtonItem1.Id = 9;
+            this.barButtonItem1.Name = "barButtonItem1";
+            // 
             // barManager
             // 
             this.barManager.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -548,12 +514,6 @@
             this.document1.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
             this.document1.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
             // 
-            // barButtonItem1
-            // 
-            this.barButtonItem1.Caption = "Rename";
-            this.barButtonItem1.Id = 9;
-            this.barButtonItem1.Name = "barButtonItem1";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -568,6 +528,7 @@
             this.IsMdiContainer = true;
             this.Name = "MainForm";
             this.Text = "NCC";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeImageCollection)).EndInit();
@@ -594,8 +555,6 @@
         private DevExpress.XtraNavBar.NavBarControl navBarControl;
         private DevExpress.XtraNavBar.NavBarGroup AutomationGroup;
         private DevExpress.XtraNavBar.NavBarGroup organizerGroup;
-        private DevExpress.XtraNavBar.NavBarItem calendarItem;
-        private DevExpress.XtraNavBar.NavBarItem tasksItem;
         private DevExpress.XtraNavBar.NavBarGroup navBarGroup1;
         private DevExpress.XtraNavBar.NavBarItem navItem_Timebase;
         private DevExpress.XtraNavBar.NavBarItem navItem_spectrum;
@@ -609,7 +568,6 @@
         private DevExpress.XtraBars.Docking.ControlContainer dockPanel2_Container;
         private DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel;
         private DevExpress.Utils.ImageCollection smallImageCollection;
-        private DevExpress.XtraNavBar.NavBarItem navItem_Config;
         private DevExpress.XtraNavBar.NavBarItem trashItem;
         private DevExpress.XtraNavBar.NavBarItem draftsItem;
         private DevExpress.XtraNavBar.NavBarItem outboxItem;

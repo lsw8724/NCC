@@ -28,9 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimeBaseControl));
             this.tChart_timeBase = new Steema.TeeChart.TChart();
-            this.fastLine1 = new Steema.TeeChart.Styles.FastLine();
             this.SuspendLayout();
             // 
             // tChart_timeBase
@@ -299,7 +297,6 @@
             this.tChart_timeBase.Panel.Brush.Gradient.SigmaScale = 0F;
             this.tChart_timeBase.Panel.Brush.Gradient.StartColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.tChart_timeBase.Panel.Brush.Gradient.UseMiddle = false;
-            this.tChart_timeBase.Series.Add(this.fastLine1);
             this.tChart_timeBase.Size = new System.Drawing.Size(654, 307);
             this.tChart_timeBase.TabIndex = 0;
             // 
@@ -376,26 +373,7 @@
             // 
             // 
             this.tChart_timeBase.Walls.Right.Pen.Visible = false;
-            // 
-            // fastLine1
-            // 
-            this.fastLine1.Color = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(102)))), ((int)(((byte)(163)))));
-            this.fastLine1.ColorEach = false;
-            // 
-            // 
-            // 
-            this.fastLine1.LinePen.Color = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.fastLine1.Title = "Ch1";
-            this.fastLine1.TreatNulls = Steema.TeeChart.Styles.TreatNullsStyle.Ignore;
-            // 
-            // 
-            // 
-            this.fastLine1.XValues.DataMember = "X";
-            this.fastLine1.XValues.Order = Steema.TeeChart.Styles.ValueListOrder.Ascending;
-            // 
-            // 
-            // 
-            this.fastLine1.YValues.DataMember = "Y";
+            this.tChart_timeBase.Click += new System.EventHandler(this.tChart_timeBase_Click);
             // 
             // TimeBaseControl
             // 
@@ -405,14 +383,11 @@
             this.Name = "TimeBaseControl";
             this.Size = new System.Drawing.Size(654, 307);
             this.ResumeLayout(false);
-            Cursor = new ChartCursor(tChart_timeBase);
+
         }
 
         #endregion
 
         private Steema.TeeChart.TChart tChart_timeBase;
-        private Steema.TeeChart.Styles.FastLine fastLine1;
-        private ChartCursor Cursor;
-
     }
 }

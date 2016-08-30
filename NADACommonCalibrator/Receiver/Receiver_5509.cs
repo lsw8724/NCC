@@ -20,9 +20,16 @@ namespace NADACommonCalibrator.Receiver
         List<object> ToItems();
     }
 
-    public class Receiver_5509 : IConvertableItems, IGettableReceiverType
+    public class Receiver_5509 : IWavesReceiver, IConvertableItems, IGettableReceiverType
     {
-        private Daq5509Receiver DaqReceiver = new Daq5509Receiver() { ModuleIp = "192.168.0.10" };
+        private Daq5509Receiver DaqReceiver = new Daq5509Receiver();
+
+        public Receiver_5509()
+        {
+            DaqReceiver.ModuleIp = "192.168.0.14";
+            DaqReceiver.WavesReceived += DaqReceiver_WaveReceived;
+        }
+
         public event Action<WaveData[]> WavesReceived;
 
         private void DaqReceiver_WaveReceived(WaveData[] waves)

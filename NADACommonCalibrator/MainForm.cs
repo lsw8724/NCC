@@ -11,7 +11,6 @@ using DevExpress.LookAndFeel;
 using DevExpress.UserSkins;
 using DevExpress.XtraBars.Docking;
 using NADACommonCalibrator.PlotControl;
-using NCCCommon.ModuleProtocol.OmapProtocol;
 using NADACommonCalibrator.ConfigControl;
 using NCCCommon.ModuleProtocol;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
@@ -32,6 +31,8 @@ namespace NADACommonCalibrator
 
     public partial class MainForm : XtraForm
     {
+        private List<XtraUserControl> OpenedPlotControl = new List<XtraUserControl>();
+        public event Action<WaveData[]> WavesReceived;
         public MainForm()
         {
             InitializeComponent();
@@ -93,18 +94,22 @@ namespace NADACommonCalibrator
 
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var timebasePlot = new TimeBaseControl(8) { Dock = DockStyle.Fill };
+            var timebasePlot = new TimeBaseControl(8, this, lb_ModuleList.SelectedItem == null? null : (lb_ModuleList.SelectedItem as IConvertableItems).ToItems()) { Dock = DockStyle.Fill };
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "TimeBase";
             dockPanel.Controls.Add(timebasePlot);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(timebasePlot);
+            OpenedPlotControl.Add(timebasePlot);
         }
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var spectrumPlot = new SpectrumControl(8) { Dock = DockStyle.Fill };
+            var spectrumPlot = new SpectrumControl(8,this) { Dock = DockStyle.Fill};
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "Spectrum";
             dockPanel.Controls.Add(spectrumPlot);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(spectrumPlot);
+            OpenedPlotControl.Add(spectrumPlot);
         }
 
         private void listBox_MouseClick(object sender, MouseEventArgs e)
@@ -118,14 +123,20 @@ namespace NADACommonCalibrator
             switch ((ReceiverType)e.Item.Tag)
             {
                 case ReceiverType.Daq5509:
-                    lb_ModuleList.Items.Add(new Receiver_5509());
+                    var receiver = new Receiver_5509();
+                    receiver.WavesReceived += WaveDatas_Received;
+                    lb_ModuleList.Items.Add(receiver);
                     dockPanel_5509Config.Show();
                     break;
                 case ReceiverType.Omap: break;
                 case ReceiverType.Bluetooth: break;
                 case ReceiverType.Wifi: break;
             }
-            
+        }
+
+        private void WaveDatas_Received(NCCCommon.ModuleProtocol.WaveData[] waves)
+        {
+            WavesReceived(waves);     
         }
 
         private void barBtn_remove_ItemClick(object sender, ItemClickEventArgs e)
@@ -134,7 +145,7 @@ namespace NADACommonCalibrator
                 lb_ModuleList.Items.Remove(lb_ModuleList.SelectedItem);
         }
 
-        private void listBoxControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void lb_ModuleList_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listBox = (ListBoxControl)sender;
             switch (((IGettableReceiverType)listBox.SelectedItem).GetReceiverType())
@@ -162,8 +173,6 @@ namespace NADACommonCalibrator
                 case ReceiverType.Bluetooth: break;
                 case ReceiverType.Wifi: break;
             }
-            
-            
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -173,6 +182,19 @@ namespace NADACommonCalibrator
                 panel.DockAsMdiDocument();
                 panel.DockTo(DockingStyle.Fill);
             }
+        }
+
+        private void navItem_connect_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            var receiver = lb_ModuleList.SelectedItem as IWavesReceiver;
+            receiver.Start();
+        }
+
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var receiver = lb_ModuleList.SelectedItem as IWavesReceiver;
+            if(receiver != null)
+                receiver.Stop();
         }
     }
 }

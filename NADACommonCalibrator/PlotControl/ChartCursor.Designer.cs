@@ -2,7 +2,7 @@
 {
     partial class ChartCursor
     {
-        private Steema.TeeChart.Tools.CursorTool GuideCursor;
+        public Steema.TeeChart.Tools.CursorTool GuideCursor;
         private Steema.TeeChart.Tools.RectangleTool CursorInfo;
         private void InitializeComponent(Steema.TeeChart.TChart chart)
         {
@@ -11,7 +11,6 @@
             Pen.Color = System.Drawing.Color.Yellow;
             Axis = chart.Axes.Bottom;
             Steema.TeeChart.Tools.CursorTool cursor = new Steema.TeeChart.Tools.CursorTool();
-            cursor.Series = chart.Series[0];
             cursor.Style = Steema.TeeChart.Tools.CursorToolStyles.Scope;
             cursor.Pen.Color = System.Drawing.Color.LightYellow;
             cursor.Pen.Style = System.Drawing.Drawing2D.DashStyle.Dash;
