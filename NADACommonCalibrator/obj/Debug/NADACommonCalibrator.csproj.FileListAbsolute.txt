@@ -41,7 +41,3 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Mono.CSharp.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Example.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.Daq5509ConfigControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.BlueToothConfigControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.OmapConfigControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.WifiConfigControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.ModuleConfigControl.resources

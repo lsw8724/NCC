@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.splitCt_5509 = new DevExpress.XtraEditors.SplitContainerControl();
             this.gcDaq5509 = new DevExpress.XtraGrid.GridControl();
             this.gvDaq5509 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gcCh_5509 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -38,42 +37,23 @@
             this.gcICP_5509 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gcHWGain = new DevExpress.XtraGrid.Columns.GridColumn();
             this.cbHWGain = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
+            this.splitterControl1 = new DevExpress.XtraEditors.SplitterControl();
             this.pgcDaq5509 = new DevExpress.XtraVerticalGrid.PropertyGridControl();
-            this.cbSamplingRate = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
-            this.cbInputType = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitCt_5509)).BeginInit();
-            this.splitCt_5509.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gcDaq5509)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDaq5509)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbHWGain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pgcDaq5509)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbSamplingRate)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbInputType)).BeginInit();
             this.SuspendLayout();
-            // 
-            // splitCt_5509
-            // 
-            this.splitCt_5509.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitCt_5509.Location = new System.Drawing.Point(0, 0);
-            this.splitCt_5509.Name = "splitCt_5509";
-            this.splitCt_5509.Panel1.Controls.Add(this.gcDaq5509);
-            this.splitCt_5509.Panel1.Text = "Panel1";
-            this.splitCt_5509.Panel2.Controls.Add(this.pgcDaq5509);
-            this.splitCt_5509.Panel2.Text = "Panel2";
-            this.splitCt_5509.Size = new System.Drawing.Size(808, 403);
-            this.splitCt_5509.SplitterPosition = 596;
-            this.splitCt_5509.TabIndex = 2;
-            this.splitCt_5509.Text = "splitContainerControl2";
             // 
             // gcDaq5509
             // 
-            this.gcDaq5509.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gcDaq5509.Dock = System.Windows.Forms.DockStyle.Left;
             this.gcDaq5509.Location = new System.Drawing.Point(0, 0);
             this.gcDaq5509.MainView = this.gvDaq5509;
             this.gcDaq5509.Name = "gcDaq5509";
             this.gcDaq5509.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.cbHWGain});
-            this.gcDaq5509.Size = new System.Drawing.Size(596, 403);
+            this.gcDaq5509.Size = new System.Drawing.Size(452, 402);
             this.gcDaq5509.TabIndex = 0;
             this.gcDaq5509.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvDaq5509});
@@ -148,54 +128,41 @@
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cbHWGain.Name = "cbHWGain";
             // 
+            // splitterControl1
+            // 
+            this.splitterControl1.Location = new System.Drawing.Point(452, 0);
+            this.splitterControl1.Name = "splitterControl1";
+            this.splitterControl1.Size = new System.Drawing.Size(7, 402);
+            this.splitterControl1.TabIndex = 1;
+            this.splitterControl1.TabStop = false;
+            // 
             // pgcDaq5509
             // 
             this.pgcDaq5509.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgcDaq5509.Location = new System.Drawing.Point(0, 0);
+            this.pgcDaq5509.Location = new System.Drawing.Point(459, 0);
             this.pgcDaq5509.Name = "pgcDaq5509";
-            this.pgcDaq5509.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.cbSamplingRate,
-            this.cbInputType});
-            this.pgcDaq5509.Size = new System.Drawing.Size(205, 403);
-            this.pgcDaq5509.TabIndex = 0;
-            this.pgcDaq5509.CellValueChanged += new DevExpress.XtraVerticalGrid.Events.CellValueChangedEventHandler(this.pgcDaq5509_CellValueChanged);
-            // 
-            // cbSamplingRate
-            // 
-            this.cbSamplingRate.AutoHeight = false;
-            this.cbSamplingRate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cbSamplingRate.Name = "cbSamplingRate";
-            // 
-            // cbInputType
-            // 
-            this.cbInputType.AutoHeight = false;
-            this.cbInputType.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cbInputType.Name = "cbInputType";
+            this.pgcDaq5509.Size = new System.Drawing.Size(265, 402);
+            this.pgcDaq5509.TabIndex = 2;
             // 
             // Daq5509ConfigControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.splitCt_5509);
+            this.Controls.Add(this.pgcDaq5509);
+            this.Controls.Add(this.splitterControl1);
+            this.Controls.Add(this.gcDaq5509);
             this.Name = "Daq5509ConfigControl";
-            this.Size = new System.Drawing.Size(808, 403);
-            ((System.ComponentModel.ISupportInitialize)(this.splitCt_5509)).EndInit();
-            this.splitCt_5509.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(724, 402);
             ((System.ComponentModel.ISupportInitialize)(this.gcDaq5509)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gvDaq5509)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cbHWGain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pgcDaq5509)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbSamplingRate)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cbInputType)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        public DevExpress.XtraEditors.SplitContainerControl splitCt_5509;
         public DevExpress.XtraGrid.GridControl gcDaq5509;
         public DevExpress.XtraGrid.Views.Grid.GridView gvDaq5509;
         private DevExpress.XtraGrid.Columns.GridColumn gcCh_5509;
@@ -205,8 +172,7 @@
         private DevExpress.XtraGrid.Columns.GridColumn gcICP_5509;
         private DevExpress.XtraGrid.Columns.GridColumn gcHWGain;
         private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit cbHWGain;
+        private DevExpress.XtraEditors.SplitterControl splitterControl1;
         private DevExpress.XtraVerticalGrid.PropertyGridControl pgcDaq5509;
-        private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit cbSamplingRate;
-        private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit cbInputType;
     }
 }

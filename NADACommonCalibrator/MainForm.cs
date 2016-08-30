@@ -117,15 +117,15 @@ namespace NADACommonCalibrator
         {
             switch ((ReceiverType)e.Item.Tag)
             {
-                case ReceiverType.Daq5509:lb_ModuleList.Items.Add(new Receiver_5509()); break;
+                case ReceiverType.Daq5509:
+                    lb_ModuleList.Items.Add(new Receiver_5509());
+                    dockPanel_5509Config.Show();
+                    break;
                 case ReceiverType.Omap: break;
                 case ReceiverType.Bluetooth: break;
                 case ReceiverType.Wifi: break;
             }
-            if(!dockPanel_5509Config.IsHandleCreated)
-                dockPanel_5509Config.DockAsMdiDocument();
-            dockPanel_5509Config.DockTo(DockingStyle.Fill);
-            dockPanel_5509Config.Show();
+            
         }
 
         private void barBtn_remove_ItemClick(object sender, ItemClickEventArgs e)
@@ -145,7 +145,34 @@ namespace NADACommonCalibrator
                 case ReceiverType.Wifi: break;
             }
             var receiver = lb_ModuleList.SelectedItem as IConvertableItems;
-            moduleConfigControl1.gcDaq5509.DataSource = receiver.ToItems();
+            ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems();
+        }
+
+        private void lb_ModuleList_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var listBox = (ListBoxControl)sender;
+            var receiver = lb_ModuleList.SelectedItem as IConvertableItems;
+            switch (((IGettableReceiverType)listBox.SelectedItem).GetReceiverType())
+            {
+                case ReceiverType.Daq5509:
+
+                    ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems(); 
+                    break;
+                case ReceiverType.Omap: break;
+                case ReceiverType.Bluetooth: break;
+                case ReceiverType.Wifi: break;
+            }
+            
+            
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            foreach (var panel in new DockPanel[] { dockPanel_5509Config })
+            {
+                panel.DockAsMdiDocument();
+                panel.DockTo(DockingStyle.Fill);
+            }
         }
     }
 }

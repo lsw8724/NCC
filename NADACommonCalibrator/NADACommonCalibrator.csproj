@@ -94,35 +94,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigControl\BlueToothConfigControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ConfigControl\BlueToothConfigControl.Designer.cs">
-      <DependentUpon>BlueToothConfigControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="ConfigControl\Daq5509ConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ConfigControl\Daq5509ConfigControl.Designer.cs">
+    <Compile Include="ConfigControl\Daq5509ConfigControl.designer.cs">
       <DependentUpon>Daq5509ConfigControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigControl\ModuleConfigControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ConfigControl\ModuleConfigControl.designer.cs">
-      <DependentUpon>ModuleConfigControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigControl\OmapConfigControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ConfigControl\OmapConfigControl.Designer.cs">
-      <DependentUpon>OmapConfigControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigControl\WifiConfigControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ConfigControl\WifiConfigControl.Designer.cs">
-      <DependentUpon>WifiConfigControl.cs</DependentUpon>
     </Compile>
     <Compile Include="DevExpressUtil.cs" />
     <Compile Include="MainForm.cs">
@@ -155,20 +131,8 @@
     <Content Include="Scripts\Example.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="ConfigControl\BlueToothConfigControl.resx">
-      <DependentUpon>BlueToothConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConfigControl\Daq5509ConfigControl.resx">
       <DependentUpon>Daq5509ConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigControl\ModuleConfigControl.resx">
-      <DependentUpon>ModuleConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigControl\OmapConfigControl.resx">
-      <DependentUpon>OmapConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConfigControl\WifiConfigControl.resx">
-      <DependentUpon>WifiConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
