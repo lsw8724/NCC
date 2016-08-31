@@ -44,14 +44,14 @@ namespace NADACommonCalibrator.ConfigControl
         }
     }
 
-    public interface IGettableItemProperty
+    public interface IChennelItem
     {
         float GetResolution();
         int GetAsyncFMax();
         bool GetActive();
     }
 
-    public class Daq5509ChannelItem : IGettableItemProperty
+    public class Daq5509ChannelItem : IChennelItem
     {
         private Daq5509Receiver Rcv;
         private RobinChannel Ch;

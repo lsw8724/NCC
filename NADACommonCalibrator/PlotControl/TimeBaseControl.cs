@@ -27,8 +27,8 @@ namespace NADACommonCalibrator.PlotControl
             if (items != null)
             {
                 for (int i = 0; i < count; i++)
-                    tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + i + 1, Active = (items[i] as IGettableItemProperty).GetActive() });
-                Resolutions = items.Select(x => (x as IGettableItemProperty).GetResolution()).ToArray();
+                    tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + i + 1, Active = (items[i] as IChennelItem).GetActive() });
+                Resolutions = items.Select(x => (x as IChennelItem).GetResolution()).ToArray();
             }
         }
 

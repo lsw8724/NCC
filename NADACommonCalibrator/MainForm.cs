@@ -33,6 +33,8 @@ namespace NADACommonCalibrator
     {
         private List<XtraUserControl> OpenedPlotControl = new List<XtraUserControl>();
         public event Action<WaveData[]> WavesReceived;
+        private IWavesReceiver CurrentReceiver;
+
         public MainForm()
         {
             InitializeComponent();
@@ -43,6 +45,29 @@ namespace NADACommonCalibrator
             barBtn_omap.Tag = ReceiverType.Omap;
             barBtn_wifi.Tag = ReceiverType.Daq5509;
             barBtn_bt.Tag = ReceiverType.Daq5509;
+
+            lb_ModuleList.Items.ListChanged += lb_ModuleList_listChanged;
+            lb_ModuleList.Items.Clear();
+        }
+
+        private void lb_ModuleList_listChanged(object sender, ListChangedEventArgs e)
+        {
+            if (lb_ModuleList.ItemCount == 0)
+            {
+                navItem_spectrum.Visible = false;
+                navItem_Timebase.Visible = false;
+                if (dockPanel_5509Config.State == DockPanelState.Docking)
+                    dockPanel_5509Config.Hide();
+                navItem_connect.Visible = false;
+                navItem_disConnect.Visible = false;
+            }
+            else
+            {
+                navItem_spectrum.Visible = true;
+                navItem_Timebase.Visible = true;
+                navItem_disConnect.Visible = true;
+                navItem_connect.Visible = true;
+            }
         }
 
         private void InitializeThemeItem()
@@ -94,7 +119,7 @@ namespace NADACommonCalibrator
 
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var timebasePlot = new TimeBaseControl(8, this, lb_ModuleList.SelectedItem == null? null : (lb_ModuleList.SelectedItem as IConvertableItems).ToItems()) { Dock = DockStyle.Fill };
+            var timebasePlot = new TimeBaseControl(8, this, lb_ModuleList.SelectedItem == null ? null : (lb_ModuleList.SelectedItem as IConvertableItems).ToItems()) { Dock = DockStyle.Fill };
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "TimeBase";
             dockPanel.Controls.Add(timebasePlot);
@@ -105,7 +130,7 @@ namespace NADACommonCalibrator
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var spectrumPlot = new SpectrumControl(8,this, lb_ModuleList.SelectedItem == null? null : (lb_ModuleList.SelectedItem as IConvertableItems).ToItems()) { Dock = DockStyle.Fill};
+            var spectrumPlot = new SpectrumControl(8, this, lb_ModuleList.SelectedItem == null ? null : (lb_ModuleList.SelectedItem as IConvertableItems).ToItems()) { Dock = DockStyle.Fill };
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "Spectrum";
             dockPanel.Controls.Add(spectrumPlot);
@@ -117,7 +142,7 @@ namespace NADACommonCalibrator
         private void listBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
-                popupMenu.ShowPopup(barManager, lb_ModuleList.PointToScreen(new Point(e.X, e.Y)));            
+                popupMenu.ShowPopup(barManager, lb_ModuleList.PointToScreen(new Point(e.X, e.Y)));
         }
 
         private void barBtn_add_ItemClick(object sender, ItemClickEventArgs e)
@@ -138,20 +163,19 @@ namespace NADACommonCalibrator
 
         private void WaveDatas_Received(NCCCommon.ModuleProtocol.WaveData[] waves)
         {
-            WavesReceived(waves);     
+            WavesReceived(waves);
         }
 
         private void barBtn_remove_ItemClick(object sender, ItemClickEventArgs e)
         {
             if (lb_ModuleList.SelectedItem != null)
                 lb_ModuleList.Items.Remove(lb_ModuleList.SelectedItem);
-            if (lb_ModuleList.ItemCount == 0) dockPanel_5509Config.Hide();
         }
 
         private void lb_ModuleList_SelectedIndexChanged(object sender, EventArgs e)
         {
             var listBox = (ListBoxControl)sender;
-            if(listBox.SelectedItem == null) return;
+            if (listBox.SelectedItem == null) return;
             switch (((IGettableReceiverType)listBox.SelectedItem).GetReceiverType())
             {
                 case ReceiverType.Daq5509: break;
@@ -171,7 +195,7 @@ namespace NADACommonCalibrator
             {
                 case ReceiverType.Daq5509:
 
-                    ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems(); 
+                    ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems();
                     break;
                 case ReceiverType.Omap: break;
                 case ReceiverType.Bluetooth: break;
@@ -190,15 +214,20 @@ namespace NADACommonCalibrator
 
         private void navItem_connect_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var receiver = lb_ModuleList.SelectedItem as IWavesReceiver;
-            receiver.Start();
+            CurrentReceiver = lb_ModuleList.SelectedItem as IWavesReceiver;
+            CurrentReceiver.Start();
+        }
+
+        private void navItem_disConnect_ItemChanged(object sender, EventArgs e)
+        {
+            if (CurrentReceiver != null)
+                CurrentReceiver.Stop();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            var receiver = lb_ModuleList.SelectedItem as IWavesReceiver;
-            if(receiver != null)
-                receiver.Stop();
+            if (CurrentReceiver != null)
+                CurrentReceiver.Stop();
         }
     }
 }

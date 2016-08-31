@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.navBarControl = new DevExpress.XtraNavBar.NavBarControl();
             this.AutomationGroup = new DevExpress.XtraNavBar.NavBarGroup();
@@ -37,9 +38,9 @@
             this.navItem_Timebase = new DevExpress.XtraNavBar.NavBarItem();
             this.navItem_spectrum = new DevExpress.XtraNavBar.NavBarItem();
             this.navBarGroup2 = new DevExpress.XtraNavBar.NavBarGroup();
-            this.largeImageCollection = new DevExpress.Utils.ImageCollection();
-            this.smallImageCollection = new DevExpress.Utils.ImageCollection();
-            this.snapDockManager = new DevExpress.Snap.Extensions.SnapDockManager();
+            this.largeImageCollection = new DevExpress.Utils.ImageCollection(this.components);
+            this.smallImageCollection = new DevExpress.Utils.ImageCollection(this.components);
+            this.snapDockManager = new DevExpress.Snap.Extensions.SnapDockManager(this.components);
             this.dockPanel_5509Config = new DevExpress.XtraBars.Docking.DockPanel();
             this.controlContainer1 = new DevExpress.XtraBars.Docking.ControlContainer();
             this.ConfigControl_5509 = new NADACommonCalibrator.ConfigControl.Daq5509ConfigControl();
@@ -48,21 +49,21 @@
             this.lb_ModuleList = new DevExpress.XtraEditors.ListBoxControl();
             this.dockPanel_MenuList = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel1_Container = new DevExpress.XtraBars.Docking.ControlContainer();
-            this.snapDocumentManager = new DevExpress.Snap.Extensions.SnapDocumentManager();
-            this.tabbedView1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.TabbedView();
-            this.defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel();
+            this.snapDocumentManager = new DevExpress.Snap.Extensions.SnapDocumentManager(this.components);
+            this.tabbedView1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.TabbedView(this.components);
+            this.defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
             this.trashItem = new DevExpress.XtraNavBar.NavBarItem();
             this.draftsItem = new DevExpress.XtraNavBar.NavBarItem();
             this.outboxItem = new DevExpress.XtraNavBar.NavBarItem();
             this.inboxItem = new DevExpress.XtraNavBar.NavBarItem();
-            this.popupMenu = new DevExpress.XtraBars.PopupMenu();
+            this.popupMenu = new DevExpress.XtraBars.PopupMenu(this.components);
             this.barBtn_5509 = new DevExpress.XtraBars.BarButtonItem();
             this.barBtn_omap = new DevExpress.XtraBars.BarButtonItem();
             this.barBtn_wifi = new DevExpress.XtraBars.BarButtonItem();
             this.barBtn_bt = new DevExpress.XtraBars.BarButtonItem();
             this.barBtn_remove = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barManager = new DevExpress.XtraBars.BarManager();
+            this.barManager = new DevExpress.XtraBars.BarManager(this.components);
             this.mainBar = new DevExpress.XtraBars.Bar();
             this.barItem_file = new DevExpress.XtraBars.BarSubItem();
             this.barItem_view = new DevExpress.XtraBars.BarSubItem();
@@ -72,7 +73,9 @@
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.document1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document();
+            this.document1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
+            this.document2 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
+            this.navItem_disConnect = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeImageCollection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.smallImageCollection)).BeginInit();
@@ -89,6 +92,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.document1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.document2)).BeginInit();
             this.SuspendLayout();
             // 
             // navBarControl
@@ -104,7 +108,8 @@
             this.navBarControl.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] {
             this.navItem_Timebase,
             this.navItem_spectrum,
-            this.navItem_connect});
+            this.navItem_connect,
+            this.navItem_disConnect});
             this.navBarControl.LargeImages = this.largeImageCollection;
             this.navBarControl.Location = new System.Drawing.Point(0, 0);
             this.navBarControl.Name = "navBarControl";
@@ -141,7 +146,8 @@
             this.organizerGroup.Caption = "측정 모듈";
             this.organizerGroup.Expanded = true;
             this.organizerGroup.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] {
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_connect)});
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_connect),
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_disConnect)});
             this.organizerGroup.LargeImageIndex = 1;
             this.organizerGroup.Name = "organizerGroup";
             this.organizerGroup.SmallImageIndex = 9;
@@ -232,11 +238,10 @@
             // snapDockManager
             // 
             this.snapDockManager.Form = this;
-            this.snapDockManager.HiddenPanels.AddRange(new DevExpress.XtraBars.Docking.DockPanel[] {
-            this.dockPanel_5509Config});
             this.snapDockManager.RootPanels.AddRange(new DevExpress.XtraBars.Docking.DockPanel[] {
             this.dockPanel_ModuleList,
-            this.dockPanel_MenuList});
+            this.dockPanel_MenuList,
+            this.dockPanel_5509Config});
             this.snapDockManager.SnapControl = null;
             this.snapDockManager.TopZIndexControls.AddRange(new string[] {
             "DevExpress.XtraBars.BarDockControl",
@@ -251,16 +256,14 @@
             // 
             this.dockPanel_5509Config.Controls.Add(this.controlContainer1);
             this.dockPanel_5509Config.Dock = DevExpress.XtraBars.Docking.DockingStyle.Float;
-            this.dockPanel_5509Config.FloatLocation = new System.Drawing.Point(260, 183);
+            this.dockPanel_5509Config.FloatLocation = new System.Drawing.Point(312, 182);
             this.dockPanel_5509Config.FloatSize = new System.Drawing.Size(640, 404);
             this.dockPanel_5509Config.ID = new System.Guid("8d03dedf-db7b-4816-88b2-ad81ebc2dca6");
-            this.dockPanel_5509Config.Location = new System.Drawing.Point(-32768, -32768);
+            this.dockPanel_5509Config.Location = new System.Drawing.Point(0, 0);
             this.dockPanel_5509Config.Name = "dockPanel_5509Config";
             this.dockPanel_5509Config.OriginalSize = new System.Drawing.Size(200, 200);
-            this.dockPanel_5509Config.SavedIndex = 2;
             this.dockPanel_5509Config.Size = new System.Drawing.Size(640, 404);
             this.dockPanel_5509Config.Text = "Daq5509 Configuration";
-            this.dockPanel_5509Config.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Hidden;
             // 
             // controlContainer1
             // 
@@ -514,6 +517,22 @@
             this.document1.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
             this.document1.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
             // 
+            // document2
+            // 
+            this.document2.Caption = "Daq5509 Configuration";
+            this.document2.FloatLocation = new System.Drawing.Point(312, 182);
+            this.document2.FloatSize = new System.Drawing.Size(640, 404);
+            this.document2.Properties.AllowClose = DevExpress.Utils.DefaultBoolean.True;
+            this.document2.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
+            this.document2.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
+            // 
+            // navItem_disConnect
+            // 
+            this.navItem_disConnect.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.navItem_disConnect.Appearance.Options.UseFont = true;
+            this.navItem_disConnect.Caption = "해제";
+            this.navItem_disConnect.Name = "navItem_disConnect";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -546,6 +565,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.document1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.document2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -596,5 +616,7 @@
         private DevExpress.XtraBars.Docking2010.Views.Tabbed.Document document1;
         private ConfigControl.Daq5509ConfigControl ConfigControl_5509;
         private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraBars.Docking2010.Views.Tabbed.Document document2;
+        private DevExpress.XtraNavBar.NavBarItem navItem_disConnect;
     }
 }

@@ -12,6 +12,7 @@ using Steema.TeeChart.Styles;
 using NADACommonCalibrator.ConfigControl;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
 using NCCCommon;
+using Steema.TeeChart;
 
 namespace NADACommonCalibrator.PlotControl
 {
@@ -29,12 +30,23 @@ namespace NADACommonCalibrator.PlotControl
             if (items != null)
             {
                 for (int i = 0; i < count; i++)
-                    tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + i + 1, Active = (items[i] as IGettableItemProperty).GetActive() });
-                Resolutions = items.Select(x => (x as IGettableItemProperty).GetResolution()).ToArray();
-                FMax = items.Select(x => (x as IGettableItemProperty).GetAsyncFMax()).First();
+                    tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + i + 1, Active = (items[i] as IChennelItem).GetActive() });
+                Resolutions = items.Select(x => (x as IChennelItem).GetResolution()).ToArray();
+                FMax = items.Select(x => (x as IChennelItem).GetAsyncFMax()).First();
             }
+            tChart_Spectrum.MouseWheel += tChart_mouseWheel;
         }
 
+        private void tChart_mouseWheel(object sender, MouseEventArgs e)
+        {
+            tChart_Spectrum.Zoom.Direction = ZoomDirections.Vertical;
+            if (e.Delta < 0)
+                tChart_Spectrum.Zoom.ZoomPercent(0.01);
+            else
+                tChart_Spectrum.Zoom.ZoomPercent(0.01);
+            
+        }
+         
         private void Waves_Received(WaveData[] waves)
         {
             foreach (var serise in tChart_Spectrum.Series)
