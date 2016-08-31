@@ -7,24 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TraceTool;
 using Real = System.Single;
-
-//더미 클래스들
-namespace TraceTool
-{
-    public class WinTrace
-    {
-        public WinTrace(string a, string b) { }
-        public void Send(string msg) { }
-    }
-
-    public class WinWatch
-    {
-        public WinWatch(string a, string b) { }
-        public void Send(string l, object r) { }
-    }
-}
 
 namespace NCCCommon.ModuleProtocol.Daq5509Protocol
 {
@@ -32,8 +15,6 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
     {
         internal TcpClient tcp;
         internal NetworkStream ns;
-        WinTrace trace;
-        WinWatch watch;
 
         private float[] scaleFactors;
 
@@ -51,16 +32,6 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
         {
             Debug.WriteLine(DateTime.Now.ToShortTimeString() + ", " + msg);
         }
-        public void WriteWatch(string name, object obj)
-        {
-            if (watch != null)
-                watch.Send(name, obj);
-        }
-        public void WriteTrace(string msg)
-        {
-            if (trace != null)
-                trace.Send(msg);
-        }
 
         public DaqClient(float[] scaleFactors = null)
         {
@@ -72,9 +43,6 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
 
         public void Connect(string ip, int port, int timeout = 2000)
         {
-            watch = new WinWatch("wDaq" + ip, "wDaq" + ip);
-            trace = new WinTrace("tDaq" + ip, "tDaq" + ip);
-
             tcp = new TcpClient();
             try
             {
@@ -228,7 +196,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
             DaqData result = null;
             while (result == null)
             {
-                var packet = DaqDataPacket.RecvDataPacket(this, qs, "fetch", trace);
+                var packet = DaqDataPacket.RecvDataPacket(this, qs, "fetch");
                 result = ProcessPacket(packets, packet);
             }
             return result;
@@ -293,8 +261,6 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
         private DaqData PopAndProcessAsyncPackets(List<DaqDataPacket> packets)
         {
             var now = DateTime.UtcNow;
-            trace.Send("PopAndProcessAsyncPackets");
-            trace.Send("Elapsed - " + (now - lastProcessTime).TotalMilliseconds + " miliseconds");
             
             DaqData data = new DaqData();
             //var gapAndRpm = packet.ToWords();

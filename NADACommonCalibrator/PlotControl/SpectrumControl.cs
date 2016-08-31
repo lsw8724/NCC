@@ -30,7 +30,7 @@ namespace NADACommonCalibrator.PlotControl
             if (items != null)
             {
                 for (int i = 0; i < count; i++)
-                    tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + i + 1, Active = (items[i] as IChennelItem).GetActive() });
+                    tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = (items[i] as IChennelItem).GetActive() });
                 Resolutions = items.Select(x => (x as IChennelItem).GetResolution()).ToArray();
                 FMax = items.Select(x => (x as IChennelItem).GetAsyncFMax()).First();
             }

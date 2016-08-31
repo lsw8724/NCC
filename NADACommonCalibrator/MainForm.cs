@@ -14,6 +14,7 @@ using NADACommonCalibrator.PlotControl;
 using NADACommonCalibrator.ConfigControl;
 using NCCCommon.ModuleProtocol;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
+using NCCCommon.ModuleProtocol.OmapProtocol;
 using System.IO;
 using CSScriptLibrary;
 using DevExpress.XtraBars;
@@ -150,12 +151,17 @@ namespace NADACommonCalibrator
             switch ((ReceiverType)e.Item.Tag)
             {
                 case ReceiverType.Daq5509:
-                    var receiver = new Receiver_5509();
-                    receiver.WavesReceived += WaveDatas_Received;
-                    lb_ModuleList.Items.Add(receiver);
+                    var daq5509 = new Receiver_5509(new DaqModule());
+                    daq5509.WavesReceived += WaveDatas_Received;
+                    lb_ModuleList.Items.Add(daq5509);
                     dockPanel_5509Config.Show();
                     break;
-                case ReceiverType.Omap: break;
+                case ReceiverType.Omap: 
+                    var omap = new Receiver_Omap(new OmapModule());
+                    omap.WavesReceived += WaveDatas_Received;
+                    lb_ModuleList.Items.Add(omap);
+                    dockPanel_OmapConfig.Show();
+                    break;
                 case ReceiverType.Bluetooth: break;
                 case ReceiverType.Wifi: break;
             }
@@ -176,15 +182,20 @@ namespace NADACommonCalibrator
         {
             var listBox = (ListBoxControl)sender;
             if (listBox.SelectedItem == null) return;
+            var receiver = lb_ModuleList.SelectedItem as IConvertableItems;
+            
             switch (((IGettableReceiverType)listBox.SelectedItem).GetReceiverType())
             {
-                case ReceiverType.Daq5509: break;
-                case ReceiverType.Omap: break;
+                case ReceiverType.Daq5509: 
+                    ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems(); 
+                    break;
+                case ReceiverType.Omap: 
+                    ConfigControl_Omap.gcOmap.DataSource = receiver.ToItems(); 
+                    break;
                 case ReceiverType.Bluetooth: break;
                 case ReceiverType.Wifi: break;
             }
-            var receiver = lb_ModuleList.SelectedItem as IConvertableItems;
-            ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems();
+          
         }
 
         private void lb_ModuleList_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -196,7 +207,8 @@ namespace NADACommonCalibrator
                 case ReceiverType.Daq5509:
                     ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems();
                     break;
-                case ReceiverType.Omap: ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems();
+                case ReceiverType.Omap: 
+                    ConfigControl_Omap.gcOmap.DataSource = receiver.ToItems();
                     break;
                 case ReceiverType.Bluetooth: break;
                 case ReceiverType.Wifi: break;
@@ -205,7 +217,7 @@ namespace NADACommonCalibrator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            foreach (var panel in new DockPanel[] { dockPanel_5509Config })
+            foreach (var panel in new DockPanel[] { dockPanel_5509Config,dockPanel_OmapConfig })
             {
                 panel.DockAsMdiDocument();
                 panel.DockTo(DockingStyle.Fill);
@@ -218,13 +230,13 @@ namespace NADACommonCalibrator
             CurrentReceiver.Start();
         }
 
-        private void navItem_disConnect_ItemChanged(object sender, EventArgs e)
+        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (CurrentReceiver != null)
                 CurrentReceiver.Stop();
         }
 
-        private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void navItem_disConnect_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
             if (CurrentReceiver != null)
                 CurrentReceiver.Stop();

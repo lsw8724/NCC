@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using TraceTool;
 
 namespace NCCCommon.ModuleProtocol.Daq5509Protocol
 {
@@ -113,7 +112,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
         }
                
 
-        public static DaqDataPacket RecvDataPacket(DaqClient parent, ByteQueuedStream ns, string commandNameForLog, WinTrace trace = null)
+        public static DaqDataPacket RecvDataPacket(DaqClient parent, ByteQueuedStream ns, string commandNameForLog)
         {
         _START:
             int invalidHeaderCount = 0;
@@ -129,8 +128,6 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
             var header = ns.PopFront(4);
             var type = (DaqDataType)header[0];
             var wordCount = (ushort)(BitConverter.ToUInt16(header, 2) * 2);
-            if (trace != null && type == DaqDataType.DAQ_DATA)
-                trace.Send("Daq DATA Packet - wordCount:" + wordCount);
 
             int readSize = 0;
             if (type == DaqDataType.DAQ_DATA)

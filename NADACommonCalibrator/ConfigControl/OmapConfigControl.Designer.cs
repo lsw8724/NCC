@@ -153,14 +153,14 @@
             this.gcActive.Visible = true;
             this.gcActive.VisibleIndex = 6;
             // 
-            // DaqOmapConfigControl
+            // OmapConfigControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pgcOmap);
             this.Controls.Add(this.splitterControl1);
             this.Controls.Add(this.gcOmap);
-            this.Name = "DaqOmapConfigControl";
+            this.Name = "OmapConfigControl";
             this.Size = new System.Drawing.Size(660, 390);
             ((System.ComponentModel.ISupportInitialize)(this.pgcOmap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gcOmap)).EndInit();

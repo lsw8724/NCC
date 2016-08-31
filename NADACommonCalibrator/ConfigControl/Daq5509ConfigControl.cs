@@ -53,15 +53,15 @@ namespace NADACommonCalibrator.ConfigControl
 
     public class Daq5509ChannelItem : IChennelItem
     {
-        private Daq5509Receiver Rcv;
-        private RobinChannel Ch;
+        private DaqModule module;
+        private DaqChannel Ch;
 
         [Category("Module")]
-        public string ModuleIp { get { return Rcv.ModuleIp; } set { Rcv.ModuleIp = value; } }
+        public string ModuleIp { get { return module.ModuleIp; } set { module.ModuleIp = value; } }
         [Category("Module")]
-        public DaqInputType InputType { get { return Rcv.InputType; } set { Rcv.InputType = value; } }
+        public DaqInputType InputType { get { return module.InputType; } set { module.InputType = value; } }
         [Category("Module"),DXDescription]
-        public DaqSamplingRate SamplingRate { get { return Rcv.nSamplingRate; } set { Rcv.nSamplingRate = value; } }
+        public DaqSamplingRate SamplingRate { get { return module.nSamplingRate; } set { module.nSamplingRate = value; } }
 
         [Category("Channel")]
         public string Channel { get { return "CH" + Ch.Id; } }
@@ -78,9 +78,9 @@ namespace NADACommonCalibrator.ConfigControl
         [Category("Channel")]
         public bool Active { get; set; }
 
-        public Daq5509ChannelItem(IWavesReceiver receiver, RobinChannel ch)
+        public Daq5509ChannelItem(IWavesReceiver receiver,DaqChannel ch)
         {
-            this.Rcv = receiver as Daq5509Receiver;
+            this.module = (receiver as Receiver_5509).Module;
             this.Ch = ch;
             if (ch.Id == 1)
                 Active = true;
@@ -89,30 +89,5 @@ namespace NADACommonCalibrator.ConfigControl
         public float GetResolution() { return AsyncLine / (float)AsyncFMax; }
         public int GetAsyncFMax() { return AsyncFMax; }
         public bool GetActive(){ return Active;}
-    }
-
-    public class OmapChannelItem
-    {
-        private OmapReceiver Rcv;
-        private SensorChannel Ch;
-        
-        [Category("Channel")]
-        public bool Active { get; set; }
-
-        public OmapChannelItem(IWavesReceiver receiver, SensorChannel ch)
-        {
-            this.Rcv = receiver as OmapReceiver;
-            this.Ch = ch;
-            if (ch.Id == 1)
-                Active = true;
-        }
-    }
-
-    public class BTChannelItem
-    {
-    }
-
-    public class WifiChannelItem
-    {
     }
 }

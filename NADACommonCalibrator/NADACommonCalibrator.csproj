@@ -111,6 +111,12 @@
     <Compile Include="ConfigControl\Daq5509ConfigControl.designer.cs">
       <DependentUpon>Daq5509ConfigControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConfigControl\OmapConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConfigControl\OmapConfigControl.Designer.cs">
+      <DependentUpon>OmapConfigControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DevExpressUtil.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -145,6 +151,9 @@
     </Content>
     <EmbeddedResource Include="ConfigControl\Daq5509ConfigControl.resx">
       <DependentUpon>Daq5509ConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigControl\OmapConfigControl.resx">
+      <DependentUpon>OmapConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
