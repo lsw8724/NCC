@@ -17,7 +17,6 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
         public bool ICP { get; set; }
         public DaqGain HWGain { get; set; }
         public float Sensitivity { get; set; }
-        public bool Active { get; set; }
 
         public float ScaleFactorByDisplayUnit() { return 1.0f; }
         public RobinChannel()

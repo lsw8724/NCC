@@ -76,12 +76,14 @@ namespace NADACommonCalibrator.ConfigControl
         [Category("Channel")]
         public float Sensitivity { get { return Ch.Sensitivity; } set { Ch.Sensitivity = value; } }
         [Category("Channel")]
-        public bool Active { get { return Ch.Active; } set { Ch.Active = value; } }
+        public bool Active { get; set; }
 
         public Daq5509ChannelItem(IWavesReceiver receiver, RobinChannel ch)
         {
             this.Rcv = receiver as Daq5509Receiver;
             this.Ch = ch;
+            if (ch.Id == 1)
+                Active = true;
         }
 
         public float GetResolution() { return AsyncLine / (float)AsyncFMax; }

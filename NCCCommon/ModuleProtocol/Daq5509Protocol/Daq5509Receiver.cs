@@ -31,10 +31,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
             this.InputType = DaqInputType.AC;
             this.Channels = new RobinChannel[8];
             for (int i = 0; i < Channels.Length; i++)
-            {
                 Channels[i] = new RobinChannel() { PhysicalIndex = i, Id = i + 1 };
-                if (i == 0) Channels[i].Active = true;
-            }
           
             scaleFactors = new float[Channels.Length];
             foreach (var channel in Channels)

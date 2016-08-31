@@ -193,9 +193,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Measure\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\NCCCommon\NCCCommon.csproj">
       <Project>{942bd897-a123-4ac7-9255-bde097db82f1}</Project>
