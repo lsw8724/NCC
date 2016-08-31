@@ -139,6 +139,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Receiver\Receiver_5509.cs" />
+    <Compile Include="Receiver\Receiver_Omap.cs" />
     <Content Include="Scripts\Example.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

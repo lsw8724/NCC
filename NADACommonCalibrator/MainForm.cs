@@ -194,10 +194,10 @@ namespace NADACommonCalibrator
             switch (((IGettableReceiverType)listBox.SelectedItem).GetReceiverType())
             {
                 case ReceiverType.Daq5509:
-
                     ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems();
                     break;
-                case ReceiverType.Omap: break;
+                case ReceiverType.Omap: ConfigControl_5509.gcDaq5509.DataSource = receiver.ToItems();
+                    break;
                 case ReceiverType.Bluetooth: break;
                 case ReceiverType.Wifi: break;
             }

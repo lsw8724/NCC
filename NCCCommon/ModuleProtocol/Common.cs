@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 
 namespace NCCCommon.ModuleProtocol
 {
+    public interface IWavesData
+    {
+    }
+
     public interface IWavesReceiver : ICancelableTask
     {
         event Action<WaveData[]> WavesReceived;

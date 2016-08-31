@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NCCCommon.ModuleProtocol.OmapProtocol
 {
-    public class OmapReceiver : SingleTask
+    public class OmapReceiver : SingleTask, IWavesReceiver
     {
         public string ModuleIp { get; set; }
         private int DataPort = 4511;
@@ -23,7 +23,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
         public double WaveIntervalTime;
 
-        public event Action<ModuleWaves> WaveReceived;
+        public event Action<WaveData[]> WavesReceived;
 
         public long WaveReceiveCount;
 
@@ -81,9 +81,6 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
                 if (msg.Type != MsgType.MsgType_Data_ModuleWaves)
                     continue;
 
-                //테스트
-                //stream.SendAsDspMessage(new HeartBeat());
-
                 var waves = ModuleWaves.Parse(msg);
                 IsTriggered = TimeTrigger.FetchTrigger();
                 if (IsTriggered)
@@ -92,7 +89,8 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
                 if (nReadCount++ % 300 == 0)
                     WriteLog("Wave Receives - Triggered:" + WaveReceiveCount + ", Read:" + nReadCount);
 
-                WaveReceived(waves);
+                var waveDatas = new WaveData[] { waves[0], waves[1], waves[2], waves[3], waves[4], waves[5], waves[6], waves[7] };
+                WavesReceived(waveDatas);
             }
             stream.Close();
         }

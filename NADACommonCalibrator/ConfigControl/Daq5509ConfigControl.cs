@@ -93,6 +93,19 @@ namespace NADACommonCalibrator.ConfigControl
 
     public class OmapChannelItem
     {
+        private OmapReceiver Rcv;
+        private SensorChannel Ch;
+        
+        [Category("Channel")]
+        public bool Active { get; set; }
+
+        public OmapChannelItem(IWavesReceiver receiver, SensorChannel ch)
+        {
+            this.Rcv = receiver as OmapReceiver;
+            this.Ch = ch;
+            if (ch.Id == 1)
+                Active = true;
+        }
     }
 
     public class BTChannelItem
