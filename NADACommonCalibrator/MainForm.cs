@@ -21,15 +21,10 @@ using DevExpress.XtraBars;
 using System.Linq;
 using NCCCommon;
 using NADACommonCalibrator.Receiver;
+using Ivi.Visa.Interop;
 
 namespace NADACommonCalibrator
 {
-    public interface IVisaScript
-    {
-        string Name { get; }
-        string Run();
-    }
-
     public partial class MainForm : XtraForm
     {
         private List<XtraUserControl> OpenedPlotControl = new List<XtraUserControl>();
@@ -59,15 +54,11 @@ namespace NADACommonCalibrator
                 navItem_Timebase.Visible = false;
                 if (dockPanel_5509Config.State == DockPanelState.Docking)
                     dockPanel_5509Config.Hide();
-                navItem_connect.Visible = false;
-                navItem_disConnect.Visible = false;
             }
             else
             {
                 navItem_spectrum.Visible = true;
                 navItem_Timebase.Visible = true;
-                navItem_disConnect.Visible = true;
-                navItem_connect.Visible = true;
             }
         }
 
@@ -95,6 +86,7 @@ namespace NADACommonCalibrator
 
         private void InitializeScriptItem()
         {
+            List<object> instances = new List<object>();
             var paths = Directory.GetFiles("Scripts", "*.cs");
             foreach (var path in paths)
             {
@@ -104,17 +96,43 @@ namespace NADACommonCalibrator
                 link.Item.LinkClicked += (s, e) => RunScript(e.Link.Item.Tag as IVisaScript);
                 link.Item.Caption = script.Name;
                 link.Item.Tag = script;
+                instances.Add(CSScript.Load(path).CreateInstance("NCCScript"));
             }
         }
 
         private void RunScript(IVisaScript script)
         {
+            ResourceManager rm = new ResourceManager();
+            FormattedIO488 ioobj = new FormattedIO488();
             try
             {
-                var temp = script.Run();
+                ioobj.IO = (IMessage)rm.Open("USB ID", AccessMode.NO_LOCK, 2000, "");
+                var visa = new VisaControl(ioobj);
+                script.Run(visa);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
+                Console.Out.WriteLine("An error occurred: " + e.Message);
+
+                var visa = new VisaControl(null);
+                script.Run(visa);
+            }
+            finally
+            {
+                try { ioobj.IO.Close(); }
+                catch { }
+                try
+                {
+                    Marshal.ReleaseComObject(ioobj);
+                    Marshal.FinalReleaseComObject(ioobj);
+                }
+                catch { }
+                try
+                {
+                    Marshal.ReleaseComObject(rm);
+                    Marshal.FinalReleaseComObject(rm);
+                }
+                catch { }
             }
         }
 
@@ -224,19 +242,7 @@ namespace NADACommonCalibrator
             }
         }
 
-        private void navItem_connect_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            CurrentReceiver = lb_ModuleList.SelectedItem as IWavesReceiver;
-            CurrentReceiver.Start();
-        }
-
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (CurrentReceiver != null)
-                CurrentReceiver.Stop();
-        }
-
-        private void navItem_disConnect_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
             if (CurrentReceiver != null)
                 CurrentReceiver.Stop();
