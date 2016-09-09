@@ -1,10 +1,12 @@
 ﻿using NADACommonCalibrator;
+using NADACommonCalibrator.Receiver;
 using NCCCommon;
+using NCCCommon.ModuleProtocol;
 
 public partial class NCCScript
 {
     public string Description { get { return "5509 연결"; } }
-    public ReceiverType Receiver {get;set;}
+    public IWavesReceiver Receiver {get;set;}
     public string ModuleIp { get; set; }
     public int AsyncLine { get; set; }
     public int AsyncFMax { get; set; }
@@ -13,8 +15,8 @@ public partial class NCCScript
 
     public NCCScript()
     {
-        Receiver = ReceiverType.Daq5509;
-        ModuleIp = "192.168.0.10";
+        ModuleIp = "192.168.0.11";
+        Receiver = new ReceiverDaq5509(ModuleIp);
         AsyncLine = 3200;
         AsyncFMax = 3200;
         ICP = true;
@@ -23,7 +25,6 @@ public partial class NCCScript
 
     public void Run()
     {
-        var rcv = ReceiverUtil.GetReceiver(Receiver);
-        rcv.Start();
+        Receiver.Start();
     }
 }

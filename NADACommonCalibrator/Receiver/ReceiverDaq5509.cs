@@ -10,14 +10,14 @@ using System.Threading;
 
 namespace NADACommonCalibrator.Receiver
 {
-    public class Receiver_5509 : SingleTask, IWavesReceiver
+    public class ReceiverDaq5509 : SingleTask, IWavesReceiver
     {
         public DaqModule Module;
         private DaqClient Daq;
         
-        public Receiver_5509(DaqModule module)
+        public ReceiverDaq5509(string ip)
         {
-            Module = module;
+            Module = new DaqModule() { ModuleIp = ip };
         }
 
         public event Action<WaveData[]> WavesReceived;

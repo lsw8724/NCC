@@ -25,10 +25,11 @@ namespace NADACommonCalibrator
 {
     public partial class MainForm : XtraForm
     {
-        private List<XtraUserControl> OpenedPlotControl = new List<XtraUserControl>();
-        public event Action<WaveData[]> WavesReceived;
-        private IWavesReceiver CurrentReceiver;
+        public IWavesReceiver CurrentReceiver;
+        public static event Action<WaveData[]> WavesReceived;
 
+        private List<XtraUserControl> OpenedPlotControl = new List<XtraUserControl>();
+        
         public MainForm()
         {
             InitializeComponent();
@@ -66,7 +67,7 @@ namespace NADACommonCalibrator
             {
                 dynamic instance = CSScript.Load(path).CreateInstance("NCCScript");
                 var link = navAutomationGroup.AddItem();
-                link.Item.LinkClicked += (s, e) => OpenScriptConfig(e.Link.Item.Tag,path);
+                link.Item.LinkClicked += (s, e) => OpenScriptConfig(e.Link.Item.Tag, path);
                 link.Item.Caption = instance.Description;
                 link.Item.Tag = instance;
             }
@@ -75,26 +76,14 @@ namespace NADACommonCalibrator
         private void OpenScriptConfig(object obj, string path)
         {
             pgcScriptConfig.Rows.Clear();
-            dockPanel_scriptGrid.Show();
+            dockPanel_scriptInfo.Show();
             pgcScriptConfig.Invalidate();
             pgcScriptConfig.SelectedObject = obj;
-            //recScript.Text = File.ReadAllText(path);
-        }
-
-        private class Temporary1
-        {
-            public string Name { get{return "1";}}
-            public int tempint { get; set; }
-        }
-
-        private class Temporary2
-        {
-            public string Name { get { return "2"; }}
         }
 
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var timebasePlot = new TimeBaseControl(8, this) { Dock = DockStyle.Fill };
+            var timebasePlot = new TimeBaseControl(8) { Dock = DockStyle.Fill };
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "TimeBase";
             dockPanel.Controls.Add(timebasePlot);
@@ -105,7 +94,7 @@ namespace NADACommonCalibrator
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var spectrumPlot = new SpectrumControl(8, this) { Dock = DockStyle.Fill };
+            var spectrumPlot = new SpectrumControl(8) { Dock = DockStyle.Fill };
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "Spectrum";
             dockPanel.Controls.Add(spectrumPlot);
@@ -114,15 +103,23 @@ namespace NADACommonCalibrator
             OpenedPlotControl.Add(spectrumPlot);
         }
 
-        private void WaveDatas_Received(NCCCommon.ModuleProtocol.WaveData[] waves)
-        {
-            WavesReceived(waves);
-        }
-
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (CurrentReceiver != null)
                 CurrentReceiver.Stop();
+        }
+
+        private void barBtn_runScript_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var script = pgcScriptConfig.SelectedObject as dynamic;
+            CurrentReceiver = (IWavesReceiver)script.Receiver;
+            CurrentReceiver.WavesReceived += AfterWavesReceived;
+            script.Run();
+        }
+
+        private void AfterWavesReceived(WaveData[] waves)
+        {
+            WavesReceived(waves);
         }
     }
 }

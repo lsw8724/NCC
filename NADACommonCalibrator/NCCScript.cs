@@ -13,17 +13,6 @@ using System.Threading.Tasks;
 
 namespace NADACommonCalibrator
 {
-    public class ReceiverUtil
-    {
-        public static IWavesReceiver GetReceiver(ReceiverType type)
-        {
-            switch (type)
-            {
-                case ReceiverType.Daq5509: return new Receiver_5509(new DaqModule());
-                default: return null;
-            }
-        }
-    }
     public class VisaConnection
     {
         public FormattedIO488 VisaIo { get; private set; }

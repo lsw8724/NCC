@@ -16,10 +16,10 @@ namespace NADACommonCalibrator.PlotControl
     public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl
     {
         private float[] Resolutions;
-        public TimeBaseControl(int count, XtraForm owner)
+        public TimeBaseControl(int count)
         {
             InitializeComponent();
-            (owner as MainForm).WavesReceived += Waves_Received;
+            MainForm.WavesReceived += Waves_Received;
             Cursor = new ChartCursor(tChart_timeBase);
             Resolutions = new float[] { 1, 1, 1, 1, 1, 1, 1, 1 };
             for (int i = 0; i < count; i++)

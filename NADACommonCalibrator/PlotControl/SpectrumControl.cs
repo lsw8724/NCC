@@ -19,10 +19,10 @@ namespace NADACommonCalibrator.PlotControl
     {
         private float[] Resolutions;
         private int FMax;
-        public SpectrumControl(int count, XtraForm owner)
+        public SpectrumControl(int count)
         {
             InitializeComponent();
-            (owner as MainForm).WavesReceived += Waves_Received;
+            MainForm.WavesReceived += Waves_Received;
             Cursor = new ChartCursor(tChart_Spectrum);
             for (int i = 0; i < count; i++)
                 tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1) });

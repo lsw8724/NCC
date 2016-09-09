@@ -12,13 +12,13 @@ using System.Runtime.InteropServices;
 
 namespace NADACommonCalibrator.Receiver
 {
-    public class Receiver_Omap : SingleTask, IWavesReceiver
+    public class ReceiverOmap : SingleTask, IWavesReceiver
     {
         public OmapModule Module;
         public TcpClient tcp;
         public event Action<WaveData[]> WavesReceived;
 
-        public Receiver_Omap(OmapModule module)
+        public ReceiverOmap(OmapModule module)
         {
             Module = module;
         }       
