@@ -65,7 +65,7 @@ namespace NADACommonCalibrator
             foreach (var path in paths)
             {
                 dynamic instance = CSScript.Load(path).CreateInstance("NCCScript");
-                var link = AutomationGroup.AddItem();
+                var link = navAutomationGroup.AddItem();
                 link.Item.LinkClicked += (s, e) => OpenScriptConfig(e.Link.Item.Tag,path);
                 link.Item.Caption = instance.Description;
                 link.Item.Tag = instance;
@@ -119,14 +119,6 @@ namespace NADACommonCalibrator
             WavesReceived(waves);
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            //foreach (var panel in new DockPanel[] { dockPanel_scriptGrid })
-            //{
-            //    panel.DockAsMdiDocument();
-            //    panel.DockTo(DockingStyle.Fill);
-            //}
-        }
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (CurrentReceiver != null)

@@ -30,17 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.navBarControl = new DevExpress.XtraNavBar.NavBarControl();
-            this.AutomationGroup = new DevExpress.XtraNavBar.NavBarGroup();
-            this.navBarGroup1 = new DevExpress.XtraNavBar.NavBarGroup();
-            this.navItem_Timebase = new DevExpress.XtraNavBar.NavBarItem();
-            this.navItem_spectrum = new DevExpress.XtraNavBar.NavBarItem();
             this.largeImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.smallImageCollection = new DevExpress.Utils.ImageCollection(this.components);
-            this.snapDockManager = new DevExpress.Snap.Extensions.SnapDockManager(this.components);
-            this.dockPanel_scriptTxt = new DevExpress.XtraBars.Docking.DockPanel();
-            this.controlContainer2 = new DevExpress.XtraBars.Docking.ControlContainer();
-            this.recScript = new DevExpress.XtraRichEdit.RichEditControl();
             this.barManager = new DevExpress.XtraBars.BarManager(this.components);
             this.mainBar = new DevExpress.XtraBars.Bar();
             this.barItem_file = new DevExpress.XtraBars.BarSubItem();
@@ -51,125 +42,30 @@
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.barBtn_5509 = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtn_remove = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtn_omap = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtn_bt = new DevExpress.XtraBars.BarButtonItem();
-            this.barBtn_wifi = new DevExpress.XtraBars.BarButtonItem();
-            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.dockPanel_scriptGrid = new DevExpress.XtraBars.Docking.DockPanel();
-            this.controlContainer1 = new DevExpress.XtraBars.Docking.ControlContainer();
-            this.pgcScriptConfig = new DevExpress.XtraVerticalGrid.PropertyGridControl();
-            this.dockPanel_MenuList = new DevExpress.XtraBars.Docking.DockPanel();
-            this.dockPanel1_Container = new DevExpress.XtraBars.Docking.ControlContainer();
-            this.snapDocumentManager = new DevExpress.Snap.Extensions.SnapDocumentManager(this.components);
             this.defaultLookAndFeel = new DevExpress.LookAndFeel.DefaultLookAndFeel(this.components);
-            this.draftsItem = new DevExpress.XtraNavBar.NavBarItem();
-            this.outboxItem = new DevExpress.XtraNavBar.NavBarItem();
-            this.inboxItem = new DevExpress.XtraNavBar.NavBarItem();
+            this.documentManager1 = new DevExpress.XtraBars.Docking2010.DocumentManager(this.components);
+            this.tabbedView1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.TabbedView(this.components);
+            this.documentGroup1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.DocumentGroup(this.components);
             this.document1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
             this.document2 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
-            this.document3 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
-            this.document4 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
-            this.document5 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.navBarControl)).BeginInit();
+            this.snapDockManager = new DevExpress.XtraBars.Docking.DockManager(this.components);
+            this.dockPanel1 = new DevExpress.XtraBars.Docking.DockPanel();
+            this.dockPanel1_Container = new DevExpress.XtraBars.Docking.ControlContainer();
+            this.navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
+            this.navAutomationGroup = new DevExpress.XtraNavBar.NavBarGroup();
             ((System.ComponentModel.ISupportInitialize)(this.largeImageCollection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.smallImageCollection)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.snapDockManager)).BeginInit();
-            this.dockPanel_scriptTxt.SuspendLayout();
-            this.controlContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
-            this.dockPanel_scriptGrid.SuspendLayout();
-            this.controlContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pgcScriptConfig)).BeginInit();
-            this.dockPanel_MenuList.SuspendLayout();
-            this.dockPanel1_Container.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.snapDocumentManager)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.documentManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabbedView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.documentGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.document1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.document2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.document3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.document4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.document5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.snapDockManager)).BeginInit();
+            this.dockPanel1.SuspendLayout();
+            this.dockPanel1_Container.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // navBarControl
-            // 
-            this.navBarControl.ActiveGroup = this.AutomationGroup;
-            this.navBarControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.navBarControl.Font = new System.Drawing.Font("Tahoma", 11F);
-            this.navBarControl.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
-            this.AutomationGroup,
-            this.navBarGroup1});
-            this.navBarControl.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] {
-            this.navItem_Timebase,
-            this.navItem_spectrum});
-            this.navBarControl.LargeImages = this.largeImageCollection;
-            this.navBarControl.Location = new System.Drawing.Point(0, 0);
-            this.navBarControl.Name = "navBarControl";
-            this.navBarControl.OptionsNavPane.ExpandedWidth = 188;
-            this.navBarControl.PaintStyleKind = DevExpress.XtraNavBar.NavBarViewKind.ExplorerBar;
-            this.navBarControl.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.navBarControl.Size = new System.Drawing.Size(188, 489);
-            this.navBarControl.SmallImages = this.smallImageCollection;
-            this.navBarControl.StoreDefaultPaintStyleName = true;
-            this.navBarControl.TabIndex = 2;
-            this.navBarControl.Text = "navBarControl1";
-            // 
-            // AutomationGroup
-            // 
-            this.AutomationGroup.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.AutomationGroup.Appearance.Options.UseFont = true;
-            this.AutomationGroup.AppearanceHotTracked.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.AutomationGroup.AppearanceHotTracked.Options.UseFont = true;
-            this.AutomationGroup.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.AutomationGroup.AppearancePressed.Options.UseFont = true;
-            this.AutomationGroup.Caption = "자동화";
-            this.AutomationGroup.Expanded = true;
-            this.AutomationGroup.LargeImageIndex = 3;
-            this.AutomationGroup.Name = "AutomationGroup";
-            // 
-            // navBarGroup1
-            // 
-            this.navBarGroup1.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navBarGroup1.Appearance.Options.UseFont = true;
-            this.navBarGroup1.AppearanceHotTracked.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navBarGroup1.AppearanceHotTracked.Options.UseFont = true;
-            this.navBarGroup1.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navBarGroup1.AppearancePressed.Options.UseFont = true;
-            this.navBarGroup1.Caption = "분석";
-            this.navBarGroup1.Expanded = true;
-            this.navBarGroup1.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] {
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_Timebase),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navItem_spectrum)});
-            this.navBarGroup1.LargeImageIndex = 2;
-            this.navBarGroup1.Name = "navBarGroup1";
-            this.navBarGroup1.SmallImageIndex = 8;
-            // 
-            // navItem_Timebase
-            // 
-            this.navItem_Timebase.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_Timebase.Appearance.Options.UseFont = true;
-            this.navItem_Timebase.AppearanceHotTracked.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_Timebase.AppearanceHotTracked.Options.UseFont = true;
-            this.navItem_Timebase.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_Timebase.AppearancePressed.Options.UseFont = true;
-            this.navItem_Timebase.Caption = "타임";
-            this.navItem_Timebase.Name = "navItem_Timebase";
-            this.navItem_Timebase.SmallImageIndex = 5;
-            this.navItem_Timebase.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItem_timeBase_LinkClicked);
-            // 
-            // navItem_spectrum
-            // 
-            this.navItem_spectrum.Appearance.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_spectrum.Appearance.Options.UseFont = true;
-            this.navItem_spectrum.AppearanceHotTracked.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_spectrum.AppearanceHotTracked.Options.UseFont = true;
-            this.navItem_spectrum.AppearancePressed.Font = new System.Drawing.Font("Tahoma", 10F);
-            this.navItem_spectrum.AppearancePressed.Options.UseFont = true;
-            this.navItem_spectrum.Caption = "스펙트럼";
-            this.navItem_spectrum.Name = "navItem_spectrum";
-            this.navItem_spectrum.SmallImageIndex = 4;
-            this.navItem_spectrum.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItem_spectrum_LinkClicked);
             // 
             // largeImageCollection
             // 
@@ -184,58 +80,6 @@
             // 
             this.smallImageCollection.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("smallImageCollection.ImageStream")));
             // 
-            // snapDockManager
-            // 
-            this.snapDockManager.Form = this;
-            this.snapDockManager.HiddenPanels.AddRange(new DevExpress.XtraBars.Docking.DockPanel[] {
-            this.dockPanel_scriptTxt,
-            this.dockPanel_scriptGrid});
-            this.snapDockManager.RootPanels.AddRange(new DevExpress.XtraBars.Docking.DockPanel[] {
-            this.dockPanel_MenuList});
-            this.snapDockManager.SnapControl = null;
-            this.snapDockManager.TopZIndexControls.AddRange(new string[] {
-            "DevExpress.XtraBars.BarDockControl",
-            "DevExpress.XtraBars.StandaloneBarDockControl",
-            "System.Windows.Forms.StatusBar",
-            "System.Windows.Forms.MenuStrip",
-            "System.Windows.Forms.StatusStrip",
-            "DevExpress.XtraBars.Ribbon.RibbonStatusBar",
-            "DevExpress.XtraBars.Ribbon.RibbonControl"});
-            // 
-            // dockPanel_scriptTxt
-            // 
-            this.dockPanel_scriptTxt.Controls.Add(this.controlContainer2);
-            this.dockPanel_scriptTxt.Dock = DevExpress.XtraBars.Docking.DockingStyle.Left;
-            this.dockPanel_scriptTxt.ID = new System.Guid("f1adc87f-9cf1-4f44-aed3-61821f8795c0");
-            this.dockPanel_scriptTxt.Location = new System.Drawing.Point(524, 24);
-            this.dockPanel_scriptTxt.Name = "dockPanel_scriptTxt";
-            this.dockPanel_scriptTxt.OriginalSize = new System.Drawing.Size(353, 200);
-            this.dockPanel_scriptTxt.SavedDock = DevExpress.XtraBars.Docking.DockingStyle.Left;
-            this.dockPanel_scriptTxt.SavedIndex = 2;
-            this.dockPanel_scriptTxt.Size = new System.Drawing.Size(353, 522);
-            this.dockPanel_scriptTxt.Text = "Script Txt";
-            this.dockPanel_scriptTxt.Visibility = DevExpress.XtraBars.Docking.DockVisibility.Hidden;
-            // 
-            // controlContainer2
-            // 
-            this.controlContainer2.Controls.Add(this.recScript);
-            this.controlContainer2.Location = new System.Drawing.Point(6, 27);
-            this.controlContainer2.Name = "controlContainer2";
-            this.controlContainer2.Size = new System.Drawing.Size(341, 489);
-            this.controlContainer2.TabIndex = 0;
-            // 
-            // recScript
-            // 
-            this.recScript.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.recScript.Location = new System.Drawing.Point(0, 0);
-            this.recScript.MenuManager = this.barManager;
-            this.recScript.Name = "recScript";
-            this.recScript.Options.Fields.UseCurrentCultureDateTimeFormat = false;
-            this.recScript.Options.MailMerge.KeepLastParagraph = false;
-            this.recScript.Size = new System.Drawing.Size(341, 489);
-            this.recScript.TabIndex = 0;
-            this.recScript.Text = "richEditControl1";
-            // 
             // barManager
             // 
             this.barManager.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -249,13 +93,7 @@
             this.barItem_file,
             this.barItem_view,
             this.barItem_theme,
-            this.barItem_help,
-            this.barBtn_5509,
-            this.barBtn_remove,
-            this.barBtn_omap,
-            this.barBtn_bt,
-            this.barBtn_wifi,
-            this.barButtonItem1});
+            this.barItem_help});
             this.barManager.MainMenu = this.mainBar;
             this.barManager.MaxItemId = 16;
             // 
@@ -326,164 +164,100 @@
             this.barDockControlRight.Location = new System.Drawing.Point(994, 24);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 522);
             // 
-            // barBtn_5509
+            // defaultLookAndFeel
             // 
-            this.barBtn_5509.Id = 10;
-            this.barBtn_5509.Name = "barBtn_5509";
+            this.defaultLookAndFeel.LookAndFeel.SkinName = "Sharp Plus";
             // 
-            // barBtn_remove
+            // documentManager1
             // 
-            this.barBtn_remove.Id = 11;
-            this.barBtn_remove.Name = "barBtn_remove";
+            this.documentManager1.MdiParent = this;
+            this.documentManager1.MenuManager = this.barManager;
+            this.documentManager1.View = this.tabbedView1;
+            this.documentManager1.ViewCollection.AddRange(new DevExpress.XtraBars.Docking2010.Views.BaseView[] {
+            this.tabbedView1});
             // 
-            // barBtn_omap
+            // tabbedView1
             // 
-            this.barBtn_omap.Id = 12;
-            this.barBtn_omap.Name = "barBtn_omap";
+            this.tabbedView1.DocumentGroups.AddRange(new DevExpress.XtraBars.Docking2010.Views.Tabbed.DocumentGroup[] {
+            this.documentGroup1});
+            this.tabbedView1.Documents.AddRange(new DevExpress.XtraBars.Docking2010.Views.BaseDocument[] {
+            this.document1,
+            this.document2});
             // 
-            // barBtn_bt
+            // documentGroup1
             // 
-            this.barBtn_bt.Id = 13;
-            this.barBtn_bt.Name = "barBtn_bt";
+            this.documentGroup1.Items.AddRange(new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document[] {
+            this.document1,
+            this.document2});
             // 
-            // barBtn_wifi
+            // document1
             // 
-            this.barBtn_wifi.Id = 14;
-            this.barBtn_wifi.Name = "barBtn_wifi";
+            this.document1.Caption = "document1";
+            this.document1.ControlName = "document1";
             // 
-            // barButtonItem1
+            // document2
             // 
-            this.barButtonItem1.Id = 15;
-            this.barButtonItem1.Name = "barButtonItem1";
+            this.document2.Caption = "document2";
+            this.document2.ControlName = "document2";
             // 
-            // dockPanel_scriptGrid
+            // snapDockManager
             // 
-            this.dockPanel_scriptGrid.Controls.Add(this.controlContainer1);
-            this.dockPanel_scriptGrid.Dock = DevExpress.XtraBars.Docking.DockingStyle.Left;
-            this.dockPanel_scriptGrid.FloatSize = new System.Drawing.Size(640, 404);
-            this.dockPanel_scriptGrid.FloatVertical = true;
-            this.dockPanel_scriptGrid.ID = new System.Guid("8d03dedf-db7b-4816-88b2-ad81ebc2dca6");
-            this.dockPanel_scriptGrid.Location = new System.Drawing.Point(200, 24);
-            this.dockPanel_scriptGrid.Name = "dockPanel_scriptGrid";
-            this.dockPanel_scriptGrid.OriginalSize = new System.Drawing.Size(324, 200);
-            this.dockPanel_scriptGrid.Size = new System.Drawing.Size(324, 522);
-            this.dockPanel_scriptGrid.Text = "Script Grid";
+            this.snapDockManager.Form = this;
+            this.snapDockManager.RootPanels.AddRange(new DevExpress.XtraBars.Docking.DockPanel[] {
+            this.dockPanel1});
+            this.snapDockManager.TopZIndexControls.AddRange(new string[] {
+            "DevExpress.XtraBars.BarDockControl",
+            "DevExpress.XtraBars.StandaloneBarDockControl",
+            "System.Windows.Forms.StatusBar",
+            "System.Windows.Forms.MenuStrip",
+            "System.Windows.Forms.StatusStrip",
+            "DevExpress.XtraBars.Ribbon.RibbonStatusBar",
+            "DevExpress.XtraBars.Ribbon.RibbonControl"});
             // 
-            // controlContainer1
+            // dockPanel1
             // 
-            this.controlContainer1.Controls.Add(this.pgcScriptConfig);
-            this.controlContainer1.Location = new System.Drawing.Point(6, 27);
-            this.controlContainer1.Name = "controlContainer1";
-            this.controlContainer1.Size = new System.Drawing.Size(312, 489);
-            this.controlContainer1.TabIndex = 0;
-            // 
-            // pgcScriptConfig
-            // 
-            this.pgcScriptConfig.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgcScriptConfig.Location = new System.Drawing.Point(0, 0);
-            this.pgcScriptConfig.Name = "pgcScriptConfig";
-            this.pgcScriptConfig.Size = new System.Drawing.Size(312, 489);
-            this.pgcScriptConfig.TabIndex = 0;
-            // 
-            // dockPanel_MenuList
-            // 
-            this.dockPanel_MenuList.Appearance.BackColor = System.Drawing.Color.Transparent;
-            this.dockPanel_MenuList.Appearance.Options.UseBackColor = true;
-            this.dockPanel_MenuList.Controls.Add(this.dockPanel1_Container);
-            this.dockPanel_MenuList.Dock = DevExpress.XtraBars.Docking.DockingStyle.Left;
-            this.dockPanel_MenuList.ID = new System.Guid("10e1913e-1f43-42cd-98bd-ef28ceafcfbd");
-            this.dockPanel_MenuList.Location = new System.Drawing.Point(0, 24);
-            this.dockPanel_MenuList.Name = "dockPanel_MenuList";
-            this.dockPanel_MenuList.OriginalSize = new System.Drawing.Size(200, 200);
-            this.dockPanel_MenuList.Size = new System.Drawing.Size(200, 522);
-            this.dockPanel_MenuList.Text = "Menu Box";
+            this.dockPanel1.Controls.Add(this.dockPanel1_Container);
+            this.dockPanel1.Dock = DevExpress.XtraBars.Docking.DockingStyle.Left;
+            this.dockPanel1.ID = new System.Guid("b344fd30-0532-4308-b7d7-45ee78e6ee5d");
+            this.dockPanel1.Location = new System.Drawing.Point(0, 24);
+            this.dockPanel1.Name = "dockPanel1";
+            this.dockPanel1.OriginalSize = new System.Drawing.Size(200, 200);
+            this.dockPanel1.Size = new System.Drawing.Size(200, 522);
+            this.dockPanel1.Text = "dockPanel1";
             // 
             // dockPanel1_Container
             // 
-            this.dockPanel1_Container.Controls.Add(this.navBarControl);
+            this.dockPanel1_Container.Controls.Add(this.navBarControl1);
             this.dockPanel1_Container.Location = new System.Drawing.Point(6, 27);
             this.dockPanel1_Container.Name = "dockPanel1_Container";
             this.dockPanel1_Container.Size = new System.Drawing.Size(188, 489);
             this.dockPanel1_Container.TabIndex = 0;
             // 
-            // snapDocumentManager
+            // navBarControl1
             // 
-            this.snapDocumentManager.ContainerControl = this;
+            this.navBarControl1.ActiveGroup = this.navAutomationGroup;
+            this.navBarControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.navBarControl1.Groups.AddRange(new DevExpress.XtraNavBar.NavBarGroup[] {
+            this.navAutomationGroup});
+            this.navBarControl1.Location = new System.Drawing.Point(0, 0);
+            this.navBarControl1.Name = "navBarControl1";
+            this.navBarControl1.OptionsNavPane.ExpandedWidth = 188;
+            this.navBarControl1.Size = new System.Drawing.Size(188, 489);
+            this.navBarControl1.TabIndex = 0;
+            this.navBarControl1.Text = "navBarControl1";
             // 
-            // defaultLookAndFeel
+            // navAutomationGroup
             // 
-            this.defaultLookAndFeel.LookAndFeel.SkinName = "Sharp Plus";
-            // 
-            // draftsItem
-            // 
-            this.draftsItem.Caption = "회전수 검사";
-            this.draftsItem.Name = "draftsItem";
-            this.draftsItem.SmallImageIndex = 2;
-            // 
-            // outboxItem
-            // 
-            this.outboxItem.Caption = "주파수 검사";
-            this.outboxItem.Name = "outboxItem";
-            this.outboxItem.SmallImageIndex = 1;
-            // 
-            // inboxItem
-            // 
-            this.inboxItem.Caption = "진폭검사";
-            this.inboxItem.Name = "inboxItem";
-            this.inboxItem.SmallImageIndex = 0;
-            // 
-            // document1
-            // 
-            this.document1.Caption = "Daq5509 Configuration";
-            this.document1.FloatLocation = new System.Drawing.Point(227, 203);
-            this.document1.FloatSize = new System.Drawing.Size(640, 404);
-            this.document1.Properties.AllowClose = DevExpress.Utils.DefaultBoolean.True;
-            this.document1.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
-            this.document1.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
-            // 
-            // document2
-            // 
-            this.document2.Caption = "Daq5509 Configuration";
-            this.document2.FloatLocation = new System.Drawing.Point(312, 182);
-            this.document2.FloatSize = new System.Drawing.Size(640, 404);
-            this.document2.Properties.AllowClose = DevExpress.Utils.DefaultBoolean.True;
-            this.document2.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
-            this.document2.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
-            // 
-            // document3
-            // 
-            this.document3.Caption = "Daq5509 Configuration";
-            this.document3.FloatLocation = new System.Drawing.Point(231, 227);
-            this.document3.FloatSize = new System.Drawing.Size(640, 404);
-            this.document3.Properties.AllowClose = DevExpress.Utils.DefaultBoolean.True;
-            this.document3.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
-            this.document3.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
-            // 
-            // document4
-            // 
-            this.document4.Caption = "panelContainer1";
-            this.document4.FloatLocation = new System.Drawing.Point(249, 243);
-            this.document4.FloatSize = new System.Drawing.Size(640, 404);
-            this.document4.Properties.AllowClose = DevExpress.Utils.DefaultBoolean.True;
-            this.document4.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
-            this.document4.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
-            // 
-            // document5
-            // 
-            this.document5.Caption = "panelContainer1";
-            this.document5.FloatLocation = new System.Drawing.Point(207, 237);
-            this.document5.FloatSize = new System.Drawing.Size(640, 404);
-            this.document5.Properties.AllowClose = DevExpress.Utils.DefaultBoolean.True;
-            this.document5.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
-            this.document5.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
+            this.navAutomationGroup.Caption = "navBarGroup1";
+            this.navAutomationGroup.Expanded = true;
+            this.navAutomationGroup.Name = "navAutomationGroup";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(994, 546);
-            this.Controls.Add(this.dockPanel_scriptGrid);
-            this.Controls.Add(this.dockPanel_MenuList);
+            this.Controls.Add(this.dockPanel1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
@@ -493,72 +267,46 @@
             this.Name = "MainForm";
             this.Text = "NCC";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.navBarControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeImageCollection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.smallImageCollection)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.snapDockManager)).EndInit();
-            this.dockPanel_scriptTxt.ResumeLayout(false);
-            this.controlContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).EndInit();
-            this.dockPanel_scriptGrid.ResumeLayout(false);
-            this.controlContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pgcScriptConfig)).EndInit();
-            this.dockPanel_MenuList.ResumeLayout(false);
-            this.dockPanel1_Container.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.snapDocumentManager)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.documentManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tabbedView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.documentGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.document1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.document2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.document3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.document4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.document5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.snapDockManager)).EndInit();
+            this.dockPanel1.ResumeLayout(false);
+            this.dockPanel1_Container.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private DevExpress.XtraNavBar.NavBarControl navBarControl;
-        private DevExpress.XtraNavBar.NavBarGroup AutomationGroup;
-        private DevExpress.XtraNavBar.NavBarGroup navBarGroup1;
-        private DevExpress.XtraNavBar.NavBarItem navItem_Timebase;
-        private DevExpress.XtraNavBar.NavBarItem navItem_spectrum;
-        private DevExpress.Snap.Extensions.SnapDockManager snapDockManager;
-        private DevExpress.Snap.Extensions.SnapDocumentManager snapDocumentManager;
-        private DevExpress.XtraBars.Docking.DockPanel dockPanel_MenuList;
-        private DevExpress.XtraBars.Docking.ControlContainer dockPanel1_Container;
         private DevExpress.LookAndFeel.DefaultLookAndFeel defaultLookAndFeel;
         private DevExpress.Utils.ImageCollection smallImageCollection;
-        private DevExpress.XtraNavBar.NavBarItem draftsItem;
-        private DevExpress.XtraNavBar.NavBarItem outboxItem;
-        private DevExpress.XtraNavBar.NavBarItem inboxItem;
         private DevExpress.Utils.ImageCollection largeImageCollection;
-        private DevExpress.XtraBars.BarDockControl barDockControlLeft;
-        private DevExpress.XtraBars.BarDockControl barDockControlRight;
-        private DevExpress.XtraBars.BarDockControl barDockControlBottom;
-        private DevExpress.XtraBars.BarDockControl barDockControlTop;
         private DevExpress.XtraBars.BarManager barManager;
         private DevExpress.XtraBars.Bar mainBar;
         private DevExpress.XtraBars.BarSubItem barItem_file;
         private DevExpress.XtraBars.BarSubItem barItem_view;
         private DevExpress.XtraBars.BarSubItem barItem_theme;
         private DevExpress.XtraBars.BarSubItem barItem_help;
-        private DevExpress.XtraBars.BarButtonItem barBtn_5509;
-        private DevExpress.XtraBars.BarButtonItem barBtn_remove;
-        private DevExpress.XtraBars.BarButtonItem barBtn_omap;
-        private DevExpress.XtraBars.BarButtonItem barBtn_wifi;
-        private DevExpress.XtraBars.BarButtonItem barBtn_bt;
-        private DevExpress.XtraBars.Docking.DockPanel dockPanel_scriptGrid;
-        private DevExpress.XtraBars.Docking.ControlContainer controlContainer1;
+        private DevExpress.XtraBars.BarDockControl barDockControlTop;
+        private DevExpress.XtraBars.BarDockControl barDockControlBottom;
+        private DevExpress.XtraBars.BarDockControl barDockControlLeft;
+        private DevExpress.XtraBars.BarDockControl barDockControlRight;
+        private DevExpress.XtraBars.Docking.DockPanel dockPanel1;
+        private DevExpress.XtraBars.Docking.ControlContainer dockPanel1_Container;
+        private DevExpress.XtraBars.Docking2010.DocumentManager documentManager1;
+        private DevExpress.XtraBars.Docking2010.Views.Tabbed.TabbedView tabbedView1;
+        private DevExpress.XtraBars.Docking2010.Views.Tabbed.DocumentGroup documentGroup1;
         private DevExpress.XtraBars.Docking2010.Views.Tabbed.Document document1;
-        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
         private DevExpress.XtraBars.Docking2010.Views.Tabbed.Document document2;
-        private DevExpress.XtraBars.Docking2010.Views.Tabbed.Document document3;
-        private DevExpress.XtraBars.Docking2010.Views.Tabbed.Document document4;
-        private DevExpress.XtraBars.Docking2010.Views.Tabbed.Document document5;
-        private DevExpress.XtraVerticalGrid.PropertyGridControl pgcScriptConfig;
-        private DevExpress.XtraBars.Docking.DockPanel dockPanel_scriptTxt;
-        private DevExpress.XtraBars.Docking.ControlContainer controlContainer2;
-        private DevExpress.XtraRichEdit.RichEditControl recScript;
+        private DevExpress.XtraBars.Docking.DockManager snapDockManager;
+        private DevExpress.XtraNavBar.NavBarControl navBarControl1;
+        private DevExpress.XtraNavBar.NavBarGroup navAutomationGroup;
     }
 }
