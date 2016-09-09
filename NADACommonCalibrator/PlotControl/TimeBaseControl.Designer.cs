@@ -387,7 +387,7 @@
         }
 
         #endregion
-
+        private ChartCursor Cursor;
         private Steema.TeeChart.TChart tChart_timeBase;
     }
 }

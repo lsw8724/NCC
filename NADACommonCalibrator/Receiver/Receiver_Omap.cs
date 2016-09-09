@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NADACommonCalibrator.ConfigControl;
 using NCCCommon.ModuleProtocol.OmapProtocol;
 using NCCCommon.ModuleProtocol;
 using NCCCommon;
@@ -13,7 +12,7 @@ using System.Runtime.InteropServices;
 
 namespace NADACommonCalibrator.Receiver
 {
-    public class Receiver_Omap : SingleTask, IWavesReceiver, IConvertableItems, IGettableReceiverType
+    public class Receiver_Omap : SingleTask, IWavesReceiver
     {
         public OmapModule Module;
         public TcpClient tcp;
@@ -23,24 +22,6 @@ namespace NADACommonCalibrator.Receiver
         {
             Module = module;
         }       
-
-        public override string ToString()
-        {
-            return "Omap Module";
-        }
-
-        public List<object> ToItems()
-        {
-            var items = new List<object>();
-            foreach (var ch in Module.SensorChannels)
-                items.Add(new OmapChannelItem(this, ch));
-            return items;
-        }
-
-        public ReceiverType GetReceiverType()
-        {
-            return ReceiverType.Omap;
-        }
 
         protected override void OnNewTask(CancellationToken token)
         {

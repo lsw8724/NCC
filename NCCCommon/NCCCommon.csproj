@@ -70,7 +70,6 @@
     <Compile Include="ModuleProtocol\Daq5509Protocol\DaqClient.cs" />
     <Compile Include="ModuleProtocol\Daq5509Protocol\DaqCommand.cs" />
     <Compile Include="ModuleProtocol\Daq5509Protocol\DaqData.cs" />
-    <Compile Include="ModuleProtocol\Daq5509Protocol\DaqException.cs" />
     <Compile Include="ModuleProtocol\Daq5509Protocol\DaqModule.cs" />
     <Compile Include="ModuleProtocol\Daq5509Protocol\enums.cs" />
     <Compile Include="ModuleProtocol\Daq5509Protocol\DaqChannel.cs" />

@@ -130,7 +130,7 @@
         dHJlYW1lcgIAAAAJSW1hZ2VTaXplBERhdGEEBxNTeXN0ZW0uRHJhd2luZy5TaXplAwAAAAICAAAABfz/
         //8TU3lzdGVtLkRyYXdpbmcuU2l6ZQIAAAAFd2lkdGgGaGVpZ2h0AAAICAMAAAAYAAAAGAAAAAkFAAAA
         DwUAAAByDgAAAu0DAACJUE5HDQoaCgAAAA1JSERSAAAAGAAAABgIBgAAAOB3PfgAAAAEZ0FNQQAAsY8L
-        /GEFAAAACXBIWXMAAA7DAAAOwwHHb6hkAAADj0lEQVRIS7VWSU9TURR+caULN+IQEwVNNPoDnDYu1Khx
+        /GEFAAAACXBIWXMAAA6/AAAOvwE4BVMkAAADj0lEQVRIS7VWSU9TURR+caULN+IQEwVNNPoDnDYu1Khx
         YdwYTMAYjZioMW5InCIJG6OJxiiI2gmhQKEtxdK5DNKBSUYxJkQajVIpFGgCbQEZ+o7v3L5729dWYmL4
         ki99Pfec776ec+655VYD/4nbPena+WDAfKrF25A73lZ/caVNnx/zGnIn+k2nP0y0ZRfxXdxe0f3fAYPc
         rhHnwTqr5mZMLisFmexVRuKaueYWP2w/3MD3c3vE8NUx056V36y9EskkuBqd2oK5afe2q6JMZky5dhTq
@@ -147,7 +147,7 @@
         GhsViNRhp1armKNcVgL2uuvkGccCDjwcfPgSFDgYbTYTi0kbdojUcZ1g/EbD3h4djZ/WZGAqcbRT/4zj
         miL1wkllX18PqQ+2InYLnheac+SqFw7Fml6ZFGt66Sfj//+2cNwfTWWGOSdtBN4AAAAASUVORK5CYILS
         BAAAiVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAAAlwSFlz
-        AAAOwwAADsMBx2+oZAAABHRJREFUSEvtlH1MlVUcx597xXyhudxsksN3zQTuBQW8gIhwQRQv7/cCSlxF
+        AAAOvwAADr8BOAVTJAAABHRJREFUSEvtlH1MlVUcx597xXyhudxsksN3zQTuBQW8gIhwQRQv7/cCSlxF
         ERHCvKQtFZLpMC0TzWUh5TRUvBCCKSkCvmG4QOVCvEiUiqnNpUiQy7/k03noWs3ErdZaf/TdPnuePTs7
         n/M7v3Me6f/8dzJwugNBQXPRarUsWbqcuIVJREUbiYw24BQ160dJP3WHlJmptA7/61mRkw0dCbyfFUCc
         wZ3L1ZHQPo/286EY5/mhdg0go2Qr11rPcvO7K3Te6+D2nTso57yEwm8SUpAK61RPjmuuCnNuLMvT1pGc
@@ -167,15 +167,15 @@
         Bd6CZwVPja3zC67hjwSJTttZqt5G3Rk9refnUJQzRlwuN06UnWB32cccKyvHLtFOFugELwqefFQfizxI
         rmqSwEngd7jIxMnPE3oFA4wDGLjQRtAfu+XDGPzKM7IgQDBY8LciC+XGjRTIZ9xVECmIlXzHWQan9ArG
         Cf7xDBJMFMiV/n4s/51I0i9wUJDHPZGfMgAAAABJRU5ErkJggq4BAACJUE5HDQoaCgAAAA1JSERSAAAA
-        GAAAABgIBgAAAOB3PfgAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAA7DAAAOwwHHb6hkAAABUElEQVRI
+        GAAAABgIBgAAAOB3PfgAAAAEZ0FNQQAAsY8L/GEFAAAACXBIWXMAAA6/AAAOvwE4BVMkAAABUElEQVRI
         S62SvUoDQRSFB1KmsBTfQTCJoGBsbCyFFKkUX8MujYWFbZqQzmWXGAQx4EPkLULAUhsLIQGjN7l3Mnv3
         7Oys64GPnbk/5yzsmjL6GBzuLOJGbzXu1rhUTd9Ra28RN1dF8Hg5IaMieNWvZdS8QMtC/XUI6wLbYC2j
         gw5acqGAP4egYZf+03VQAMGWW6EhjZiHBBBsHf63uAFvyUmq/p4cpWYJtg//Y9wAQtfdWSE3AC3RfTTu
         pnpylrsmOGDy2LH3s5dbe5Y5QeYF8znc39VFtJB3l5ruC79v3+jpol52a3kz86Sdqgnm/uGqjhpfccue
         fQHT0Xmm5rL+BqihTel5+XxjzWbJqe35WAegBqEDdD8EbwAhIZUCSKhJVAlg643QAPFvASQ0JObHk7tM
         zwdbZoWGy749W+ULLYXCFsVCy0XwajkhIw2PAhnzAxT8sU5jCEvFAAAAAElFTkSuQmCC9QMAAIlQTkcN
-        ChoKAAAADUlIRFIAAAAYAAAAGAgGAAAA4Hc9+AAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7D
-        AcdvqGQAAAOXSURBVEhLvZXdT1pJGIe971Wve9nsH9GYTfZSUj/a2Ghsm2zMpkmru11jjIZtTUR609Rq
+        ChoKAAAADUlIRFIAAAAYAAAAGAgGAAAA4Hc9+AAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADr8AAA6/
+        ATgFUyQAAAOXSURBVEhLvZXdT1pJGIe971Wve9nsH9GYTfZSUj/a2Ghsm2zMpkmru11jjIZtTUR609Rq
         7KY2y2pKC6hQWhCw5RRQQEQ+ysEiAbWWiibrbvZ+/Wh3f/vOKDAjt6QkT4b3B5ln5sycmTr22dnZObe7
         u/tNLSkWi+f39vbO1Pl8vu+6bv98pH84hlqi1en/0w3fM9b5/f7rhmkr8vuoKYubRTwyTL2pErgSq2i7
         eg1X2tpx4+YtXG5tRfOly2hqaaH2EpqaWXtct5Rzaim/0t6OV8tJ3k+QBL+WBTNWbByA44yleEd9fX1I
@@ -1873,16 +1873,13 @@
         AAAAAAAAAAAAAAAAAAAAAAAA
 </value>
   </data>
+  <metadata name="barManager.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>871, 15</value>
+  </metadata>
   <metadata name="snapDocumentManager.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>521, 17</value>
   </metadata>
   <metadata name="defaultLookAndFeel.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>714, 17</value>
-  </metadata>
-  <metadata name="popupMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>883, 17</value>
-  </metadata>
-  <metadata name="barManager.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>1010, 17</value>
   </metadata>
 </root>

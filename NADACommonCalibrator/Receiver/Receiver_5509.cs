@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NADACommonCalibrator.ConfigControl;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
 using NCCCommon.ModuleProtocol;
 using NCCCommon;
@@ -11,17 +10,7 @@ using System.Threading;
 
 namespace NADACommonCalibrator.Receiver
 {
-    public interface IGettableReceiverType
-    {
-        ReceiverType GetReceiverType();
-    }
-
-    public interface IConvertableItems
-    {
-        List<object> ToItems();
-    }
-
-    public class Receiver_5509 : SingleTask, IWavesReceiver, IConvertableItems, IGettableReceiverType
+    public class Receiver_5509 : SingleTask, IWavesReceiver
     {
         public DaqModule Module;
         private DaqClient Daq;
@@ -32,24 +21,6 @@ namespace NADACommonCalibrator.Receiver
         }
 
         public event Action<WaveData[]> WavesReceived;
-
-        public override string ToString()
-        {
-            return "Daq5509 Module";
-        }
-
-        public List<object> ToItems()
-        {
-            var items = new List<object>();
-            foreach (var ch in Module.Channels)
-                items.Add(new Daq5509ChannelItem(this, ch));
-            return items;
-        }
-
-        public ReceiverType GetReceiverType()
-        {
-            return ReceiverType.Daq5509;
-        }
 
         protected override void OnNewTask(CancellationToken token)
         {

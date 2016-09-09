@@ -9,7 +9,6 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using NCCCommon.ModuleProtocol;
 using Steema.TeeChart.Styles;
-using NADACommonCalibrator.ConfigControl;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
 using NCCCommon;
 using Steema.TeeChart;
@@ -18,22 +17,19 @@ namespace NADACommonCalibrator.PlotControl
 {
     public partial class SpectrumControl : DevExpress.XtraEditors.XtraUserControl
     {
-        private ChartCursor Cursor;
         private float[] Resolutions;
         private int FMax;
-        public SpectrumControl(int count, XtraForm owner, List<object> items = null)
+        public SpectrumControl(int count, XtraForm owner)
         {
             InitializeComponent();
             (owner as MainForm).WavesReceived += Waves_Received;
             Cursor = new ChartCursor(tChart_Spectrum);
+            for (int i = 0; i < count; i++)
+                tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1) });
 
-            if (items != null)
-            {
-                for (int i = 0; i < count; i++)
-                    tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = (items[i] as IChennelItem).GetActive() });
-                Resolutions = items.Select(x => (x as IChennelItem).GetResolution()).ToArray();
-                FMax = items.Select(x => (x as IChennelItem).GetAsyncFMax()).First();
-            }
+            Resolutions = new float[] { 1, 1, 1, 1, 1, 1, 1, 1 };
+            FMax = 3200;
+           
             tChart_Spectrum.MouseWheel += tChart_mouseWheel;
         }
 

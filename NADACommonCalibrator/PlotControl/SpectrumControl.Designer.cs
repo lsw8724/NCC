@@ -392,5 +392,6 @@
         #endregion
 
         private Steema.TeeChart.TChart tChart_Spectrum;
+        private ChartCursor Cursor;
     }
 }

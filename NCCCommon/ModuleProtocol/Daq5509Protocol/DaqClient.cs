@@ -50,10 +50,10 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
                 tcp.ReceiveTimeout = 5000;
                 bool success = result.AsyncWaitHandle.WaitOne(timeout, true);
                 if (!success)
-                    throw new DaqException("Connect Failed - WaitOne Failed");
+                    throw new Exception("Connect Failed - WaitOne Failed");
 
                 if (!tcp.Connected)
-                    throw new DaqException("Connect Failed - Not Established");
+                    throw new Exception("Connect Failed - Not Established");
 
                 //tcp.LingerState = new LingerOption(true, 0);
                 //tcp.NoDelay = true;

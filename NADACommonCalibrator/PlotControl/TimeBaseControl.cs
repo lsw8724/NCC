@@ -10,26 +10,20 @@ using DevExpress.XtraEditors;
 using NCCCommon.ModuleProtocol;
 using Steema.TeeChart.Styles;
 using NADACommonCalibrator.Receiver;
-using NADACommonCalibrator.ConfigControl;
 
 namespace NADACommonCalibrator.PlotControl
 {
     public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl
     {
-        private ChartCursor Cursor;
         private float[] Resolutions;
-        public TimeBaseControl(int count, XtraForm owner, List<object> items = null)
+        public TimeBaseControl(int count, XtraForm owner)
         {
             InitializeComponent();
             (owner as MainForm).WavesReceived += Waves_Received;
             Cursor = new ChartCursor(tChart_timeBase);
-
-            if (items != null)
-            {
-                for (int i = 0; i < count; i++)
-                    tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = (items[i] as IChennelItem).GetActive() });
-                Resolutions = items.Select(x => (x as IChennelItem).GetResolution()).ToArray();
-            }
+            Resolutions = new float[] { 1, 1, 1, 1, 1, 1, 1, 1 };
+            for (int i = 0; i < count; i++)
+                tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + (i + 1) });
         }
 
         private void Waves_Received(WaveData[] waves)

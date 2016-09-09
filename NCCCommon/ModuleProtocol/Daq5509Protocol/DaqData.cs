@@ -186,7 +186,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
                 byteQueue.Dequeue();
                 var ch = ns.ReadByte();
                 if(ch < 0)
-                    throw new DaqException("Header Read Failed - length:" + byteQueue.Count);
+                    throw new Exception("Header Read Failed - length:" + byteQueue.Count);
                 byteQueue.Enqueue((byte)ch);
             }
 

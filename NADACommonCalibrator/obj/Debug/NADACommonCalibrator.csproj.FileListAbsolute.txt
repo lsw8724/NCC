@@ -9,7 +9,6 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibra
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\TeeChart.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\TeeChart.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.PlotControl.TimeBaseControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.MainForm.resources
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.PlotControl.SpectrumControl.resources
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Math\MathNet.Iridium.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\NCCCommon.dll
@@ -29,7 +28,6 @@ E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\NCCCommon.pdb
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\TeeChart.xml
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Sasa.Binary.xml
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.csprojResolveAssemblyReference.cache
-E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.ModuleConfigControl.resources
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.MainForm.resources
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.PlotControl.SpectrumControl.resources
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.PlotControl.TimeBaseControl.resources
@@ -39,7 +37,16 @@ E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibra
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Mono.CSharp.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.xml
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.Daq5509ConfigControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.OmapConfigControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Frequency Analysis.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Copy of Frequency Analysis.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Agilent.TMFramework.InstrumentIO.VisaInterop.dll
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.csproj.ResolveComReference.cache
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.csproj.ResolveComReference.cache
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.Daq5509ConfigControl.resources
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.OmapConfigControl.resources
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.dll
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Mono.CSharp.dll
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.xml
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Example1.cs
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Example2.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Example1.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\SimpleConnect5509.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.MainForm.resources
