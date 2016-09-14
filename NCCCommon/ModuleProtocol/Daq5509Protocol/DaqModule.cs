@@ -21,7 +21,6 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
 
         public DaqModule()
         {
-            ModuleIp = "192.168.0.14";
             this.InputType = DaqInputType.AC;
             this.Channels = new DaqChannel[8];
             for (int i = 0; i < Channels.Length; i++)

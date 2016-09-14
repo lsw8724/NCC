@@ -114,7 +114,13 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NCCScript.cs" />
+    <Compile Include="MeasureCalculator.cs" />
+    <Compile Include="PlotControl\TableControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PlotControl\TableControl.Designer.cs">
+      <DependentUpon>TableControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="PlotControl\ChartCursor.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -137,7 +143,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Receiver\ReceiverDaq5509.cs" />
     <Compile Include="Receiver\ReceiverOmap.cs" />
-    <Content Include="Scripts\Example1.cs">
+    <Compile Include="Receiver\ReceiverVirtual.cs" />
+    <Content Include="Scripts\SimpleConnectVirtual.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\SimpleConnect5509.cs">
@@ -148,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PlotControl\SpectrumControl.resx">
       <DependentUpon>SpectrumControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlotControl\TableControl.resx">
+      <DependentUpon>TableControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PlotControl\TimeBaseControl.resx">
       <DependentUpon>TimeBaseControl.cs</DependentUpon>

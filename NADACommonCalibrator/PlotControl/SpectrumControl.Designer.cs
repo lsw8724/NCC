@@ -290,6 +290,11 @@
             // 
             // 
             // 
+            this.tChart_Spectrum.Panel.Bevel.Outer = Steema.TeeChart.Drawing.BevelStyles.None;
+            this.tChart_Spectrum.Panel.Bevel.Width = 2;
+            // 
+            // 
+            // 
             // 
             // 
             // 
@@ -299,6 +304,10 @@
             this.tChart_Spectrum.Panel.Brush.Gradient.SigmaScale = 0F;
             this.tChart_Spectrum.Panel.Brush.Gradient.StartColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.tChart_Spectrum.Panel.Brush.Gradient.UseMiddle = false;
+            // 
+            // 
+            // 
+            this.tChart_Spectrum.Panning.Allow = Steema.TeeChart.ScrollModes.Horizontal;
             this.tChart_Spectrum.Size = new System.Drawing.Size(654, 307);
             this.tChart_Spectrum.TabIndex = 0;
             // 
@@ -375,6 +384,10 @@
             // 
             // 
             this.tChart_Spectrum.Walls.Right.Pen.Visible = false;
+            // 
+            // 
+            // 
+            this.tChart_Spectrum.Zoom.Direction = Steema.TeeChart.ZoomDirections.Horizontal;
             this.tChart_Spectrum.Click += new System.EventHandler(this.tChart_Spectrum_Click);
             // 
             // SpectrumControl
@@ -391,7 +404,7 @@
 
         #endregion
 
-        private Steema.TeeChart.TChart tChart_Spectrum;
         private ChartCursor Cursor;
+        public Steema.TeeChart.TChart tChart_Spectrum;
     }
 }

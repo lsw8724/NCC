@@ -16,10 +16,10 @@ public class NCCScript
 
     public void Run()
     {
-        Visa.OpenByUSBPort(USBId);
+        //Visa.OpenByUSBPort(USBId);
 
-        //TODO Task
+        //Visa.Close();
 
-        Visa.Close();
+
     }
 }

@@ -40,13 +40,13 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.x
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Agilent.TMFramework.InstrumentIO.VisaInterop.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.csproj.ResolveComReference.cache
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.csproj.ResolveComReference.cache
-E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.Daq5509ConfigControl.resources
-E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.ConfigControl.OmapConfigControl.resources
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.dll
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Mono.CSharp.dll
 E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\CSScriptLibrary.xml
-E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Example1.cs
-E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Example2.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\Example1.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\SimpleConnect5509.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.MainForm.resources
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.PlotControl.TableControl.resources
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\SimpleConnect5509.cs
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Debug\NADACommonCalibrator.PlotControl.TableControl.resources
+E:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Debug\Scripts\SimpleConnectVirtual.cs

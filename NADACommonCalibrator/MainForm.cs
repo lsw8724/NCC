@@ -27,6 +27,8 @@ namespace NADACommonCalibrator
     {
         public IWavesReceiver CurrentReceiver;
         public static event Action<WaveData[]> WavesReceived;
+        private object TablePlotItem;
+        private MeasureCalculator MeasCalc = new MeasureCalculator();
 
         private List<XtraUserControl> OpenedPlotControl = new List<XtraUserControl>();
         
@@ -50,13 +52,11 @@ namespace NADACommonCalibrator
             var themeString = "Sharp Plus";
             defaultLookAndFeel.LookAndFeel.SkinName = themeString;
             barItems.Where(x => x.Caption.Equals(themeString)).First().Checked = true;
-
             foreach (var item in barItems)
             {
                 item.ItemClick += (s, e) => defaultLookAndFeel.LookAndFeel.SkinName = e.Item.Caption;
                 item.GroupIndex = 1;
             }
-
             barItem_theme.ItemLinks.AddRange(barItems);
         }
 
@@ -65,11 +65,21 @@ namespace NADACommonCalibrator
             var paths = Directory.GetFiles("Scripts", "*.cs");
             foreach (var path in paths)
             {
-                dynamic instance = CSScript.Load(path).CreateInstance("NCCScript");
+                var assembly =  CSScript.Load(path);
+                dynamic instance = assembly.CreateInstance("NCCScript");
                 var link = navAutomationGroup.AddItem();
-                link.Item.LinkClicked += (s, e) => OpenScriptConfig(e.Link.Item.Tag, path);
+                link.Item.LinkClicked += (s, e) =>
+                    {
+                        TablePlotItem = assembly.CreateInstance("TableItem");
+                        OpenScriptConfig(e.Link.Item.Tag, path);
+                    };
                 link.Item.Caption = instance.Description;
                 link.Item.Tag = instance;
+                (instance.Receiver as IWavesReceiver).WavesReceived += (waves) => 
+                {
+                    if (WavesReceived != null)
+                        WavesReceived(waves);
+                };
             }
         }
 
@@ -103,6 +113,17 @@ namespace NADACommonCalibrator
             OpenedPlotControl.Add(spectrumPlot);
         }
 
+        private void navItemTable_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            var tablePlot = new TableControl(TablePlotItem) { Dock = DockStyle.Fill };
+            DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
+            dockPanel.Text = "Table";
+            dockPanel.Controls.Add(tablePlot);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(tablePlot);
+            dockPanel.Height = 300;
+            OpenedPlotControl.Add(tablePlot);
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             if (CurrentReceiver != null)
@@ -112,14 +133,9 @@ namespace NADACommonCalibrator
         private void barBtn_runScript_ItemClick(object sender, ItemClickEventArgs e)
         {
             var script = pgcScriptConfig.SelectedObject as dynamic;
+            if (script == null) return;
             CurrentReceiver = (IWavesReceiver)script.Receiver;
-            CurrentReceiver.WavesReceived += AfterWavesReceived;
             script.Run();
-        }
-
-        private void AfterWavesReceived(WaveData[] waves)
-        {
-            WavesReceived(waves);
         }
     }
 }

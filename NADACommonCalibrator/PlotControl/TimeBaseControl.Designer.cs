@@ -220,6 +220,7 @@
             // 
             // 
             this.tChart_timeBase.Axes.Top.Ticks.Color = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
+            this.tChart_timeBase.Cursor = System.Windows.Forms.Cursors.Default;
             this.tChart_timeBase.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // 
@@ -297,6 +298,10 @@
             this.tChart_timeBase.Panel.Brush.Gradient.SigmaScale = 0F;
             this.tChart_timeBase.Panel.Brush.Gradient.StartColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.tChart_timeBase.Panel.Brush.Gradient.UseMiddle = false;
+            // 
+            // 
+            // 
+            this.tChart_timeBase.Panning.Allow = Steema.TeeChart.ScrollModes.Horizontal;
             this.tChart_timeBase.Size = new System.Drawing.Size(654, 307);
             this.tChart_timeBase.TabIndex = 0;
             // 
@@ -373,6 +378,10 @@
             // 
             // 
             this.tChart_timeBase.Walls.Right.Pen.Visible = false;
+            // 
+            // 
+            // 
+            this.tChart_timeBase.Zoom.Direction = Steema.TeeChart.ZoomDirections.Horizontal;
             this.tChart_timeBase.Click += new System.EventHandler(this.tChart_timeBase_Click);
             // 
             // TimeBaseControl
@@ -388,6 +397,6 @@
 
         #endregion
         private ChartCursor Cursor;
-        private Steema.TeeChart.TChart tChart_timeBase;
+        public Steema.TeeChart.TChart tChart_timeBase;
     }
 }
