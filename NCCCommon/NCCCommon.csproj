@@ -72,7 +72,6 @@
     <Compile Include="ModuleProtocol\Daq5509Protocol\DaqData.cs" />
     <Compile Include="ModuleProtocol\Daq5509Protocol\DaqModule.cs" />
     <Compile Include="ModuleProtocol\Daq5509Protocol\enums.cs" />
-    <Compile Include="ModuleProtocol\Daq5509Protocol\DaqChannel.cs" />
     <Compile Include="ModuleProtocol\ByteUtil.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\DspMessage.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\DspMsgAtrribute.cs" />

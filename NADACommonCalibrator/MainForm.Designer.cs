@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
             this.largeImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.smallImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.barManager = new DevExpress.XtraBars.BarManager(this.components);
@@ -173,9 +173,9 @@
             this.barBtn_runScript.Id = 23;
             this.barBtn_runScript.ImageIndex = 0;
             this.barBtn_runScript.Name = "barBtn_runScript";
-            toolTipItem1.Text = "Run Script";
-            superToolTip1.Items.Add(toolTipItem1);
-            this.barBtn_runScript.SuperTip = superToolTip1;
+            toolTipItem2.Text = "Run Script";
+            superToolTip2.Items.Add(toolTipItem2);
+            this.barBtn_runScript.SuperTip = superToolTip2;
             this.barBtn_runScript.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtn_runScript_ItemClick);
             // 
             // barAndDockingController1
@@ -297,7 +297,7 @@
             // 
             // navItemTable
             // 
-            this.navItemTable.Caption = "Table";
+            this.navItemTable.Caption = "Tabular";
             this.navItemTable.Name = "navItemTable";
             this.navItemTable.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItemTable_LinkClicked);
             // 
@@ -351,6 +351,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.AutoScrollMinSize = new System.Drawing.Size(10, 0);
             this.ClientSize = new System.Drawing.Size(994, 546);
             this.Controls.Add(this.dockPanel_scriptInfo);

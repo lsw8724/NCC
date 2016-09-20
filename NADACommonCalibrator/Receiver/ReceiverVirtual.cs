@@ -26,12 +26,18 @@ namespace NADACommonCalibrator.Receiver
         public float Resolution { get; set; }
         public List<SinWave> SinWaves;
         
-        public ReceiverVirtual(int asyncFMax, int ayncLine)
+        public ReceiverVirtual()
         {
             SinWaves = new List<SinWave>();
-            Resolution = ayncLine/(float)asyncFMax;
-            DataCount = (int)(8192 * Resolution);
+            Resolution = 1;
+            DataCount = 8192;
         }
+
+        //public void SetConfig(int ayncLine, int asyncFMax)
+        //{
+        //    Resolution = ayncLine/(float)asyncFMax;
+        //    DataCount = (int)(8192 * Resolution);
+        //}
 
         public void AddSinWaves(float freq, float amp)
         {

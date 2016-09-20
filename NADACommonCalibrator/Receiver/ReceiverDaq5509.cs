@@ -14,23 +14,19 @@ namespace NADACommonCalibrator.Receiver
     {
         public DaqModule Module;
         private DaqClient Daq;
-        
-        public ReceiverDaq5509(string ip)
-        {
-            Module = new DaqModule() { ModuleIp = ip };
-        }
 
         public event Action<WaveData[]> WavesReceived;
 
         protected override void OnNewTask(CancellationToken token)
         {
+            Module.Init();
             //ReconnectLoop
             while (!token.IsCancellationRequested)
             {
                 try
                 {
                     WriteLog("Connecting");
-
+                    
                     ConnectDaq();
 
                     ReadLoop(token);
@@ -55,7 +51,7 @@ namespace NADACommonCalibrator.Receiver
             {
                 try
                 {
-                    var _daq = new DaqClient(Module.scaleFactors) { PacketCountFor1Sec = Module.PacketCountFor1Sec };
+                    var _daq = new DaqClient(Module.Channels.Select(x=>x.ScaleFactors).ToArray()) { PacketCountFor1Sec = Module.PacketCountFor1Sec };
                     _daq.Connect(Module.ModuleIp, 7000);
                     _daq.Stop(true);
                     Daq = _daq;
@@ -72,7 +68,7 @@ namespace NADACommonCalibrator.Receiver
                 Daq.SetGain(channel.PhysicalIndex, false, channel.HWGain);
             }
             Daq.SetRunVariable();
-            Daq.SetSampleMode(Module.nSamplingRate);
+            Daq.SetSampleMode(Module.SamplingRate);
 
             Daq.Start();
         }

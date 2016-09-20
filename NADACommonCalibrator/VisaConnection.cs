@@ -15,8 +15,8 @@ namespace NADACommonCalibrator
 {
     public class VisaConnection
     {
-        public FormattedIO488 VisaIo { get; private set; }
-        public ResourceManager VisaRM { get; set; }
+        public FormattedIO488 VisaIo = new FormattedIO488();
+        public ResourceManager VisaRM = new ResourceManager();
 
         public void Send(string cmd)
         {
@@ -39,7 +39,7 @@ namespace NADACommonCalibrator
         {
             try
             {
-                VisaIo = new FormattedIO488() { IO = (IMessage)VisaRM.Open(usbId, AccessMode.NO_LOCK, 2000, "") };
+                VisaIo = new FormattedIO488() { IO = (IMessage)VisaRM.Open(usbId, AccessMode.NO_LOCK, 0, "") };
             }
             catch (Exception e)
             {

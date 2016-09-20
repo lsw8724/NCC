@@ -1,0 +1,13 @@
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Math\MathNet.Iridium.dll
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\NCCCommon.dll
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\NCCCommon.pdb
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\MathNet.Iridium.dll
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Sasa.Binary.dll
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Sasa.Collections.dll
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Sasa.dll
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Sasa.xml
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Sasa.Binary.xml
+D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Sasa.Collections.xml
+D:\Project\NADACommonCalibrator\NCCCommon\obj\Release\NCCCommon.csprojResolveAssemblyReference.cache
+D:\Project\NADACommonCalibrator\NCCCommon\obj\Release\NCCCommon.dll
+D:\Project\NADACommonCalibrator\NCCCommon\obj\Release\NCCCommon.pdb

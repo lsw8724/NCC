@@ -3,14 +3,12 @@ using NADACommonCalibrator.Receiver;
 using NCCCommon;
 using NCCCommon.ModuleProtocol;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
-using System.ComponentModel;
 
-
-public partial class NCCScript
+public class NCCScript
 {
-    public string Description { get { return "가상모듈 연결"; } }
-    [Browsable(false)]
+    [System.ComponentModel.Browsable(false)]
     public ReceiverVirtual Receiver { get; set; }
+    public string Description { get { return "가상모듈 연결"; } }
     public int AsyncLine { get; set; }
     public int AsyncFMax { get; set; }
 
@@ -18,7 +16,7 @@ public partial class NCCScript
     {
         AsyncLine = 3200;
         AsyncFMax = 3200;
-        Receiver = new ReceiverVirtual(AsyncFMax, AsyncLine);
+        Receiver = new ReceiverVirtual();
         Receiver.AddSinWaves(60, 5);
     }
 
@@ -26,18 +24,4 @@ public partial class NCCScript
     {
         Receiver.Start();
     }
-}
-
-public class TableItem
-{
-    public string Frequency { get; set; }
-    public string Amplitude { get; set; }
-    public string Ch1 { get; set; }
-    public string Ch2 { get; set; }
-    public string Ch3 { get; set; }
-    public string Ch4 { get; set; }
-    public string Ch5 { get; set; }
-    public string Ch6 { get; set; }
-    public string Ch7 { get; set; }
-    public string Ch8 { get; set; }
 }

@@ -20,6 +20,7 @@ using DevExpress.XtraBars;
 using System.Linq;
 using NCCCommon;
 using NADACommonCalibrator.Receiver;
+using System.Diagnostics;
 
 namespace NADACommonCalibrator
 {
@@ -27,11 +28,12 @@ namespace NADACommonCalibrator
     {
         public IWavesReceiver CurrentReceiver;
         public static event Action<WaveData[]> WavesReceived;
-        private object TablePlotItem;
+        private object TableColumns;
+        private object TableItems;
         private MeasureCalculator MeasCalc = new MeasureCalculator();
 
-        private List<XtraUserControl> OpenedPlotControl = new List<XtraUserControl>();
-        
+        private List<XtraUserControl> OpenedPlotControls = new List<XtraUserControl>();
+
         public MainForm()
         {
             InitializeComponent();
@@ -65,17 +67,25 @@ namespace NADACommonCalibrator
             var paths = Directory.GetFiles("Scripts", "*.cs");
             foreach (var path in paths)
             {
-                var assembly =  CSScript.Load(path);
+                var assembly = CSScript.Load(path);
                 dynamic instance = assembly.CreateInstance("NCCScript");
                 var link = navAutomationGroup.AddItem();
                 link.Item.LinkClicked += (s, e) =>
                     {
-                        TablePlotItem = assembly.CreateInstance("TableItem");
                         OpenScriptConfig(e.Link.Item.Tag, path);
+                        try
+                        {
+                            TableColumns = assembly.CreateInstance("TableItem");
+                            TableItems = instance.Items;
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine(ex.Message);
+                        }
                     };
                 link.Item.Caption = instance.Description;
                 link.Item.Tag = instance;
-                (instance.Receiver as IWavesReceiver).WavesReceived += (waves) => 
+                (instance.Receiver as IWavesReceiver).WavesReceived += (waves) =>
                 {
                     if (WavesReceived != null)
                         WavesReceived(waves);
@@ -88,6 +98,7 @@ namespace NADACommonCalibrator
             pgcScriptConfig.Rows.Clear();
             dockPanel_scriptInfo.Show();
             pgcScriptConfig.Invalidate();
+            pgcScriptConfig.SelectedObject = null;
             pgcScriptConfig.SelectedObject = obj;
         }
 
@@ -97,9 +108,9 @@ namespace NADACommonCalibrator
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "TimeBase";
             dockPanel.Controls.Add(timebasePlot);
-            dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(timebasePlot);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControls.Remove(timebasePlot);
             dockPanel.Height = 300;
-            OpenedPlotControl.Add(timebasePlot);
+            OpenedPlotControls.Add(timebasePlot);
         }
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
@@ -108,20 +119,20 @@ namespace NADACommonCalibrator
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = "Spectrum";
             dockPanel.Controls.Add(spectrumPlot);
-            dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(spectrumPlot);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControls.Remove(spectrumPlot);
             dockPanel.Height = 300;
-            OpenedPlotControl.Add(spectrumPlot);
+            OpenedPlotControls.Add(spectrumPlot);
         }
 
         private void navItemTable_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var tablePlot = new TableControl(TablePlotItem) { Dock = DockStyle.Fill };
+            var tablePlot = new TabularControl(TableColumns, TableItems) { Dock = DockStyle.Fill };
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
-            dockPanel.Text = "Table";
+            dockPanel.Text = "Tabular";
             dockPanel.Controls.Add(tablePlot);
-            dockPanel.ClosedPanel += (s, de) => OpenedPlotControl.Remove(tablePlot);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControls.Remove(tablePlot);
             dockPanel.Height = 300;
-            OpenedPlotControl.Add(tablePlot);
+            OpenedPlotControls.Add(tablePlot);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -132,10 +143,17 @@ namespace NADACommonCalibrator
 
         private void barBtn_runScript_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var script = pgcScriptConfig.SelectedObject as dynamic;
-            if (script == null) return;
-            CurrentReceiver = (IWavesReceiver)script.Receiver;
-            script.Run();
+            try
+            {
+                var script = pgcScriptConfig.SelectedObject as dynamic;
+                if (script == null) return;
+                CurrentReceiver = (IWavesReceiver)script.Receiver;
+                script.Run();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
     }
 }
