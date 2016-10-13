@@ -3,54 +3,9 @@ using NADACommonCalibrator.Receiver;
 using NCCCommon;
 using NCCCommon.ModuleProtocol;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
+using NADACommonCalibrator.PlotControl;
 
-public class NCCScript
-{
-    public string Description { get { return "5509 연결"; } }
-    public DaqGain HWGain { get; set; }
-    public DaqSamplingRate SamplingRate { get; set; }
-    public DaqInputType InputType { get; set; }
-    public string ModuleIp { get; set; }
-    public int AsyncLine { get; set; }
-    public int AsyncFMax { get; set; }
-    public bool ICP { get; set; }
-    public float Sensitivity { get; set; }
-
-    public ReceiverDaq5509 Receiver = new ReceiverDaq5509();
-    public System.Collections.Generic.List<TableItem> Items = new System.Collections.Generic.List<TableItem>();
-
-    public NCCScript()
-    {
-        ModuleIp = "192.168.0.14";
-        AsyncLine = 3200;
-        AsyncFMax = 3200;
-        ICP = true;
-        Sensitivity = 7.87f;
-        InputType = DaqInputType.AC;
-        HWGain = DaqGain._1;
-        SamplingRate = DaqSamplingRate._8192;
-
-        Items.Add(new TableItem() { Frequency = 20, Amplitude = 30 });
-        Items.Add(new TableItem() { Frequency = 40, Amplitude = 30 });
-        Items.Add(new TableItem() { Frequency = 60, Amplitude = 30 });
-        Items.Add(new TableItem() { Frequency = 80, Amplitude = 30 });
-    }
-
-    public void Run()
-    {
-        Receiver.Module.ModuleIp = this.ModuleIp;
-        Receiver.Module.AsyncLine = this.AsyncLine;
-        Receiver.Module.AsyncFMax = this.AsyncFMax;
-        Receiver.Module.ICP = this.ICP;
-        Receiver.Module.Sensitivity = this.Sensitivity;
-        Receiver.Module.InputType = this.InputType;
-        Receiver.Module.HWGain = this.HWGain;
-        Receiver.Module.SamplingRate = this.SamplingRate;
-        Receiver.Start();
-    }
-}
-
-public class TableItem
+public class Items
 {
     public int Frequency { get; set; }
     public int Amplitude { get; set; }
@@ -63,3 +18,45 @@ public class TableItem
     public float? Ch7 { get; set; }
     public float? Ch8 { get; set; }
 }
+
+public class NCCScript
+{
+    public string Description { get { return "5509 Connect Test"; } }
+    public DaqGain HWGain { get; set; }
+    public DaqSamplingRate SamplingRate { get; set; }
+    public DaqInputType InputType { get; set; }
+    public string ModuleIp { get; set; }
+    public int AsyncLine { get; set; }
+    public int AsyncFMax { get; set; }
+    public bool ICP { get; set; }
+    public float Sensitivity { get; set; }
+
+    public ReceiverDaq5509 Receiver = new ReceiverDaq5509();
+
+    public NCCScript()
+    {
+        ModuleIp = "192.168.0.14";
+        AsyncLine = 3200;
+        AsyncFMax = 3200;
+        ICP = true;
+        Sensitivity = 7.87f;
+        InputType = DaqInputType.AC;
+        HWGain = DaqGain._1;
+        SamplingRate = DaqSamplingRate._8192;
+    }
+
+    public void Run()
+    {
+        Receiver.Start();
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(20,40);
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(520, 450);
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(220, 340);
+    }
+}
+

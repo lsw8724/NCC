@@ -71,7 +71,7 @@ namespace NCCCommon.ModuleProtocol
             if (task != null)
             {
                 if (!task.IsCompleted)
-                    task.Wait();
+                    task.Wait(1000);
                 task = null;
             }
         }

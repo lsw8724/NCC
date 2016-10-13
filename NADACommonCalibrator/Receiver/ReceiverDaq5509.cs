@@ -16,6 +16,11 @@ namespace NADACommonCalibrator.Receiver
         private DaqClient Daq;
 
         public event Action<WaveData[]> WavesReceived;
+        
+        public ReceiverDaq5509()
+        {
+            Module = new DaqModule();
+        }
 
         protected override void OnNewTask(CancellationToken token)
         {

@@ -4,42 +4,6 @@ using NCCCommon;
 using NCCCommon.ModuleProtocol;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
 
-public class NCCScript
-{
-    public string Description { get { return "5509 연결"; } }
-    [System.ComponentModel.Browsable(false)]
-    public IWavesReceiver Receiver {get;set;}
-    public string ModuleIp { get; set; }
-    public int AsyncLine { get; set; }
-    public int AsyncFMax { get; set; }
-    public bool ICP { get; set; }
-    public float Sensitivity { get; set; }
-    public DaqInputType InputType { get; set; }
-
-    public System.Collections.Generic.List<TableItem> Items = new System.Collections.Generic.List<TableItem>();
-
-    public NCCScript()
-    {
-        ModuleIp = "192.168.0.11";
-        AsyncLine = 3200;
-        AsyncFMax = 3200;
-        ICP = true;
-        Sensitivity = 7.87f;
-        InputType = DaqInputType.AC;
-        Receiver = new ReceiverDaq5509(ModuleIp);
-
-        Items.Add(new TableItem(20, 30));
-        Items.Add(new TableItem(40, 30));
-        Items.Add(new TableItem(60, 30));
-        Items.Add(new TableItem(80, 30));
-    }
-
-    public void Run()
-    {
-        Receiver.Start();
-    }
-}
-
 public class TableItem
 {
     public int Frequency { get; set; }
@@ -52,10 +16,47 @@ public class TableItem
     public float? Ch6 { get; set; }
     public float? Ch7 { get; set; }
     public float? Ch8 { get; set; }
-    public TableItem() { }
-    public TableItem(int freq, int amp)
+}
+
+public class NCCScript
+{
+    public string Description { get { return "5509 연결"; } }
+    public DaqGain HWGain { get; set; }
+    public DaqSamplingRate SamplingRate { get; set; }
+    public DaqInputType InputType { get; set; }
+    public string ModuleIp { get; set; }
+    public int AsyncLine { get; set; }
+    public int AsyncFMax { get; set; }
+    public bool ICP { get; set; }
+    public float Sensitivity { get; set; }
+
+    public ReceiverDaq5509 Receiver = new ReceiverDaq5509();
+
+    public NCCScript()
     {
-        Frequency = freq;
-        Amplitude = amp;
+        ModuleIp = "192.168.0.14";
+        AsyncLine = 3200;
+        AsyncFMax = 3200;
+        ICP = true;
+        Sensitivity = 7.87f;
+        InputType = DaqInputType.AC;
+        HWGain = DaqGain._1;
+        SamplingRate = DaqSamplingRate._8192;
+    }
+
+    public void Run()
+    {
+        Receiver.Module.ModuleIp = this.ModuleIp;
+        Receiver.Module.AsyncLine = this.AsyncLine;
+        Receiver.Module.AsyncFMax = this.AsyncFMax;
+        Receiver.Module.ICP = this.ICP;
+        Receiver.Module.Sensitivity = this.Sensitivity;
+        Receiver.Module.InputType = this.InputType;
+        Receiver.Module.HWGain = this.HWGain;
+        Receiver.Module.SamplingRate = this.SamplingRate;
+
+        Receiver.Start();
+
     }
 }
+

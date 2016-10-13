@@ -51,6 +51,7 @@
             this.gvTable.Name = "gvTable";
             this.gvTable.OptionsBehavior.Editable = false;
             this.gvTable.OptionsView.ShowGroupPanel = false;
+            this.gvTable.RowCountChanged += new System.EventHandler(this.gvTable_RowCountChanged);
             // 
             // TabularControl
             // 
@@ -67,7 +68,7 @@
 
         #endregion
 
-        private DevExpress.XtraGrid.GridControl gcTable;
         private DevExpress.XtraGrid.Views.Grid.GridView gvTable;
+        private DevExpress.XtraGrid.GridControl gcTable;
     }
 }

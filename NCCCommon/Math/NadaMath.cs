@@ -12,6 +12,7 @@ using MathNet.Numerics.Transformations;
 #if USE_VIBEC
 using Complex = NCCCommon.NadaMath.complex;
 using Complex32 = NCCCommon.NadaMath.complex;
+using System.ComponentModel;
 
 #else
 using Complex = MathNet.Numerics.Complex;
@@ -30,6 +31,44 @@ namespace NCCCommon
         Blackman,
         Harris,
         NoWindow
+    }
+
+    public enum Unit1Type
+    {
+        custom,
+
+        [Description("㎛")]
+        um,
+
+        [Description("mm")]
+        mm,
+
+        [Description("in")]
+        inch,
+
+        [Description("mil")]
+        mil,
+
+        [Description("mm/s")]
+        mm_sec,
+
+        [Description("in/s")]
+        inch_sec,
+
+        [Description("㎨")]
+        m_sec2,
+
+        [Description("g")]
+        g,
+
+        [Description("gal")]
+        gal,
+
+        [Description("ft/s²")]
+        ft_sec2,
+
+        [Description("-")]
+        no_unit
     }
 
     public enum Unit2Type

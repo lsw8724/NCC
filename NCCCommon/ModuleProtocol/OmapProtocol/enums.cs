@@ -24,21 +24,21 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         External = 4,
     }
 
-    public enum ChannelType
-    {
-        Keyphasor = 100,
-        Displacement = 201,         //변위
-        AbsoluteDisplacement = 202, //절대 변위
-        Accelate = 205,             //가속도
-        DC = 203,
-        Thrust = 204,
-        Eccentricity = 206,
-        DiffExp = 207,
-        DiffRamp = 208,
-        CaseExp = 209,
-        ReverseRotation = 210,
-        Robin = 300,
-    }
+    //public enum ChannelType
+    //{
+    //    Keyphasor = 100,
+    //    Displacement = 201,         //변위
+    //    AbsoluteDisplacement = 202, //절대 변위
+    //    Accelate = 205,             //가속도
+    //    DC = 203,
+    //    Thrust = 204,
+    //    Eccentricity = 206,
+    //    DiffExp = 207,
+    //    DiffRamp = 208,
+    //    CaseExp = 209,
+    //    ReverseRotation = 210,
+    //    Robin = 300,
+    //}
 
     public enum AlarmBufferMode
     {
@@ -64,5 +64,17 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         AmpSave,
         RpmSave,
         AlarmSave
+    }
+
+    public enum AngleDirection
+    {
+        Left = 0,
+        Right = 1
+    }
+
+    public enum ShaftDirection
+    {
+        CW,
+        CCW
     }
 }

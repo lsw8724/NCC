@@ -77,8 +77,6 @@
     <Compile Include="ModuleProtocol\OmapProtocol\DspMsgAtrribute.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\enums.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\ModuleWaves.cs" />
-    <Compile Include="ModuleProtocol\OmapProtocol\OmapChannel.cs" />
-    <Compile Include="ModuleProtocol\OmapProtocol\OmapCommand.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\OmapModule.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\SimpleTimeTrigger.cs" />
     <Compile Include="ModuleProtocol\SystemExtension.cs" />

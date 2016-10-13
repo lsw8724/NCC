@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
             this.largeImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.smallImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.barManager = new DevExpress.XtraBars.BarManager(this.components);
@@ -55,7 +55,8 @@
             this.navPlotGroup = new DevExpress.XtraNavBar.NavBarGroup();
             this.navItemTimePlot = new DevExpress.XtraNavBar.NavBarItem();
             this.navItemSpectrum = new DevExpress.XtraNavBar.NavBarItem();
-            this.navItemTable = new DevExpress.XtraNavBar.NavBarItem();
+            this.navItemTabular = new DevExpress.XtraNavBar.NavBarItem();
+            this.navItemWorkSheet = new DevExpress.XtraNavBar.NavBarItem();
             this.dockPanel_scriptInfo = new DevExpress.XtraBars.Docking.DockPanel();
             this.dockPanel2_Container = new DevExpress.XtraBars.Docking.ControlContainer();
             this.pgcScriptConfig = new DevExpress.XtraVerticalGrid.PropertyGridControl();
@@ -173,9 +174,9 @@
             this.barBtn_runScript.Id = 23;
             this.barBtn_runScript.ImageIndex = 0;
             this.barBtn_runScript.Name = "barBtn_runScript";
-            toolTipItem2.Text = "Run Script";
-            superToolTip2.Items.Add(toolTipItem2);
-            this.barBtn_runScript.SuperTip = superToolTip2;
+            toolTipItem4.Text = "Run Script";
+            superToolTip4.Items.Add(toolTipItem4);
+            this.barBtn_runScript.SuperTip = superToolTip4;
             this.barBtn_runScript.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtn_runScript_ItemClick);
             // 
             // barAndDockingController1
@@ -237,8 +238,8 @@
             this.dockPanel_menuList.ID = new System.Guid("518281eb-5104-4b61-bd37-c4480c74f627");
             this.dockPanel_menuList.Location = new System.Drawing.Point(0, 49);
             this.dockPanel_menuList.Name = "dockPanel_menuList";
-            this.dockPanel_menuList.OriginalSize = new System.Drawing.Size(140, 200);
-            this.dockPanel_menuList.Size = new System.Drawing.Size(140, 497);
+            this.dockPanel_menuList.OriginalSize = new System.Drawing.Size(188, 200);
+            this.dockPanel_menuList.Size = new System.Drawing.Size(188, 497);
             this.dockPanel_menuList.Text = "Menu List";
             // 
             // dockPanel1_Container
@@ -246,7 +247,7 @@
             this.dockPanel1_Container.Controls.Add(this.navBarControl);
             this.dockPanel1_Container.Location = new System.Drawing.Point(6, 27);
             this.dockPanel1_Container.Name = "dockPanel1_Container";
-            this.dockPanel1_Container.Size = new System.Drawing.Size(128, 464);
+            this.dockPanel1_Container.Size = new System.Drawing.Size(176, 464);
             this.dockPanel1_Container.TabIndex = 0;
             // 
             // navBarControl
@@ -259,11 +260,12 @@
             this.navBarControl.Items.AddRange(new DevExpress.XtraNavBar.NavBarItem[] {
             this.navItemTimePlot,
             this.navItemSpectrum,
-            this.navItemTable});
+            this.navItemTabular,
+            this.navItemWorkSheet});
             this.navBarControl.Location = new System.Drawing.Point(0, 0);
             this.navBarControl.Name = "navBarControl";
-            this.navBarControl.OptionsNavPane.ExpandedWidth = 128;
-            this.navBarControl.Size = new System.Drawing.Size(128, 464);
+            this.navBarControl.OptionsNavPane.ExpandedWidth = 176;
+            this.navBarControl.Size = new System.Drawing.Size(176, 464);
             this.navBarControl.TabIndex = 0;
             this.navBarControl.Text = "navBarControl1";
             // 
@@ -280,7 +282,8 @@
             this.navPlotGroup.ItemLinks.AddRange(new DevExpress.XtraNavBar.NavBarItemLink[] {
             new DevExpress.XtraNavBar.NavBarItemLink(this.navItemTimePlot),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navItemSpectrum),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navItemTable)});
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navItemTabular),
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navItemWorkSheet)});
             this.navPlotGroup.Name = "navPlotGroup";
             // 
             // navItemTimePlot
@@ -295,21 +298,27 @@
             this.navItemSpectrum.Name = "navItemSpectrum";
             this.navItemSpectrum.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItem_spectrum_LinkClicked);
             // 
-            // navItemTable
+            // navItemTabular
             // 
-            this.navItemTable.Caption = "Tabular";
-            this.navItemTable.Name = "navItemTable";
-            this.navItemTable.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItemTable_LinkClicked);
+            this.navItemTabular.Caption = "RealTime Tabular";
+            this.navItemTabular.Name = "navItemTabular";
+            this.navItemTabular.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItemTable_LinkClicked);
+            // 
+            // navItemWorkSheet
+            // 
+            this.navItemWorkSheet.Caption = "Work Sheet";
+            this.navItemWorkSheet.Name = "navItemWorkSheet";
+            this.navItemWorkSheet.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItemWorkSheet_LinkClicked);
             // 
             // dockPanel_scriptInfo
             // 
             this.dockPanel_scriptInfo.Controls.Add(this.dockPanel2_Container);
             this.dockPanel_scriptInfo.Dock = DevExpress.XtraBars.Docking.DockingStyle.Left;
             this.dockPanel_scriptInfo.ID = new System.Guid("97520603-e275-4506-87ce-338c7e818ec2");
-            this.dockPanel_scriptInfo.Location = new System.Drawing.Point(140, 49);
+            this.dockPanel_scriptInfo.Location = new System.Drawing.Point(188, 49);
             this.dockPanel_scriptInfo.Name = "dockPanel_scriptInfo";
-            this.dockPanel_scriptInfo.OriginalSize = new System.Drawing.Size(381, 200);
-            this.dockPanel_scriptInfo.Size = new System.Drawing.Size(381, 497);
+            this.dockPanel_scriptInfo.OriginalSize = new System.Drawing.Size(333, 200);
+            this.dockPanel_scriptInfo.Size = new System.Drawing.Size(333, 497);
             this.dockPanel_scriptInfo.Text = "Script Info";
             // 
             // dockPanel2_Container
@@ -317,7 +326,7 @@
             this.dockPanel2_Container.Controls.Add(this.pgcScriptConfig);
             this.dockPanel2_Container.Location = new System.Drawing.Point(6, 27);
             this.dockPanel2_Container.Name = "dockPanel2_Container";
-            this.dockPanel2_Container.Size = new System.Drawing.Size(369, 464);
+            this.dockPanel2_Container.Size = new System.Drawing.Size(321, 464);
             this.dockPanel2_Container.TabIndex = 0;
             // 
             // pgcScriptConfig
@@ -325,7 +334,7 @@
             this.pgcScriptConfig.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgcScriptConfig.Location = new System.Drawing.Point(0, 0);
             this.pgcScriptConfig.Name = "pgcScriptConfig";
-            this.pgcScriptConfig.Size = new System.Drawing.Size(369, 464);
+            this.pgcScriptConfig.Size = new System.Drawing.Size(321, 464);
             this.pgcScriptConfig.TabIndex = 0;
             // 
             // defaultLookAndFeel
@@ -414,6 +423,7 @@
         private DevExpress.XtraBars.BarAndDockingController barAndDockingController1;
         private DevExpress.XtraBars.Bar bar1;
         private DevExpress.XtraBars.BarButtonItem barBtn_runScript;
-        private DevExpress.XtraNavBar.NavBarItem navItemTable;
+        private DevExpress.XtraNavBar.NavBarItem navItemTabular;
+        private DevExpress.XtraNavBar.NavBarItem navItemWorkSheet;
     }
 }
