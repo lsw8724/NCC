@@ -24,6 +24,18 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         External = 4,
     }
 
+    public enum KeyphasorEdgeMode
+    {
+        Rising,
+        Falling
+    }
+
+    public enum ResponseCodeTyoe : int
+    {
+        RCT_Ok,
+        RCT_Error,
+    }
+
     //public enum ChannelType
     //{
     //    Keyphasor = 100,

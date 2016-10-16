@@ -28,7 +28,7 @@ namespace NADACommonCalibrator
     public partial class MainForm : XtraForm
     {
         public IWavesReceiver CurrentReceiver;
-        public static event Action<WaveData[]> WavesReceived;
+        public static event Action<WaveData[]> DataReceived;
         private object Items;
         private MeasureCalculator MeasCalc = new MeasureCalculator();
 
@@ -89,8 +89,8 @@ namespace NADACommonCalibrator
                 link.Item.Tag = instance;
                 (instance.Receiver as IWavesReceiver).WavesReceived += (waves) =>
                 {
-                    if (WavesReceived != null)
-                        WavesReceived(waves);
+                    if (DataReceived != null)
+                        DataReceived(waves);
                 };
             }
         }
@@ -158,7 +158,6 @@ namespace NADACommonCalibrator
                     if (validProp == null) continue;
                     validProp.SetValue(obj, prop.GetValue(script));
                 }
-                Debug.WriteLine((CurrentReceiver as ReceiverDaq5509).Module.Sensitivity);
                 Task.Run(() =>{ script.Run(); });
             }
             catch (Exception ex)

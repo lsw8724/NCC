@@ -12,37 +12,28 @@ namespace NADACommonCalibrator.Receiver
 {
     public class ReceiverDaq5509 : SingleTask, IWavesReceiver
     {
-        public DaqModule Module;
+        public DaqModule Module = new DaqModule();
         private DaqClient Daq;
 
         public event Action<WaveData[]> WavesReceived;
-        
-        public ReceiverDaq5509()
-        {
-            Module = new DaqModule();
-        }
 
         protected override void OnNewTask(CancellationToken token)
         {
             Module.Init();
-            //ReconnectLoop
+
             while (!token.IsCancellationRequested)
             {
                 try
-                {
-                    WriteLog("Connecting");
-                    
+                {                  
                     ConnectDaq();
 
                     ReadLoop(token);
 
                     CloseDaq();
-
-                    WriteLog("Closing");
                 }
                 catch (Exception ex)
                 {
-                    WriteLog("Error - " + ex);
+                    Console.WriteLine("Error - " + ex);
                     Thread.Sleep(100);
                 }
             }
@@ -57,7 +48,7 @@ namespace NADACommonCalibrator.Receiver
                 try
                 {
                     var _daq = new DaqClient(Module.Channels.Select(x=>x.ScaleFactors).ToArray()) { PacketCountFor1Sec = Module.PacketCountFor1Sec };
-                    _daq.Connect(Module.ModuleIp, 7000);
+                    _daq.Connect(Module.Ip, 7000);
                     _daq.Stop(true);
                     Daq = _daq;
                     break;
@@ -65,7 +56,7 @@ namespace NADACommonCalibrator.Receiver
                 catch (Exception) { Thread.Sleep(500); }
             }
             if (Daq == null)
-                throw new Exception("Connect Failed - IP:" + Module.ModuleIp);
+                throw new Exception("Connect Failed - IP:" + Module.Ip);
 
             foreach (var channel in Module.Channels)
             {

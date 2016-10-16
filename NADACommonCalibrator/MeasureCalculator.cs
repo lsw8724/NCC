@@ -11,19 +11,18 @@ namespace NADACommonCalibrator
 {
     public class MeasureCalculator
     {
+        public ReceiverType RcvType { get; set; }
         public static event Action<SpectrumData[]> AfterFFT;
         public static event Action<IMeasure[]> AfterMeasureCalc;
         public MeasureCalculator()
         {
-            MainForm.WavesReceived += (waves) =>
+            MainForm.DataReceived += (waves) =>
                 {
-                    if (AfterFFT != null)
-                        AfterFFT(waves.Select(x => new SpectrumData(1, x)).ToArray());
+                    AfterFFT(waves.Select(x => new SpectrumData(1, x)).ToArray());
                 };
             AfterFFT += (fft) =>
                 {
-                    if (AfterMeasureCalc != null)
-                        AfterMeasureCalc(fft.Select(x => new Measure_RMS(x)).ToArray());
+                    AfterMeasureCalc(fft.Select(x => new Measure_RMS(x)).ToArray());
                 };
         }
     }

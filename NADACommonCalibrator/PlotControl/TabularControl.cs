@@ -28,7 +28,7 @@ namespace NADACommonCalibrator.PlotControl
 
     public partial class TabularControl : DevExpress.XtraEditors.XtraUserControl
     {
-        private static Queue<object[]> ParamQueue { get; set; }
+        private static Queue<object[]> ParamQueue = new Queue<object[]>();
         delegate void DataRefreshCallback(List<object> items);
         List<object> TableItems = new List<object>();
         private object ColumnObj { get; set; }
@@ -37,7 +37,6 @@ namespace NADACommonCalibrator.PlotControl
         public TabularControl(object columns, TabularMode mode)
         {
             InitializeComponent();
-            ParamQueue = new Queue<object[]>();
             MeasureCalculator.AfterMeasureCalc += MeasureData_Received;
 
             if (columns != null)

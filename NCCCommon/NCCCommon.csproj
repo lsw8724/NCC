@@ -76,13 +76,14 @@
     <Compile Include="ModuleProtocol\OmapProtocol\DspMessage.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\DspMsgAtrribute.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\enums.cs" />
-    <Compile Include="ModuleProtocol\OmapProtocol\ModuleWaves.cs" />
+    <Compile Include="ModuleProtocol\OmapProtocol\Message.cs" />
+    <Compile Include="ModuleProtocol\OmapProtocol\ModuleCommandConnection.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\OmapModule.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\SimpleTimeTrigger.cs" />
+    <Compile Include="ModuleProtocol\OmapProtocol\TcpConnection.cs" />
     <Compile Include="ModuleProtocol\SystemExtension.cs" />
     <Compile Include="ModuleProtocol\OmapProtocol\TcpSocketExtension.cs" />
     <Compile Include="ModuleProtocol\UtcSeconds.cs" />
-    <Compile Include="ModuleProtocol\OmapProtocol\OmapWaveData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

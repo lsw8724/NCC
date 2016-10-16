@@ -208,7 +208,9 @@
     <Content Include="Scripts\FrequencyTest.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\SimpleConnectOmap.cs" />
+    <Content Include="Scripts\SimpleConnectOmap.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="VisaConnection.cs" />
     <Content Include="Scripts\SimpleConnect5509.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

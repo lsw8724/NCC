@@ -25,7 +25,7 @@ public class NCCScript
     public DaqGain HWGain { get; set; }
     public DaqSamplingRate SamplingRate { get; set; }
     public DaqInputType InputType { get; set; }
-    public string ModuleIp { get; set; }
+    public string Ip { get; set; }
     public int AsyncLine { get; set; }
     public int AsyncFMax { get; set; }
     public bool ICP { get; set; }
@@ -35,7 +35,7 @@ public class NCCScript
 
     public NCCScript()
     {
-        ModuleIp = "192.168.0.14";
+        Ip = "192.168.0.14";
         AsyncLine = 3200;
         AsyncFMax = 3200;
         ICP = true;

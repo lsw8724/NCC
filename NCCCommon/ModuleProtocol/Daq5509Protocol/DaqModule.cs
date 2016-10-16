@@ -7,7 +7,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
 {
     public class DaqModule
     {
-        public string ModuleIp { get; set; }
+        public string Ip { get; set; }
         public DaqSamplingRate SamplingRate { get; set; }
         public int AsyncFMax { get; set; }
         public int AsyncLine { get; set; }
@@ -23,7 +23,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509Protocol
 
         public void Init()
         {
-            this.InputType = DaqInputType.AC;
+            this.InputType = InputType;
             Channels = new DaqChannel[8];
             for (int i = 0; i < Channels.Length; i++)
                 Channels[i] = new DaqChannel()

@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,97 +9,78 @@ using NCCCommon;
 using System.Net.Sockets;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace NADACommonCalibrator.Receiver
 {
-    public class ReceiverOmap : SingleTask, IWavesReceiver
+    public class ReceiverOmap : IWavesReceiver
     {
-        public OmapModule Module;
-        public TcpClient tcp;
+        public OmapModule Module = new OmapModule();
         public event Action<WaveData[]> WavesReceived;
 
-        public Dictionary<int, OmapCommandTask> commandTasks = new Dictionary<int, OmapCommandTask>();
-        public Dictionary<int, OmapDataReceiver> waveReceivers = new Dictionary<int, OmapDataReceiver>();
-        public Dictionary<int, OmapDataReceiver> vectorReceivers = new Dictionary<int, OmapDataReceiver>();
+        public OmapCommandTask commandTask { get;set;}
+        public OmapDataReceiver waveReceiver { get; set; }
+        public OmapDataReceiver vectorReceiver { get; set; }
+        private WaveData[] Waves = new WaveData[8];
 
-        public ReceiverOmap(OmapModule module)
+        void ReceiverOmap_MsgReceived(DspMessage msg)
         {
-            Module = module;
-            vectorReceivers.Add(module.Id, new OmapDataReceiver(module, SessionType.SessionType_Vector, module.DataPort, "Omap.Vec." + module.ModuleIp));
-            waveReceivers.Add(module.Id, new OmapDataReceiver(module, SessionType.SessionType_Wave, module.DataPort + 1, "Omap.Wav." + module.ModuleIp));
-            commandTasks.Add(module.Id, new OmapCommandTask(module, new CancellationTokenSource(), vectorReceivers[module.Id], waveReceivers[module.Id]));
+            Console.WriteLine(msg.Type.ToString());
+            switch (msg.Type)
+            {
+                case MsgType.MsgType_Data_VectorData:
+                    var vector = msg.GetDataAsStruct<VectorData>();
+                    vector.GetType();
+                    if ((DataSaveType)vector.SaveType == DataSaveType.TimeSave) return;
+                    break;
+
+                case MsgType.MsgType_Data_WaveData: 
+                    var wave = OmapWaveData.ParseWave(msg);
+                    Waves[wave.ChannelId - 4] = wave;
+                    if(!Waves.Contains(null))
+                        WavesReceived(Waves);
+                    break;
+            }            
         }       
 
-        protected override void OnNewTask(CancellationToken token)
+        public void Start()
         {
-            //ReconnectLoop
-            while (!token.IsCancellationRequested)
-            {
-                try
-                {
-                    WriteLog("Connecting");
-                    tcp = new TcpClient();
-                    tcp.ReceiveTimeout = 5000;
-                    var result = tcp.BeginConnect(Module.ModuleIp, Module.DataPort + 1, null, null);
-                    bool success = result.AsyncWaitHandle.WaitOne(new TimeSpan(0, 0, 5), true);
-                    if (!success)
-                        throw new Exception("Connect Timeout");
+            Module.Init();
 
-                    ReadLoop(token);
+            vectorReceiver = new OmapDataReceiver(Module, SessionType.SessionType_Vector, Module.DataPort);
+            waveReceiver = new OmapDataReceiver(Module, SessionType.SessionType_Wave, Module.DataPort + 1);
+            commandTask = new OmapCommandTask(Module, vectorReceiver, waveReceiver);
 
-                    WriteLog("Closing");
-                    tcp.Close();
-                }
-                catch (Exception ex)
-                {
-                    WriteLog("Error - " + ex);
-                    Thread.Sleep(100);
-                }
-            }
+            waveReceiver.MsgReceived += ReceiverOmap_MsgReceived;
+            vectorReceiver.MsgReceived += ReceiverOmap_MsgReceived;
+            commandTask.Start();
         }
 
-        private void ReadLoop(CancellationToken token)
+        public void Stop()
         {
-            var stream = tcp.GetStream();
-            stream.SendAsDspMessage(new SessionInit { InitType = (int)SessionType.SessionType_Wave });
-            while (!token.IsCancellationRequested)
-            {
-                var msg = stream.ReadDspMessage();
-                if (msg.Type != MsgType.MsgType_Data_ModuleWaves)
-                    continue;
-
-                var waves = ModuleWaves.Parse(msg);
-                Module.IsTriggered = Module.TimeTrigger.FetchTrigger();
-                if (Module.IsTriggered)
-                    Module.WaveReceiveCount++;
-
-                var waveDatas = new WaveData[] { waves[0], waves[1], waves[2], waves[3], waves[4], waves[5], waves[6], waves[7] };
-                WavesReceived(waveDatas);
-            }
-            stream.Close();
+            commandTask.Stop();
+            vectorReceiver.Stop();
+            waveReceiver.Stop();
         }
 
-        [DspMsg(MsgType.MsgType_Session_Init)]
-        [StructLayout(LayoutKind.Sequential)]
-        public struct SessionInit
+        public void Dispose()
         {
-            public int InitType;
         }
     }
 
-    internal class OmapCommandTask : SingleTask
+    public class OmapCommandTask : SingleTask
     {
-        private OmapModule module;
+        public OmapModule module;
         public ModuleCommandConnection conn;
         private OmapDataReceiver vectorReceiver;
         private OmapDataReceiver waveReceiver;
-        public OmapCommandTask(OmapModule module, CancellationTokenSource cts, OmapDataReceiver vectorTask, OmapDataReceiver waveTask)
-            : base(cts, "Cmd" + module.Name, "Cmd" + module.Name)
+
+        public OmapCommandTask(OmapModule module, OmapDataReceiver vectorTask, OmapDataReceiver waveTask) 
         {
             this.module = module;
             this.vectorReceiver = vectorTask;
             this.waveReceiver = waveTask;
-            conn = new ModuleCommandConnection(module, module.CommandPort, new ModuleOptions(), channelConfig);
+            conn = new ModuleCommandConnection(module, module.CommandPort);
         }
 
         protected override void OnNewTask(CancellationToken token)
@@ -108,14 +89,12 @@ namespace NADACommonCalibrator.Receiver
             {
                 try
                 {
-                    WriteLog("Connecting");
                     if (!conn.Connect())
                     {
                         Thread.Sleep(1000);
                         continue;
                     }
                     conn.SendConfigs();
-                    WriteLog("Configs Sent");
 
                     Thread.Sleep(500);
                     vectorReceiver.Start();
@@ -140,12 +119,11 @@ namespace NADACommonCalibrator.Receiver
         }
     }
 
-    internal class OmapDataReceiver : SingleTask
+    public class OmapDataReceiver : SingleTask
     {
-        private OmapModule module;
+        public OmapModule module;
         private TcpClient tcp;
 
-        public event Action<ModuleWaves> WaveReceived;
         public event Action<DspMessage> MsgReceived;
 
         public long WaveReceiveCount { get; set; }
@@ -158,7 +136,7 @@ namespace NADACommonCalibrator.Receiver
 
         public int Port { get; private set; }
 
-        public OmapDataReceiver(OmapModule module, SessionType sessionType, int port, string traceName)
+        public OmapDataReceiver(OmapModule module, SessionType sessionType, int port)
         {
             this.module = module;
             this.SessionType = sessionType;
@@ -168,23 +146,19 @@ namespace NADACommonCalibrator.Receiver
 
         protected override void OnNewTask(CancellationToken token)
         {
-            //ReconnectLoop
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    WriteLog("Connecting");
                     tcp = new TcpClient();
                     tcp.ReceiveTimeout = 5000;
-                    //tcp.Connect(module.IP, module.Port + 1);
-                    var result = tcp.BeginConnect(module.ModuleIp, Port, null, null);
+                    var result = tcp.BeginConnect(module.Ip, Port, null, null);
                     bool success = result.AsyncWaitHandle.WaitOne(new TimeSpan(0, 0, 5), true);
                     if (!success)
                         throw new Exception("Connect Timeout");
 
                     ReadLoop(token);
 
-                    WriteLog("Closing");
                     tcp.Close();
                 }
                 catch (Exception ex)
@@ -199,33 +173,10 @@ namespace NADACommonCalibrator.Receiver
         {
             var stream = tcp.GetStream();
             stream.SendAsDspMessage(new SessionInit { InitType = (int)SessionType });
-            int nReadCount = 0;
             while (!token.IsCancellationRequested)
             {
                 var msg = stream.ReadDspMessage();
                 MsgReceived(msg);
-
-                //for (int i = 0; i < 12;i++)
-                //{
-                //    if(msg.Data != null)
-                //        Console.WriteLine();
-                //}
-
-                if (msg.Type != MsgType.MsgType_Data_ModuleWaves)
-                    continue;
-
-                //테스트
-                //stream.SendAsDspMessage(new HeartBeat());
-
-                var waves = ModuleWaves.Parse(msg);
-                IsTriggered = TimeTrigger.FetchTrigger();
-                if (IsTriggered)
-                    WaveReceiveCount++;
-
-                if (nReadCount++ % 300 == 0)
-                    WriteLog("Wave Receives - Triggered:" + WaveReceiveCount + ", Read:" + nReadCount);
-
-                WaveReceived(waves);
             }
             stream.Close();
         }

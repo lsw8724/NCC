@@ -177,3 +177,4 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalib
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.PlotControl.TabularControl.resources
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectOmap.cs

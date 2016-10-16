@@ -20,7 +20,7 @@ namespace NADACommonCalibrator.PlotControl
         public TimeBaseControl(int count)
         {
             InitializeComponent();
-            MainForm.WavesReceived += Waves_Received;
+            MainForm.DataReceived += Waves_Received;
             Cursor = new ChartCursor(tChart_timeBase);
             for (int i = 0; i < count; i++)
                 tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i>0? false:true });

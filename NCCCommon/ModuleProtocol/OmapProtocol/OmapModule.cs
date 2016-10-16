@@ -7,92 +7,65 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 {
     public class OmapModule
     {
-        public int Id { get; set; }
-        public string ModuleIp { get; set; }
+        public string Ip { get; set; }
+        public int AsyncFMax { get; set; }
+        public int AsyncLine { get; set; }
+        public int HWGain { get; set; }
+        public float Sensitivity { get; set; }
+        public bool ICP { get; set; }
+        public AlarmBufferMode AlarmBufferMode { get; set; }
+
+        public Keyphasor[] KeyPhasors = new Keyphasor[2];
+        public DisChannel[] Channels = new DisChannel[8];
         public int DataPort = 4511;
         public int CommandPort = 4510;
-        public ModuleType OmapModuleType { get; set; }
-        public double WaveIntervalTime;
-        public AlarmBufferMode ModuleAlarmBufferMode { get; set; }
-        public OmapChannel[] Channels { get; set; }
-        public SimpleTimeTrigger TimeTrigger { get; set; }
-        public long WaveReceiveCount;
-        public bool IsTriggered;
 
-        public OmapModule()
+        public void Init()
         {
-            OmapModuleType = ModuleType.Vibration;
-            ModuleAlarmBufferMode = AlarmBufferMode.Slow;
-            Channels = new OmapChannel[8];
-            for (int i = 0; i < Channels.Length; i++)
-                Channels[i] = new OmapChannel() 
+            for (int i = 0; i < KeyPhasors.Length; i++)
+            {
+                KeyPhasors[i] = new Keyphasor()
                 {
-                    Id = i + 1,
-                    PhysicalIndex = i,
-                    Angle = 45, 
-                    MROType = 0,
-                    MRORange = 150,
-                    MRORangeLow = 0,
-                 
-                    TransducerUnit = Unit1Type.g,
-                    Rectification = 0,
-                    Sensitivity = 7.87f,
-                    HWGain = 1,
-                    Bandwidth = 0,
-                    ICP = true,
-                    DisplayUnit = Unit1Type.g,
+                    Id = i+1,
+                    ModuleId = 1,
+                    PhysicalCh = i+1,
+                    Angle = 0,
+                    IsSimulated = 0,
+                    SimulatedRpm = 0,
+                    HysterisisVolt = 0,
+                    AutoThreshold = 0,
+                    ThresholdVolt = 0,
+                    MaxRpm = 5000,
+                    PulsePerRev = 1
+                };
+            }
+            for (int i = 0; i < Channels.Length; i++)
+            {
+                Channels[i] = new DisChannel()
+                {
+                    Id = i + 4,
+                    ModuleId = 1,
+                    PhysicalCh = i + 1,
+                    Angle = 45,
+                    Active = 1,
+                    TransducerUnit = (int)Unit1Type.g,
+                    TransducerUnit2 = (int)Unit2Type.rms,
+                    DisplayUnit = (int)Unit1Type.g,
+                    KeyphasorId = 1,
                     Integral = 0,
-                    PairChannelId =0,
-                    TransducerUnit2 = Unit2Type.rms,
-                    KeyphasorId = 0,
-                    AngleDirection = AngleDirection.Left,
-                    Shaft = ShaftDirection.CCW,
-                    CorrectionValue = 1,
-                    Offset =0,
-
+                    Sensitivity = Sensitivity,
+                    HWGain = HWGain,
+                    Bandwidth = 0,
+                    ICP = ICP ? 1 : 0,
                     nX = 3,
                     BandLow = 20,
                     BandHigh = 3200,
                     SyncSR = 128,
-                    SyncRev =8,
-                    AsyncFMax = 3200,
-                    AsyncLine = 3200
+                    SyncRev = 8,
+                    AsyncFMax = AsyncFMax,
+                    AsyncLine = AsyncLine
                 };
-            this.TimeTrigger = new SimpleTimeTrigger(TimeSpan.FromSeconds(WaveIntervalTime));
+            }
         }
-    }
-
-    public class OmapChannel
-    {
-        public int Id { get; set; }
-        public int PhysicalIndex {get;set;}
-        public int Angle{get;set;}
-        public int MROType{get;set;}
-        public int MRORange{get;set;}
-        public int MRORangeLow{get;set;}
-
-        public Unit1Type TransducerUnit{get;set;}
-        public int Rectification{get;set;}
-        public float Sensitivity{get;set;}
-        public int HWGain{get;set;}
-        public int Bandwidth{get;set;}
-        public bool ICP{get;set;}
-        public Unit1Type DisplayUnit{get;set;}
-        public int Integral{get;set;}
-        public int PairChannelId{get;set;}
-        public Unit2Type TransducerUnit2{get;set;}
-        public int KeyphasorId{get;set;}
-        public AngleDirection AngleDirection{get;set;}
-        public ShaftDirection Shaft{get;set;}
-        public float CorrectionValue{get;set;}
-        public float Offset{get;set;}
-
-        public float nX{get;set;}
-        public int BandLow{get;set;}
-        public int BandHigh{get;set;}
-        public int SyncSR{get;set;}
-        public int SyncRev{get;set;}
-        public int AsyncFMax{get;set;}
-        public int AsyncLine{get;set;}
     }
 }

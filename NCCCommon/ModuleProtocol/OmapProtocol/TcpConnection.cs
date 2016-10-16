@@ -51,7 +51,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         {
             try
             {
-                              tcp = new TcpSocket();
+                tcp = new TcpSocket();
                 tcp.SendTimeout = 12000;
                 tcp.ReceiveTimeout = 12000;
                 tcp.Connect(IP, Port, new TimeSpan(0, 0, 5));
