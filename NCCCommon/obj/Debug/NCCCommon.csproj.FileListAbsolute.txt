@@ -48,3 +48,16 @@ D:\Project\NADACommonCalibrator\NCCCommon\bin\Debug\de\DevExpress.XtraEditors.v1
 D:\Project\NADACommonCalibrator\NCCCommon\bin\Debug\es\DevExpress.XtraEditors.v12.2.resources.dll
 D:\Project\NADACommonCalibrator\NCCCommon\bin\Debug\ja\DevExpress.XtraEditors.v12.2.resources.dll
 D:\Project\NADACommonCalibrator\NCCCommon\bin\Debug\ru\DevExpress.XtraEditors.v12.2.resources.dll
+E:\Project\NCC\NCCCommon\bin\Debug\Math\MathNet.Iridium.dll
+E:\Project\NCC\NCCCommon\bin\Debug\NCCCommon.dll
+E:\Project\NCC\NCCCommon\bin\Debug\NCCCommon.pdb
+E:\Project\NCC\NCCCommon\bin\Debug\MathNet.Iridium.dll
+E:\Project\NCC\NCCCommon\bin\Debug\Sasa.Binary.dll
+E:\Project\NCC\NCCCommon\bin\Debug\Sasa.Collections.dll
+E:\Project\NCC\NCCCommon\bin\Debug\Sasa.dll
+E:\Project\NCC\NCCCommon\bin\Debug\Sasa.xml
+E:\Project\NCC\NCCCommon\bin\Debug\Sasa.Binary.xml
+E:\Project\NCC\NCCCommon\bin\Debug\Sasa.Collections.xml
+E:\Project\NCC\NCCCommon\obj\Debug\NCCCommon.csprojResolveAssemblyReference.cache
+E:\Project\NCC\NCCCommon\obj\Debug\NCCCommon.dll
+E:\Project\NCC\NCCCommon\obj\Debug\NCCCommon.pdb

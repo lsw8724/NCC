@@ -28,7 +28,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         {
         }
 
-        private void SendMsg<MsgType>(MsgType obj) where MsgType : struct
+        private void SendMsg<MsgType>(ref MsgType obj) where MsgType : struct
         {
             var msg = new DspMessage();
             msg.SetData<MsgType>(obj);
@@ -38,14 +38,15 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
         public virtual void SendConfigs()
         {
-            SendMsg(new ModuleConfig() { AlarmBufferMode = (int)Module.AlarmBufferMode});
+            var moduleConf = new ModuleConfig() { AlarmBufferMode = (int)Module.AlarmBufferMode };
+            SendMsg(ref moduleConf);
 
-            SendMsg(Module.KeyPhasors[0]);
-            SendMsg(Module.KeyPhasors[1]);
+            SendMsg(ref Module.KeyPhasors[0]);
+            SendMsg(ref Module.KeyPhasors[1]);
 
-            foreach (var ch in Module.Channels)
-                SendMsg(ch);
-
+            for(int i=0; i<Module.Channels.Length; i++)
+                SendMsg(ref Module.Channels[i]);
+             
             Thread.Sleep(2000);
             Send(MsgType.MsgType_Cmd_Start);
 

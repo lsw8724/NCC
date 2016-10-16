@@ -144,9 +144,9 @@
     <Reference Include="DevExpress.XtraVerticalGrid.v12.2, Version=12.2.15.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ivi.Visa.Interop, Version=5.5.0.0, Culture=neutral, PublicKeyToken=a128c98f1d7717c1, processorArchitecture=AMD64">
-      <HintPath>C:\Program Files\IVI Foundation\VISA\VisaCom64\Primary Interop Assemblies\Ivi.Visa.Interop.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ivi.Visa.Interop">
+      <HintPath>bin\Release\Ivi.Visa.Interop.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.CSharp, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -162,7 +162,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TeeChart.Client">
-      <HintPath>C:\Program Files (x86)\Steema Software\Steema TeeChart for .NET 2014 4.1.2014.12150\net40\x64\TeeChart.Client.dll</HintPath>
+      <HintPath>bin\Release\TeeChart.Client.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -205,13 +205,15 @@
     <Compile Include="Receiver\ReceiverDaq5509.cs" />
     <Compile Include="Receiver\ReceiverOmap.cs" />
     <Compile Include="Receiver\ReceiverVirtual.cs" />
+    <Compile Include="VisaConnection.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Content Include="Scripts\FrequencyTest.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\SimpleConnectOmap.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="VisaConnection.cs" />
     <Content Include="Scripts\SimpleConnect5509.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -227,7 +229,6 @@
     <EmbeddedResource Include="PlotControl\TimeBaseControl.resx">
       <DependentUpon>TimeBaseControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -3,8 +3,9 @@ using NADACommonCalibrator.Receiver;
 using NCCCommon;
 using NCCCommon.ModuleProtocol;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
+using NADACommonCalibrator.PlotControl;
 
-public class TableItem
+public class Items
 {
     public int Frequency { get; set; }
     public int Amplitude { get; set; }
@@ -20,11 +21,11 @@ public class TableItem
 
 public class NCCScript
 {
-    public string Description { get { return "5509 연결"; } }
+    public string Description { get { return "5509 Connect Test"; } }
     public DaqGain HWGain { get; set; }
     public DaqSamplingRate SamplingRate { get; set; }
     public DaqInputType InputType { get; set; }
-    public string ModuleIp { get; set; }
+    public string Ip { get; set; }
     public int AsyncLine { get; set; }
     public int AsyncFMax { get; set; }
     public bool ICP { get; set; }
@@ -34,7 +35,7 @@ public class NCCScript
 
     public NCCScript()
     {
-        ModuleIp = "192.168.0.14";
+        Ip = "192.168.0.14";
         AsyncLine = 3200;
         AsyncFMax = 3200;
         ICP = true;
@@ -46,17 +47,16 @@ public class NCCScript
 
     public void Run()
     {
-        Receiver.Module.ModuleIp = this.ModuleIp;
-        Receiver.Module.AsyncLine = this.AsyncLine;
-        Receiver.Module.AsyncFMax = this.AsyncFMax;
-        Receiver.Module.ICP = this.ICP;
-        Receiver.Module.Sensitivity = this.Sensitivity;
-        Receiver.Module.InputType = this.InputType;
-        Receiver.Module.HWGain = this.HWGain;
-        Receiver.Module.SamplingRate = this.SamplingRate;
-
         Receiver.Start();
 
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(20,40);
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(520, 450);
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(220, 340);
     }
 }
 
