@@ -7,8 +7,6 @@ using NADACommonCalibrator.PlotControl;
 
 public class Items
 {
-    public int Frequency { get; set; }
-    public int Amplitude { get; set; }
     public float? Ch1 { get; set; }
     public float? Ch2 { get; set; }
     public float? Ch3 { get; set; }
@@ -37,7 +35,7 @@ public class NCCScript
     {
         Ip = "192.168.0.14";
         AsyncLine = 3200;
-        AsyncFMax = 3200;
+        AsyncFMax = 800;
         ICP = true;
         Sensitivity = 7.87f;
         InputType = DaqInputType.AC;
@@ -48,15 +46,6 @@ public class NCCScript
     public void Run()
     {
         Receiver.Start();
-
-        System.Threading.Thread.Sleep(2000);
-        TabularControl.InsertRow(20,40);
-
-        System.Threading.Thread.Sleep(2000);
-        TabularControl.InsertRow(520, 450);
-
-        System.Threading.Thread.Sleep(2000);
-        TabularControl.InsertRow(220, 340);
     }
 }
 

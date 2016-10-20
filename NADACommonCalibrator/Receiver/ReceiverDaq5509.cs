@@ -15,7 +15,10 @@ namespace NADACommonCalibrator.Receiver
         public DaqModule Module = new DaqModule();
         private DaqClient Daq;
 
-        public event Action<WaveData[]> WavesReceived;
+        public int AsyncFMax { get { return Module.AsyncFMax; } }
+        public int AsyncLine { get { return Module.AsyncLine; } }
+
+        public event Action<IReceiveData[]> DatasReceived;
 
         protected override void OnNewTask(CancellationToken token)
         {
@@ -24,7 +27,7 @@ namespace NADACommonCalibrator.Receiver
             while (!token.IsCancellationRequested)
             {
                 try
-                {                  
+                {
                     ConnectDaq();
 
                     ReadLoop(token);
@@ -47,7 +50,7 @@ namespace NADACommonCalibrator.Receiver
             {
                 try
                 {
-                    var _daq = new DaqClient(Module.Channels.Select(x=>x.ScaleFactors).ToArray()) { PacketCountFor1Sec = Module.PacketCountFor1Sec };
+                    var _daq = new DaqClient(Module.Channels.Select(x => x.ScaleFactors).ToArray()) { PacketCountFor1Sec = Module.PacketCountFor1Sec };
                     _daq.Connect(Module.Ip, 7000);
                     _daq.Stop(true);
                     Daq = _daq;
@@ -111,8 +114,8 @@ namespace NADACommonCalibrator.Receiver
                     waves[i] = wave;
                 }
 
-                if (WavesReceived != null)
-                    WavesReceived(waves);
+                if (DatasReceived != null)
+                    DatasReceived(waves);
 
             NEXT_READ:
                 continue;

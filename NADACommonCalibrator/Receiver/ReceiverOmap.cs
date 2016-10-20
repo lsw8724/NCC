@@ -16,30 +16,39 @@ namespace NADACommonCalibrator.Receiver
     public class ReceiverOmap : SingleTask, IWavesReceiver
     {       
         public OmapModule Module = new OmapModule();
-        private ModuleCommandConnection conn;
+        private ModuleCommandConnection Conn;
         private Queue<WaveData> WavesQueue = new Queue<WaveData>();
+        private Queue<VectorData> VectorsQueue = new Queue<VectorData>();
 
-        public event Action<WaveData[]> WavesReceived;
+        public int AsyncFMax { get { return Module.AsyncFMax; } }
+        public int AsyncLine { get { return Module.AsyncLine; } }
+
+        public event Action<IReceiveData[]> DatasReceived;
 
         void ReceiverOmap_MsgReceived(DspMessage msg)
         {
-            Console.WriteLine(msg.Type.ToString());
             switch (msg.Type)
             {
                 case MsgType.MsgType_Data_VectorData:
-                    var vector = msg.GetDataAsStruct<VectorData>();
-                    vector.GetType();
-                    if ((DataSaveType)vector.SaveType == DataSaveType.TimeSave) return;
+                    var vector = msg.GetDataAsStruct<DSPMsg_VectorData>();
+                    if ((DataSaveType)vector.SaveType != DataSaveType.TimeSave)
+                    {
+                        var vectors = new VectorData[8];
+                        foreach (var vec in VectorsQueue)
+                            vectors[vec.ChannelId - 4] = vec;
+                        DatasReceived(vectors);
+                        VectorsQueue.Clear();
+                    }
                     break;
 
                 case MsgType.MsgType_Data_WaveData:
-                    WavesQueue.Enqueue(OmapWaveData.ParseWave(msg));
+                    WavesQueue.Enqueue(DSPMsg_WaveData.ParseWave(msg));
                     if (WavesQueue.Count >= 8)
                     {
                         var waves = new WaveData[8];
                         foreach(var wave in WavesQueue)
                             waves[wave.ChannelId - 4] = wave;
-                        WavesReceived(waves);
+                        DatasReceived(waves);
                         WavesQueue.Clear();
                     }
                     break;
@@ -51,18 +60,20 @@ namespace NADACommonCalibrator.Receiver
             Module.Init();
             var vectorReceiver = new OmapDataReceiver(Module, SessionType.SessionType_Vector, Module.DataPort);
             var waveReceiver = new OmapDataReceiver(Module, SessionType.SessionType_Wave, Module.DataPort + 1);
-            conn = new ModuleCommandConnection(Module, Module.CommandPort);
+            Conn = new ModuleCommandConnection(Module, Module.CommandPort);
+            waveReceiver.MsgReceived += ReceiverOmap_MsgReceived;
+            vectorReceiver.MsgReceived += ReceiverOmap_MsgReceived;
 
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    if (!conn.Connect())
+                    if (!Conn.Connect())
                     {
                         Thread.Sleep(1000);
                         continue;
                     }
-                    conn.SendConfigs();
+                    Conn.SendConfigs();
 
                     Thread.Sleep(500);
                     vectorReceiver.Start();
@@ -82,7 +93,7 @@ namespace NADACommonCalibrator.Receiver
             while (!token.IsCancellationRequested)
             {
                 Thread.Sleep(1000);
-                conn.Send(MsgType.MsgType_Cmd_RealTime);
+                Conn.Send(MsgType.MsgType_Cmd_RealTime);
             }
         }
     } 

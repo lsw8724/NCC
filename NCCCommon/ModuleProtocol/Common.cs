@@ -8,12 +8,30 @@ using System.Threading.Tasks;
 
 namespace NCCCommon.ModuleProtocol
 {
-    public interface IWavesReceiver : ICancelableTask
+    public enum DataType
     {
-        event Action<WaveData[]> WavesReceived;
+        WaveData,
+        VectorData,
+        MeasureData
     }
 
-    public class WaveData
+    public interface IWavesReceiver : IModuleConfig, ICancelableTask
+    {
+        event Action<IReceiveData[]> DatasReceived;
+    }
+
+    public interface IReceiveData
+    {
+        DataType Type { get;}
+    }
+
+    public interface IModuleConfig
+    {
+        int AsyncFMax{get;}
+        int AsyncLine{get;}
+    }
+
+    public class WaveData : IReceiveData
     {
         public uint Idx;
         public int ChannelId;
@@ -24,6 +42,114 @@ namespace NCCCommon.ModuleProtocol
         public int AsyncDataCount;
         public float[] SyncData;
         public float[] AsyncData;
+
+        public DataType Type { get { return DataType.WaveData; } }
+    }
+
+    public class VectorData : IReceiveData
+    {
+        public uint Idx;
+        public int ChannelId;
+        public int SaveType;
+        public UtcAndMiliseconds DateTime;
+        public float Rpm;
+        public float Gap;            
+        public float Direct;
+        public float OneXAmp;    
+        public float OneXPhase;  
+        public float TwoXAmp;    
+        public float TwoXPhase;  
+        public float NXAmp;      
+        public float NXPhase;    
+        public float Bandpass;   
+        public float CrestFactor;
+
+        public DataType Type { get { return DataType.VectorData; } }
+    }
+
+    public interface IMeasuredData : IReceiveData
+    {
+        int ChannelId { get; }
+        float Scalar { get; }
+        DateTime TimeStamp { get; }
+    }
+
+    public class Measure_P2P : IMeasuredData
+    {
+        private int Ch { get; set; }
+        public float Value { get; set; }
+        public DateTime Time { get; set; }
+
+        public Measure_P2P(WaveData wave)
+        {
+            Ch = wave.ChannelId;
+            Value = wave.AsyncData.Max() - wave.AsyncData.Min();
+            Time = wave.DateTime;
+        }
+
+        public int ChannelId { get { return Ch; } }
+        public float Scalar { get { return Value; } }
+        public DateTime TimeStamp { get { return Time; } }
+        public DataType Type { get { return DataType.MeasureData; } }
+    }
+
+    public class Measure_Peak : IMeasuredData
+    {
+        private int Ch { get; set; }
+        public float Value { get; set; }
+        public DateTime Time { get; set; }
+
+        public Measure_Peak(WaveData wave)
+        {
+            Ch = wave.ChannelId;
+            Value = wave.AsyncData.Max();
+            Time = wave.DateTime;
+        }
+
+        public int ChannelId { get { return Ch; } }
+        public float Scalar { get { return Value; } }
+        public DateTime TimeStamp { get { return Time; } }
+        public DataType Type { get { return DataType.MeasureData; } }
+    }
+
+    public class Measure_RMS : IMeasuredData
+    {
+        private int Ch { get; set; }
+        public float Value { get; set; }
+        public DateTime Time { get; set; }
+
+        public Measure_RMS() { }
+
+        public Measure_RMS(SpectrumData spectrum, int low = 20, int high = 3200)
+        {
+            Ch = spectrum.ChannelId;
+            double sum = 0;
+            for (int i = low; i < high; i++)
+                sum += spectrum.YValues[i] * spectrum.YValues[i];
+            Value = (float)Math.Sqrt(sum / spectrum.XValues.Length);
+            Time = spectrum.TimeStamp;
+        }
+
+        public int ChannelId { get { return Ch; } }
+        public float Scalar { get { return Value; } }
+        public DateTime TimeStamp { get { return Time; } }
+        public DataType Type { get { return DataType.MeasureData; } }
+    }
+
+    public class SpectrumData
+    {
+        public int ChannelId { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public float[] XValues { get; set; }
+        public float[] YValues { get; set; }
+
+        public SpectrumData(float res, WaveData wave)
+        {
+            ChannelId = wave.ChannelId;
+            YValues = Array.ConvertAll(NadaMath.PositiveFFT(wave.AsyncData), x => (float)x);
+            XValues = YValues.Select((x, i) => (float)i / res).ToArray();
+            TimeStamp = wave.DateTime;
+        }
     }
 
     public interface ICancelableTask : IDisposable

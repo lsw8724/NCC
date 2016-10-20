@@ -22,15 +22,18 @@ using NCCCommon;
 using NADACommonCalibrator.Receiver;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Dynamic;
 
 namespace NADACommonCalibrator
 {
     public partial class MainForm : XtraForm
     {
         public IWavesReceiver CurrentReceiver;
-        public static event Action<WaveData[]> DataReceived;
+        public event Action<IReceiveData[]> DatasReceived;
+        public event Action<SpectrumData[]> FFTCalculated;
+        private float SpectrumRes;
+        
         private object Items;
-        private MeasureCalculator MeasCalc = new MeasureCalculator();
 
         private List<XtraUserControl> OpenedPlotControls = new List<XtraUserControl>();
 
@@ -39,6 +42,44 @@ namespace NADACommonCalibrator
             InitializeComponent();
             InitializeThemeItem();
             InitializeScriptItem();
+
+            DatasReceived += (datas) =>
+            {
+                try
+                {
+                    var first = datas.FirstOrDefault();
+                    if (first != null)
+                    {
+                        switch (first.Type)
+                        {
+                            case DataType.WaveData:
+                                if (FFTCalculated == null) break;  
+                                var waves = datas as WaveData[];
+                                FFTCalculated(waves.Select(x => new SpectrumData(SpectrumRes, x)).ToArray());
+                                break;
+                            case DataType.VectorData: break;
+                            case DataType.MeasureData: break;
+                        }
+                      
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.Message);
+                }
+            };
+
+            FFTCalculated += (fft) =>
+            {
+                try
+                {
+                    DatasReceived(fft.Select(x => new Measure_RMS(x)).ToArray());
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex.Message);
+                }
+            };
         }
 
         private void InitializeThemeItem()
@@ -72,7 +113,7 @@ namespace NADACommonCalibrator
                 var link = navAutomationGroup.AddItem();
                 link.Item.LinkClicked += (s, e) =>
                     {
-                        for (int i = snapDockManager.Panels.Count-1; i > 1; i--)
+                        for (int i = snapDockManager.Panels.Count - 1; i > 1; i--)
                             snapDockManager.RemovePanel(snapDockManager.Panels[i]);
 
                         OpenScriptConfig(e.Link.Item.Tag, path);
@@ -87,41 +128,49 @@ namespace NADACommonCalibrator
                     };
                 link.Item.Caption = instance.Description;
                 link.Item.Tag = instance;
-                (instance.Receiver as IWavesReceiver).WavesReceived += (waves) =>
+                (instance.Receiver as IWavesReceiver).DatasReceived += (waves) =>
                 {
-                    if (DataReceived != null)
-                        DataReceived(waves);
+                    if (DatasReceived != null)
+                        DatasReceived(waves);
                 };
             }
         }
 
-        private void OpenScriptConfig(object obj, string path)
+        private void OpenScriptConfig(dynamic obj, string path)
         {
             pgcScriptConfig.Rows.Clear();
             dockPanel_scriptInfo.Show();
             pgcScriptConfig.Invalidate();
             pgcScriptConfig.SelectedObject = null;
             pgcScriptConfig.SelectedObject = obj;
+            CurrentReceiver = (IWavesReceiver)obj.Receiver;
+            var moduleConf = CurrentReceiver as IModuleConfig;
+            SpectrumRes = moduleConf.AsyncLine / (float)moduleConf.AsyncFMax;
         }
 
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TimeBaseControl(8), "TimeBase");
+            AddDockPanel(new TimeBaseControl(8, ref DatasReceived), "TimeBase");
         }
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new SpectrumControl(8), "Spectrum");
+            var fMax = (CurrentReceiver as IModuleConfig).AsyncFMax;
+            AddDockPanel(new SpectrumControl(8, fMax, ref FFTCalculated), "Spectrum");
         }
 
         private void navItemTable_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.RealTime), "RealTime Tabular");
+            AddDockPanel(new TabularControl(Items, TabularMode.RealTime, ref DatasReceived), "RealTime Tabular");
         }
-         
+
         private void navItemWorkSheet_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.WorkSheet), "Work Sheet");
+            AddDockPanel(new TabularControl(Items, TabularMode.WorkSheet, ref DatasReceived), "Work Sheet");
+        }
+        private void navItemCorrection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
+        {
+            AddDockPanel(new TabularControl(Items, TabularMode.Correction, ref DatasReceived), "Correction Tabular");
         }
 
         private void AddDockPanel(XtraUserControl control, string text)
@@ -142,23 +191,28 @@ namespace NADACommonCalibrator
                 CurrentReceiver.Stop();
         }
 
+        private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (CurrentReceiver != null)
+                CurrentReceiver.Stop();
+        }
+
         private void barBtn_runScript_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
             {
                 var script = pgcScriptConfig.SelectedObject as dynamic;
                 if (script == null) return;
-                CurrentReceiver = (IWavesReceiver)script.Receiver;
 
                 var scrProps = (script as object).GetType().GetProperties().ToList();
-                var obj = (script.Receiver.Module as object);
-                foreach(var prop in scrProps)
+                var module = (script.Receiver.Module as object);
+                foreach (var prop in scrProps)
                 {
-                    var validProp = obj.GetType().GetProperty(prop.Name);
+                    var validProp = module.GetType().GetProperty(prop.Name);
                     if (validProp == null) continue;
-                    validProp.SetValue(obj, prop.GetValue(script));
+                    validProp.SetValue(module, prop.GetValue(script));
                 }
-                Task.Run(() =>{ script.Run(); });
+                Task.Run(() => { script.Run(); });
             }
             catch (Exception ex)
             {

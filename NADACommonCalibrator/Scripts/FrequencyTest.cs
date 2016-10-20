@@ -3,6 +3,7 @@ using NADACommonCalibrator.Receiver;
 using NCCCommon;
 using NCCCommon.ModuleProtocol;
 using NCCCommon.ModuleProtocol.Daq5509Protocol;
+using NADACommonCalibrator.PlotControl;
 
 public class Items
 {
@@ -59,6 +60,18 @@ public class NCCScript
         Visa.Send("SOURCE1:Function Sin");
         Visa.Send("SOURCE1:Volt:Offset 4.7");
         Visa.Send("SOURCE1:Volt:Unit Vpp");
+
+
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(20, 40);
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(520, 450);
+
+        System.Threading.Thread.Sleep(2000);
+        TabularControl.InsertRow(220, 340);
+
 
         //var millisec = 2000;
         //Visa.Send("SOURCE1:Freq 60");

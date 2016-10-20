@@ -19,7 +19,7 @@ public class Items
 
 public class NCCScript
 {
-    public string Description { get { return "Omap Connect Test"; } }
+    public string Description { get { return "보정값 계산"; } }
     public int HWGain { get; set; }
     public string Ip { get; set; }
     public int AsyncLine { get; set; }
@@ -27,7 +27,6 @@ public class NCCScript
     public bool ICP { get; set; }
     public float Sensitivity { get; set; }
     public AlarmBufferMode AlarmBufferMode { get; set; }
-
     public ReceiverOmap Receiver = new ReceiverOmap();
 
     public NCCScript()
@@ -42,8 +41,10 @@ public class NCCScript
     }
 
     public void Run()
-    {        
+    {
         Receiver.Start();
+
+        System.Threading.Thread.Sleep(2000);
     }
 }
 

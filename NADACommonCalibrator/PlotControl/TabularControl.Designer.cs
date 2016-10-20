@@ -44,6 +44,7 @@
             this.gcTable.TabIndex = 0;
             this.gcTable.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gvTable});
+            this.gcTable.Click += new System.EventHandler(this.gcTable_Click);
             // 
             // gvTable
             // 

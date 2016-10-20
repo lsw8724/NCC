@@ -19,15 +19,16 @@ namespace NADACommonCalibrator.PlotControl
     public partial class SpectrumControl : DevExpress.XtraEditors.XtraUserControl
     {
         private int FMax;
-        public SpectrumControl(int count)
+        private Action<SpectrumData[]> FFTCalculated;
+        public SpectrumControl(int count,int fMax, ref Action<SpectrumData[]> fftCalc)
         {
             InitializeComponent();
-            MeasureCalculator.AfterFFT += FFTData_Received;
+            fftCalc += FFTData_Received;
             Cursor = new ChartCursor(tChart_Spectrum);
             for (int i = 0; i < count; i++)
                 tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true });
 
-            FMax = 3200;
+            FMax = fMax;
             tChart_Spectrum.MouseWheel += (s, e) =>
                 {                    
                     tChart_Spectrum.Axes.Left.Automatic = false;

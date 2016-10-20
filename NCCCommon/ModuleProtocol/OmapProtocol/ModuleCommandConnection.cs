@@ -38,7 +38,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
         public virtual void SendConfigs()
         {
-            var moduleConf = new ModuleConfig() { AlarmBufferMode = (int)Module.AlarmBufferMode };
+            var moduleConf = new DSPMsg_ModuleConfig() { AlarmBufferMode = (int)Module.AlarmBufferMode };
             SendMsg(ref moduleConf);
 
             SendMsg(ref Module.KeyPhasors[0]);

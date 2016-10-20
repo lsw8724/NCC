@@ -11,17 +11,8 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
     {
         public OmapModule module;
         private TcpClient tcp;
-
         public event Action<DspMessage> MsgReceived;
-
-        public long WaveReceiveCount { get; set; }
-
-        internal SimpleTimeTrigger TimeTrigger { get; set; }
-
-        public bool IsTriggered { get; set; }
-
         public SessionType SessionType { get; private set; }
-
         public int Port { get; private set; }
 
         public OmapDataReceiver(OmapModule module, SessionType sessionType, int port)
@@ -29,7 +20,6 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
             this.module = module;
             this.SessionType = sessionType;
             this.Port = port;
-            this.TimeTrigger = new SimpleTimeTrigger(TimeSpan.FromSeconds(1));
         }
 
         protected override void OnNewTask(CancellationToken token)
@@ -60,7 +50,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         private void ReadLoop(CancellationToken token)
         {
             var stream = tcp.GetStream();
-            stream.SendAsDspMessage(new SessionInit { InitType = (int)SessionType });
+            stream.SendAsDspMessage(new DSPMsg_SessionInit { InitType = (int)SessionType });
             while (!token.IsCancellationRequested)
             {
                 var msg = stream.ReadDspMessage();

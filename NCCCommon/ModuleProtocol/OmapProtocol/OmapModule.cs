@@ -15,8 +15,8 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         public bool ICP { get; set; }
         public AlarmBufferMode AlarmBufferMode { get; set; }
 
-        public Keyphasor[] KeyPhasors = new Keyphasor[2];
-        public DisChannel[] Channels = new DisChannel[8];
+        public DSPMsg_Keyphasor[] KeyPhasors = new DSPMsg_Keyphasor[2];
+        public DSPMsg_DisChannel[] Channels = new DSPMsg_DisChannel[8];
         public int DataPort = 4511;
         public int CommandPort = 4510;
 
@@ -24,7 +24,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         {
             for (int i = 0; i < KeyPhasors.Length; i++)
             {
-                KeyPhasors[i] = new Keyphasor()
+                KeyPhasors[i] = new DSPMsg_Keyphasor()
                 {
                     Id = i+1,
                     ModuleId = 1,
@@ -41,7 +41,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
             }
             for (int i = 0; i < Channels.Length; i++)
             {
-                Channels[i] = new DisChannel()
+                Channels[i] = new DSPMsg_DisChannel()
                 {
                     Id = i + 4,
                     ModuleId = 1,

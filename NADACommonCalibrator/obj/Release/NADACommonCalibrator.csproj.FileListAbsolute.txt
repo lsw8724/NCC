@@ -5,7 +5,6 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\NADACommonCalib
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\CSScriptLibrary.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Mono.CSharp.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\NCCCommon.dll
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.Client.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\MathNet.Iridium.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Sasa.Binary.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\NCCCommon.pdb
@@ -173,8 +172,9 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\ja\DevExpress.X
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\ru\DevExpress.XtraVerticalGrid.v12.2.resources.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FrequencyTest.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnect5509.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.PlotControl.TabularControl.resources
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectOmap.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.exe.licenses
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.xml
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.PlotControl.TabularControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectOmap.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Calc Correction Value.cs

@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            DevExpress.Utils.SuperToolTip superToolTip4 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.ToolTipItem toolTipItem4 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
             this.largeImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.smallImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.barManager = new DevExpress.XtraBars.BarManager(this.components);
@@ -42,6 +42,7 @@
             this.barItem_help = new DevExpress.XtraBars.BarSubItem();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtn_runScript = new DevExpress.XtraBars.BarButtonItem();
+            this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barAndDockingController1 = new DevExpress.XtraBars.BarAndDockingController(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
@@ -64,6 +65,7 @@
             this.snapDocumentManager1 = new DevExpress.Snap.Extensions.SnapDocumentManager(this.components);
             this.tabbedView1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.TabbedView(this.components);
             this.document1 = new DevExpress.XtraBars.Docking2010.Views.Tabbed.Document(this.components);
+            this.navItemCorrection = new DevExpress.XtraNavBar.NavBarItem();
             ((System.ComponentModel.ISupportInitialize)(this.largeImageCollection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.smallImageCollection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager)).BeginInit();
@@ -94,6 +96,7 @@
             // 
             this.smallImageCollection.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("smallImageCollection.ImageStream")));
             this.smallImageCollection.Images.SetKeyName(0, "running.png");
+            this.smallImageCollection.Images.SetKeyName(1, "stop.png");
             // 
             // barManager
             // 
@@ -113,10 +116,11 @@
             this.barItem_view,
             this.barItem_theme,
             this.barItem_help,
-            this.barBtn_runScript});
+            this.barBtn_runScript,
+            this.barButtonItem1});
             this.barManager.LargeImages = this.largeImageCollection;
             this.barManager.MainMenu = this.mainBar;
-            this.barManager.MaxItemId = 24;
+            this.barManager.MaxItemId = 25;
             // 
             // mainBar
             // 
@@ -164,7 +168,8 @@
             this.bar1.DockRow = 1;
             this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.barBtn_runScript)});
+            new DevExpress.XtraBars.LinkPersistInfo(this.barBtn_runScript),
+            new DevExpress.XtraBars.LinkPersistInfo(this.barButtonItem1)});
             this.bar1.OptionsBar.AllowQuickCustomization = false;
             this.bar1.Text = "Custom 2";
             // 
@@ -174,10 +179,18 @@
             this.barBtn_runScript.Id = 23;
             this.barBtn_runScript.ImageIndex = 0;
             this.barBtn_runScript.Name = "barBtn_runScript";
-            toolTipItem4.Text = "Run Script";
-            superToolTip4.Items.Add(toolTipItem4);
-            this.barBtn_runScript.SuperTip = superToolTip4;
+            toolTipItem1.Text = "Run Script";
+            superToolTip1.Items.Add(toolTipItem1);
+            this.barBtn_runScript.SuperTip = superToolTip1;
             this.barBtn_runScript.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtn_runScript_ItemClick);
+            // 
+            // barButtonItem1
+            // 
+            this.barButtonItem1.Caption = "barBtn_stopScript";
+            this.barButtonItem1.Id = 24;
+            this.barButtonItem1.ImageIndex = 1;
+            this.barButtonItem1.Name = "barButtonItem1";
+            this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
             // 
             // barAndDockingController1
             // 
@@ -261,7 +274,8 @@
             this.navItemTimePlot,
             this.navItemSpectrum,
             this.navItemTabular,
-            this.navItemWorkSheet});
+            this.navItemWorkSheet,
+            this.navItemCorrection});
             this.navBarControl.Location = new System.Drawing.Point(0, 0);
             this.navBarControl.Name = "navBarControl";
             this.navBarControl.OptionsNavPane.ExpandedWidth = 176;
@@ -283,7 +297,8 @@
             new DevExpress.XtraNavBar.NavBarItemLink(this.navItemTimePlot),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navItemSpectrum),
             new DevExpress.XtraNavBar.NavBarItemLink(this.navItemTabular),
-            new DevExpress.XtraNavBar.NavBarItemLink(this.navItemWorkSheet)});
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navItemWorkSheet),
+            new DevExpress.XtraNavBar.NavBarItemLink(this.navItemCorrection)});
             this.navPlotGroup.Name = "navPlotGroup";
             // 
             // navItemTimePlot
@@ -356,6 +371,12 @@
             this.document1.Properties.AllowFloat = DevExpress.Utils.DefaultBoolean.True;
             this.document1.Properties.ShowPinButton = DevExpress.Utils.DefaultBoolean.True;
             // 
+            // navItemCorrection
+            // 
+            this.navItemCorrection.Caption = "Correction";
+            this.navItemCorrection.Name = "navItemCorrection";
+            this.navItemCorrection.LinkClicked += new DevExpress.XtraNavBar.NavBarLinkEventHandler(this.navItemCorrection_LinkClicked);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 14F);
@@ -425,5 +446,7 @@
         private DevExpress.XtraBars.BarButtonItem barBtn_runScript;
         private DevExpress.XtraNavBar.NavBarItem navItemTabular;
         private DevExpress.XtraNavBar.NavBarItem navItemWorkSheet;
+        private DevExpress.XtraBars.BarButtonItem barButtonItem1;
+        private DevExpress.XtraNavBar.NavBarItem navItemCorrection;
     }
 }

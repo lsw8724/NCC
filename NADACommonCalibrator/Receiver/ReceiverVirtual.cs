@@ -20,12 +20,13 @@ namespace NADACommonCalibrator.Receiver
 
     public class ReceiverVirtual : IWavesReceiver
     {
-        public event Action<WaveData[]> WavesReceived;
+        public event Action<IReceiveData[]> DatasReceived;
         private System.Timers.Timer Timer;
         private int DataCount { get; set; }
         public float Resolution { get; set; }
         public List<SinWave> SinWaves;
-        
+        public int GetAsyncFMax { get { return 3200; } }
+        public int AsyncLine { get { return 3200; } }
         public ReceiverVirtual()
         {
             SinWaves = new List<SinWave>();
@@ -56,7 +57,7 @@ namespace NADACommonCalibrator.Receiver
                 waves[i].AsyncData = CreateSimulateFloatDataArr(SinWaves);
             }
             if (waves != null)
-                WavesReceived(waves);
+                DatasReceived(waves);
         }
 
         public void Start()
@@ -99,6 +100,11 @@ namespace NADACommonCalibrator.Receiver
 
         public void Dispose()
         {
+        }
+
+        public int AsyncFMax
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }

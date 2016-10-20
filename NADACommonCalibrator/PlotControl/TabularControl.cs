@@ -13,90 +13,159 @@ using DevExpress.XtraGrid.Columns;
 using System.Linq;
 using System.Reflection;
 using System.Dynamic;
-using NADACommonCalibrator.Measure;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections;
+using System.IO;
+using System.Diagnostics;
 
 namespace NADACommonCalibrator.PlotControl
 {
     public enum TabularMode
     {
         RealTime,
-        WorkSheet
+        WorkSheet,
+        Correction,
     }
 
     public partial class TabularControl : DevExpress.XtraEditors.XtraUserControl
     {
         private static Queue<object[]> ParamQueue = new Queue<object[]>();
+        private Queue<float[]> CorrectionQueue = new Queue<float[]>();
         delegate void DataRefreshCallback(List<object> items);
-        List<object> TableItems = new List<object>();
+        public List<object> TableItems = new List<object>();
         private object ColumnObj { get; set; }
         private TabularMode Mode { get; set; }
         private System.Reflection.MemberInfo[] Members { get; set; }
-        public TabularControl(object columns, TabularMode mode)
+        private float[] SWCorrectionValues { get; set; }
+        public static int CorrectionValueCalcRowCount = 5;
+        private int RcvCount = 0;
+
+        public TabularControl(object columns, TabularMode mode, ref Action<IReceiveData[]> datasRcv)
         {
             InitializeComponent();
-            MeasureCalculator.AfterMeasureCalc += MeasureData_Received;
 
             if (columns != null)
             {
+                datasRcv += MeasureData_Received;
+
+                var chMembers = columns.GetType().GetProperties().Where(x => x.Name.Contains("Ch")).ToArray();
+                SWCorrectionValues = new float[chMembers.Length];
+
+                for (int ch = 0; ch < SWCorrectionValues.Length; ch++)
+                    SWCorrectionValues[ch] = 1.0f;
+
                 ColumnObj = columns;
                 this.Mode = mode;
                 switch (Mode)
                 {
                     case TabularMode.RealTime:
                         gvTable.Columns.Add(new GridColumn() { Caption = "Time Stamp", FieldName = "TimeStamp", Visible = true });
-                        Members = columns.GetType().GetProperties().Where(x => x.Name.Contains("Ch")).ToArray();
+                        Members = chMembers;
+                        foreach (var member in Members)
+                            gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
+
                         break;
                     case TabularMode.WorkSheet:
                         Members = columns.GetType().GetProperties().ToArray();
+                        foreach (var member in Members)
+                            gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
+                        break;
+                    case TabularMode.Correction:
+                        Members = Members = chMembers;
+                        gvTable.Columns.Add(new GridColumn() { Caption = "Ch", FieldName = "Ch", Visible = true });
+                        gvTable.Columns.Add(new GridColumn() { Caption = "Direct", FieldName = "Direct", Visible = true });
+                        gvTable.Columns.Add(new GridColumn() { Caption = "Correction Value", FieldName = "CV", Visible = true});
                         break;
                 }
-                foreach (var member in Members)
-                    gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
             }
         }
 
-        private void MeasureData_Received(IMeasure[] data)
+        private IMeasuredData[] ParseDatas(IReceiveData[] rcvDatas)
         {
+            IMeasuredData[] data = null;
+
+            var first = rcvDatas.FirstOrDefault();
+            if (first == null) return null;
+            switch (first.Type)
+            {
+                case  DataType.MeasureData :
+                    data = rcvDatas as IMeasuredData[];
+                    break;
+                case DataType.VectorData:
+                    var vec = rcvDatas as VectorData[];
+                    data = vec.Select(x => new Measure_RMS()
+                    {
+                        Value = x.Direct,
+                        Time = x.DateTime.ToLocalDateTime()
+                    }).ToArray();
+                    break;
+                case DataType.WaveData:
+                    break;
+            }
+            return data;
+        }
+
+        private void MeasureData_Received(IReceiveData[] rcvDatas)
+        {
+            var data = ParseDatas(rcvDatas);
+            if (data == null) return;
+
             if (ColumnObj == null) return;
-            Dictionary<string, object> dic = new Dictionary<string, object>();
             switch (Mode)
             {
                 case TabularMode.RealTime:
-                    dic.Add("TimeStamp", data[0].GetTimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
-                    break;
-                case TabularMode.WorkSheet:
-                    if (ParamQueue.Count > 0)
+                    Dictionary<string, object> dic_rt = new Dictionary<string, object>();
+                    dic_rt.Add("TimeStamp", data[0].TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
+                    for (int ch = 0; ch < data.Length; ch++)
                     {
-                        object[] param = null;
-
-                        lock (((ICollection)ParamQueue).SyncRoot)
-                        {
-                            param = ParamQueue.Dequeue();
-                        }
-                        
-                        for (int i = 0; i < param.Length; i++)
-                        {
-                            var prop = ColumnObj.GetType().GetProperties();
-                            dic.Add(prop[i].Name, param[i]);
-                        }
-                    }
-                    else
-                        return;
-
-                    for (int i = 0; i < data.Length; i++)
-                    {
-                        string memberName = "Ch" + (i + 1);
+                        string memberName = "Ch" + (ch + 1);
                         var property = ColumnObj.GetType().GetProperty(memberName);
                         if (property == null) continue;
-                        dic.Add(memberName, Math.Round(data[i].GetScalar, 3));
+                        dic_rt.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
                     }
-                    TableItems.Add(Expando(dic));
-                    DataRefresh(TableItems);
+                    TableItems.Add(Expando(dic_rt));
+                    break;
+                case TabularMode.WorkSheet:
+                    Dictionary<string, object> dic_ws = new Dictionary<string, object>();
+                    if (ParamQueue.Count == 0) return;
+                    object[] param = null;
+
+                    lock (((ICollection)ParamQueue).SyncRoot)
+                    {
+                        param = ParamQueue.Dequeue();
+                    }
+                        
+                    for (int i = 0; i < param.Length; i++)
+                    {
+                        var prop = ColumnObj.GetType().GetProperties();
+                        dic_ws.Add(prop[i].Name, param[i]);
+                    }
+
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                        string memberName = "Ch" + (ch + 1);
+                        var property = ColumnObj.GetType().GetProperty(memberName);
+                        if (property == null) continue;
+                        dic_ws.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
+                    }
+                    TableItems.Add(Expando(dic_ws));
+                    break;
+                case TabularMode.Correction:
+                    TableItems.Clear();
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                       
+                        Dictionary<string, object> dic_cr = new Dictionary<string, object>();
+                        dic_cr.Add("Ch", data[ch].ChannelId);
+                        dic_cr.Add("Direct", data[ch].Scalar);
+                        dic_cr.Add("CV", Math.Round(SWCorrectionValues[ch],3));
+                        TableItems.Add(Expando(dic_cr));
+                    }
                     break;
             }
+            UpdateCorrectionValue(data);
+            DataRefresh(TableItems);
         }
 
         private void DataRefresh(List<object> items)
@@ -113,7 +182,7 @@ namespace NADACommonCalibrator.PlotControl
             }
         }
 
-        public ExpandoObject Expando(IEnumerable<KeyValuePair<string, object>> dictionary)
+        private ExpandoObject Expando(IEnumerable<KeyValuePair<string, object>> dictionary)
         {
             var expando = new ExpandoObject();
             var expandoDic = (IDictionary<string, object>)expando;
@@ -128,6 +197,15 @@ namespace NADACommonCalibrator.PlotControl
             gvTable.FocusedRowHandle = gvTable.RowCount - 1;
         }
 
+        private void gcTable_Click(object sender, EventArgs e)
+        {
+            string DownloadedFile = Path.Combine("D:\\문서\\test.csv");
+
+            gvTable.ExportToCsv(DownloadedFile);
+
+            Process.Start(DownloadedFile);
+        }
+
         public static void InsertRow(params object[] p)
         {
             lock (((ICollection)ParamQueue).SyncRoot)
@@ -137,6 +215,37 @@ namespace NADACommonCalibrator.PlotControl
 
             while (ParamQueue.Count > 0)
                 Thread.Sleep(100);
+        }
+
+        private void UpdateCorrectionValue(IMeasuredData[] data)
+        {
+            if (RcvCount < CorrectionValueCalcRowCount)
+            {
+                CorrectionQueue.Enqueue(data.Select(x => x.Scalar).ToArray());
+                RcvCount++;
+            }
+            else if (RcvCount == CorrectionValueCalcRowCount)
+            {
+                var sumValues = new float[data.Length];
+                sumValues = sumValues.Select((x, ch) => CorrectionQueue.Sum(m => m[ch])).ToArray();
+                SWCorrectionValues = sumValues.Select(x => x / (float)CorrectionQueue.Count).ToArray();
+            }
+        }
+    }
+
+    public class CorrectionItem
+    {
+        private IMeasuredData Data;
+        private float CorrectionValue;
+
+        public int Ch { get { return Data.ChannelId; } }
+        public float Direct { get { return Data.Scalar; } }
+        public float CV {get{return CorrectionValue;}}
+
+        public CorrectionItem(IMeasuredData data, float cv)
+        {
+            Data = data;
+            CorrectionValue = cv;
         }
     }
 }

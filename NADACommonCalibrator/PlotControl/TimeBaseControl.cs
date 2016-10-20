@@ -17,10 +17,10 @@ namespace NADACommonCalibrator.PlotControl
     public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl
     {
         private float Resolutions = 1;
-        public TimeBaseControl(int count)
+        public TimeBaseControl(int count, ref Action<IReceiveData[]> datasRcv)
         {
             InitializeComponent();
-            MainForm.DataReceived += Waves_Received;
+            datasRcv += Datas_Received;
             Cursor = new ChartCursor(tChart_timeBase);
             for (int i = 0; i < count; i++)
                 tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i>0? false:true });
@@ -42,10 +42,13 @@ namespace NADACommonCalibrator.PlotControl
                 };
         }
 
-        private void Waves_Received(WaveData[] waves)
+        private void Datas_Received(IReceiveData[] datas)
         {
             try
             {
+                var first = datas.FirstOrDefault();
+                if (first == null ||first.Type != DataType.WaveData ) return;
+                var waves = datas as WaveData[];
                 foreach (var serise in tChart_timeBase.Series)
                     (serise as FastLine).Clear();
 

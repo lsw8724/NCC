@@ -1,17 +1,9 @@
 ﻿using Ivi.Visa.Interop;
-using NADACommonCalibrator.Receiver;
-using NCCCommon;
-using NCCCommon.ModuleProtocol;
-using NCCCommon.ModuleProtocol.Daq5509Protocol;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace NADACommonCalibrator
+namespace NCCCommon
 {
     public class VisaConnection
     {

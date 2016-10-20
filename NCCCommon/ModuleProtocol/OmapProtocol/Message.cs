@@ -6,21 +6,21 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 {
     [DspMsg(MsgType.MsgType_Conf_Module)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct ModuleConfig
+    public struct DSPMsg_ModuleConfig
     {
         public int AlarmBufferMode;
     }
 
     [DspMsg(MsgType.MsgType_Session_Init)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct SessionInit
+    public struct DSPMsg_SessionInit
     {
         public int InitType;
     }
 
     [DspMsg(MsgType.MsgType_Conf_Keyphasor)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct Keyphasor
+    public struct DSPMsg_Keyphasor
     {
         public int Id;
         public int ModuleId;
@@ -37,7 +37,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_DisChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct DisChannel			//진동 변위 채널	/*수정*/  
+    public struct DSPMsg_DisChannel			//진동 변위 채널	/*수정*/  
     {
         public int Id;
         public int ModuleId;
@@ -65,7 +65,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_AbsDisChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct AbsDisChannel			//진동 절대 변위 채널	/*수정*/ 
+    public struct DSPMsg_AbsDisChannel			//진동 절대 변위 채널	/*수정*/ 
     {
         public int Id;
         public int ModuleId;
@@ -94,7 +94,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_ThrustChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct ThrustChannel			//진동 트러스트 채널	/*추가*/
+    public struct DSPMsg_ThrustChannel			//진동 트러스트 채널	/*추가*/
     {
         public int Id;
         public int ModuleId;
@@ -116,7 +116,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_EccChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct EccChannel			//Ecc 채널	/*추가*/
+    public struct DSPMsg_EccChannel			//Ecc 채널	/*추가*/
     {
         public int Id;
         public int ModuleId;
@@ -138,7 +138,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_DiffExpChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct DiffExpChannel			//DiffExp 채널	/*추가*/
+    public struct DSPMsg_DiffExpChannel			//DiffExp 채널	/*추가*/
     {
         public int Id;
         public int ModuleId;
@@ -160,7 +160,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_DiffRampChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct DiffRampChannel			//DiffRamp 채널	/*추가*/
+    public struct DSPMsg_DiffRampChannel			//DiffRamp 채널	/*추가*/
     {
         public int Id;
         public int ModuleId;
@@ -183,7 +183,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_CaseExpChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct CaseExpChannel			//DiffRamp 채널	/*추가*/
+    public struct DSPMsg_CaseExpChannel			//DiffRamp 채널	/*추가*/
     {
         public int Id;
         public int ModuleId;
@@ -206,7 +206,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_AccChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct AccChannel			//진동 가속도 속도 채널	/*추가*/
+    public struct DSPMsg_AccChannel			//진동 가속도 속도 채널	/*추가*/
     {
         public int Id;
         public int ModuleId;
@@ -234,7 +234,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_DcChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct DcChannel			//진동 DC 채널		/*수정*/ 
+    public struct DSPMsg_DcChannel			//진동 DC 채널		/*수정*/ 
     {
         public int Id;
         public int ModuleId;
@@ -254,7 +254,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_ReverseRoationChannel)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct ReverseRotationChannel			//Reverse Rotation 채널	/*추가*/
+    public struct DSPMsg_ReverseRotationChannel			//Reverse Rotation 채널	/*추가*/
     {
         public int Id;
         public int ModuleId;
@@ -275,7 +275,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Response)]
     [StructLayout(LayoutKind.Sequential, CharSet = System.Runtime.InteropServices.CharSet.Ansi)]
-    public struct CommandResponse
+    public struct DSPMsg_CommandResponse
     {
         public int ResponseCode;	//응답코드(enum ResponseCodeTyoe 값)
         //public fixed char Args[252];		//응답정보
@@ -286,7 +286,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_SampleMode)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct SampleMode
+    public struct DSPMsg_SampleMode
     {
         public int Id;
         public int KeyphasorId;
@@ -303,7 +303,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_SampleModeAmp)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct SampleModeAmp
+    public struct DSPMsg_SampleModeAmp
     {
         public int Id;
         public int ChannelId;
@@ -318,7 +318,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
     [DspMsg(MsgType.MsgType_Conf_HWAlarmConfig)]
     //채널마다 2개의 HWAlarmConfig가 존재(Alert, Danger)
     [StructLayout(LayoutKind.Sequential)]
-    public struct HWAlarmConfig
+    public struct DSPMsg_HWAlarmConfig
     {
         public int Id;
         public int ChannelId;
@@ -330,7 +330,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
     [DspMsg(MsgType.MsgType_Conf_HWAlarmFunction)]
     //HWAlarmConfig 마다 여러개의 AlarmFunction이 존재
     [StructLayout(LayoutKind.Sequential)]
-    public struct AlarmFunction
+    public struct DSPMsg_AlarmFunction
     {
         public int Id;
         public int AlarmId;
@@ -345,7 +345,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Conf_RecordOutput)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct ModbusRecordOutput			//진동 DC 채널		/*수정*/ 
+    public struct DSPMsg_ModbusRecordOutput			//진동 DC 채널		/*수정*/ 
     {
         public int Id;
         //public int ModuleId;
@@ -358,7 +358,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Data_WaveData)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct OmapWaveData
+    public struct DSPMsg_WaveData
     {
         public uint Idx;
         public int ChannelId;
@@ -370,9 +370,9 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         public float[] SyncData;
         public float[] AsyncData;
 
-        public static OmapWaveData Parse(DspMessage msg)
+        public static DSPMsg_WaveData Parse(DspMessage msg)
         {
-            var data = new OmapWaveData();
+            var data = new DSPMsg_WaveData();
             int i = 0;
             var buff = msg.Data;
 
@@ -400,9 +400,9 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
             return wave;
         }
 
-        public static OmapWaveData ParseHeader(DspMessage msg)
+        public static DSPMsg_WaveData ParseHeader(DspMessage msg)
         {
-            var data = new OmapWaveData();
+            var data = new DSPMsg_WaveData();
             int i = 0;
             var buff = msg.Data;
             ReadHeader(ref data, i, buff);
@@ -410,7 +410,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
             return data;
         }
 
-        internal static int ReadHeader(ref OmapWaveData data, int i, byte[] buff)
+        internal static int ReadHeader(ref DSPMsg_WaveData data, int i, byte[] buff)
         {
             data.Idx = (uint)ByteUtil.ReadInt32(buff, i);
             i += 4;
@@ -439,7 +439,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
             return i;
         }
 
-        internal static int ReadBody(ref OmapWaveData data, int i, byte[] buff)
+        internal static int ReadBody(ref DSPMsg_WaveData data, int i, byte[] buff)
         {
             data.SyncData = new float[data.SyncDataCount];
             int syncDataSize = sizeof(float) * data.SyncDataCount;
@@ -489,7 +489,7 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
 
     [DspMsg(MsgType.MsgType_Data_VectorData)]
     [StructLayout(LayoutKind.Sequential)]
-    public struct VectorData
+    public struct DSPMsg_VectorData
     {
         public uint Idx;
         public int ChannelId;
@@ -506,5 +506,27 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         public float NXPhase;        // null 가능
         public float Bandpass;       // null 가능
         public float CrestFactor;    // null 가능
+
+        public VectorData ParseVector(DSPMsg_VectorData msg)
+        {
+            return new VectorData()
+            {
+                Idx = Idx,
+                ChannelId = ChannelId,
+                SaveType = SaveType,
+                DateTime = DateTime,
+                Rpm = Rpm,
+                Gap = Gap,
+                Direct = Direct,
+                OneXAmp = OneXAmp,
+                OneXPhase = OneXPhase,
+                TwoXAmp = TwoXAmp,
+                TwoXPhase = TwoXPhase,
+                NXAmp = NXAmp,
+                NXPhase = NXPhase,
+                Bandpass = Bandpass,
+                CrestFactor = CrestFactor
+            };
+        }
     }
 }

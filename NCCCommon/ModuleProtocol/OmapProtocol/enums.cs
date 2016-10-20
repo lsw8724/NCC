@@ -36,22 +36,6 @@ namespace NCCCommon.ModuleProtocol.OmapProtocol
         RCT_Error,
     }
 
-    //public enum ChannelType
-    //{
-    //    Keyphasor = 100,
-    //    Displacement = 201,         //변위
-    //    AbsoluteDisplacement = 202, //절대 변위
-    //    Accelate = 205,             //가속도
-    //    DC = 203,
-    //    Thrust = 204,
-    //    Eccentricity = 206,
-    //    DiffExp = 207,
-    //    DiffRamp = 208,
-    //    CaseExp = 209,
-    //    ReverseRotation = 210,
-    //    Robin = 300,
-    //}
-
     public enum AlarmBufferMode
     {
         Slow,
