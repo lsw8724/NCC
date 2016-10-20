@@ -34,8 +34,8 @@ public class NCCScript
     public NCCScript()
     {
         Ip = "192.168.0.14";
-        AsyncLine = 3200;
-        AsyncFMax = 800;
+        AsyncLine = 800;
+        AsyncFMax = 3200;
         ICP = true;
         Sensitivity = 7.87f;
         InputType = DaqInputType.AC;

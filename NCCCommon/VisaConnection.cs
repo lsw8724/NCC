@@ -5,6 +5,16 @@ using System.Threading;
 
 namespace NCCCommon
 {
+    /* [Command Example]
+     * Output:SYNC On
+     * Output1 ON
+     * Output1:Load INF
+     * SOURCE1:Function Sin
+     * SOURCE2:Volt:Offset -7.5
+     * SOURCE2:Freq 100
+     * SOURCE1:Volt:Unit Vpp
+     * SOURCE1:Volt
+     */
     public class VisaConnection
     {
         public FormattedIO488 VisaIo;

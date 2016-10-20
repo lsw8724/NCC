@@ -124,7 +124,9 @@ namespace NCCCommon.ModuleProtocol
         {
             Ch = spectrum.ChannelId;
             double sum = 0;
-            for (int i = low; i < high; i++)
+            int lo = Convert.ToInt32(low*spectrum.Resolution);
+            int hi = Convert.ToInt32(high*spectrum.Resolution);
+            for (int i = lo; i < hi; i++)
                 sum += spectrum.YValues[i] * spectrum.YValues[i];
             Value = (float)Math.Sqrt(sum / spectrum.XValues.Length);
             Time = spectrum.TimeStamp;
@@ -138,6 +140,7 @@ namespace NCCCommon.ModuleProtocol
 
     public class SpectrumData
     {
+        public float Resolution { get; set; }
         public int ChannelId { get; set; }
         public DateTime TimeStamp { get; set; }
         public float[] XValues { get; set; }
@@ -145,6 +148,7 @@ namespace NCCCommon.ModuleProtocol
 
         public SpectrumData(float res, WaveData wave)
         {
+            Resolution = res;
             ChannelId = wave.ChannelId;
             YValues = Array.ConvertAll(NadaMath.PositiveFFT(wave.AsyncData), x => (float)x);
             XValues = YValues.Select((x, i) => (float)i / res).ToArray();

@@ -19,7 +19,6 @@ namespace NADACommonCalibrator.PlotControl
     public partial class SpectrumControl : DevExpress.XtraEditors.XtraUserControl
     {
         private int FMax;
-        private Action<SpectrumData[]> FFTCalculated;
         public SpectrumControl(int count,int fMax, ref Action<SpectrumData[]> fftCalc)
         {
             InitializeComponent();
@@ -50,13 +49,14 @@ namespace NADACommonCalibrator.PlotControl
         {
             try
             {
+                int limit = Convert.ToInt32(fftData.First().Resolution * FMax);
                 foreach (var serise in tChart_Spectrum.Series)
                     (serise as FastLine).Clear();
 
                 for (int ch = 0; ch < fftData.Length; ch++)
                 {
                     tChart_Spectrum.Series[ch].BeginUpdate();
-                    for (int i = 0; i < FMax; i++)
+                    for (int i = 0; i < limit; i++)
                         tChart_Spectrum.Series[ch].Add(fftData[ch].XValues[i], fftData[ch].YValues[i]);
                     tChart_Spectrum.Series[ch].EndUpdate();
                 }

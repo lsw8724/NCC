@@ -31,6 +31,7 @@ namespace NADACommonCalibrator
         public IWavesReceiver CurrentReceiver;
         public event Action<IReceiveData[]> DatasReceived;
         public event Action<SpectrumData[]> FFTCalculated;
+        private int FMax;
         private float SpectrumRes;
         
         private object Items;
@@ -116,7 +117,7 @@ namespace NADACommonCalibrator
                         for (int i = snapDockManager.Panels.Count - 1; i > 1; i--)
                             snapDockManager.RemovePanel(snapDockManager.Panels[i]);
 
-                        OpenScriptConfig(e.Link.Item.Tag, path);
+                        OnOpenScript(e.Link.Item.Tag, path);
                         try
                         {
                             Items = assembly.CreateInstance("Items");
@@ -136,7 +137,7 @@ namespace NADACommonCalibrator
             }
         }
 
-        private void OpenScriptConfig(dynamic obj, string path)
+        private void OnOpenScript(dynamic obj, string path)
         {
             pgcScriptConfig.Rows.Clear();
             dockPanel_scriptInfo.Show();
@@ -144,8 +145,8 @@ namespace NADACommonCalibrator
             pgcScriptConfig.SelectedObject = null;
             pgcScriptConfig.SelectedObject = obj;
             CurrentReceiver = (IWavesReceiver)obj.Receiver;
-            var moduleConf = CurrentReceiver as IModuleConfig;
-            SpectrumRes = moduleConf.AsyncLine / (float)moduleConf.AsyncFMax;
+            FMax = obj.AsyncFMax;
+            SpectrumRes = obj.AsyncLine / (float)obj.AsyncFMax;
         }
 
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
@@ -155,8 +156,7 @@ namespace NADACommonCalibrator
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            var fMax = (CurrentReceiver as IModuleConfig).AsyncFMax;
-            AddDockPanel(new SpectrumControl(8, fMax, ref FFTCalculated), "Spectrum");
+            AddDockPanel(new SpectrumControl(8, FMax, ref FFTCalculated), "Spectrum");
         }
 
         private void navItemTable_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)

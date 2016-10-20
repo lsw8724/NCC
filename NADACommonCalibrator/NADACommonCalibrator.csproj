@@ -157,8 +157,8 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TeeChart.Client">
-      <HintPath>bin\Release\TeeChart.Client.dll</HintPath>
+    <Reference Include="TeeChart">
+      <HintPath>C:\Program Files (x86)\Steema Software\Steema TeeChart for .NET 2014 4.1.2014.12150\net45\x86\TeeChart.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
