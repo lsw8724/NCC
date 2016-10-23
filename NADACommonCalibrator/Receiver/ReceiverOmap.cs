@@ -22,8 +22,14 @@ namespace NADACommonCalibrator.Receiver
 
         public int AsyncFMax { get { return Module.AsyncFMax; } }
         public int AsyncLine { get { return Module.AsyncLine; } }
+        public int ChannelCount { get { return 8; } }
 
         public event Action<IReceiveData[]> DatasReceived;
+
+        public override string ToString()
+        {
+            return "ReceiverOmap";
+        }
 
         void ReceiverOmap_MsgReceived(DspMessage msg)
         {

@@ -198,7 +198,10 @@
     <Compile Include="Receiver\ReceiverDaq5509.cs" />
     <Compile Include="Receiver\ReceiverOmap.cs" />
     <Compile Include="Receiver\ReceiverVirtual.cs" />
-    <Content Include="Scripts\Calc Correction Value.cs">
+    <Content Include="Scripts\SimpleConnectVirtualModule.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\SimpleConnectWifi.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\FrequencyTest.cs">

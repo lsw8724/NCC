@@ -28,7 +28,14 @@ namespace NADACommonCalibrator
 {
     public partial class MainForm : XtraForm
     {
-        public IWavesReceiver CurrentReceiver;
+        private IWavesReceiver CurrentReceiver;
+        private IModuleConfig CurrentModule 
+        {
+            get 
+            { 
+                return CurrentReceiver==null? new ReceiverVirtual() : CurrentReceiver as IModuleConfig; 
+            } 
+        }
         public event Action<IReceiveData[]> DatasReceived;
         public event Action<SpectrumData[]> FFTCalculated;
         private int FMax;
@@ -139,38 +146,45 @@ namespace NADACommonCalibrator
 
         private void OnOpenScript(dynamic obj, string path)
         {
-            pgcScriptConfig.Rows.Clear();
-            dockPanel_scriptInfo.Show();
-            pgcScriptConfig.Invalidate();
-            pgcScriptConfig.SelectedObject = null;
-            pgcScriptConfig.SelectedObject = obj;
-            CurrentReceiver = (IWavesReceiver)obj.Receiver;
-            FMax = obj.AsyncFMax;
-            SpectrumRes = obj.AsyncLine / (float)obj.AsyncFMax;
+            try
+            {
+                pgcScriptConfig.Rows.Clear();
+                dockPanel_scriptInfo.Show();
+                pgcScriptConfig.Invalidate();
+                pgcScriptConfig.SelectedObject = null;
+                pgcScriptConfig.SelectedObject = obj;
+                CurrentReceiver = (IWavesReceiver)obj.Receiver;
+                FMax = obj.AsyncFMax;
+                SpectrumRes = obj.AsyncLine / (float)obj.AsyncFMax;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TimeBaseControl(8, ref DatasReceived), "TimeBase");
+            AddDockPanel(new TimeBaseControl(CurrentModule.ChannelCount, ref DatasReceived), "TimeBase - " + CurrentModule.ToString());
         }
 
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new SpectrumControl(8, FMax, ref FFTCalculated), "Spectrum");
+            AddDockPanel(new SpectrumControl(CurrentModule.ChannelCount, FMax, ref FFTCalculated), "Spectrum - " + CurrentModule.ToString());
         }
 
         private void navItemTable_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.RealTime, ref DatasReceived), "RealTime Tabular");
+            AddDockPanel(new TabularControl(Items, TabularMode.RealTime, ref DatasReceived), "RealTime Tabular - " + CurrentModule.ToString());
         }
 
         private void navItemWorkSheet_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.WorkSheet, ref DatasReceived), "Work Sheet");
+            AddDockPanel(new TabularControl(Items, TabularMode.WorkSheet, ref DatasReceived), "Work Sheet - " + CurrentModule.ToString());
         }
         private void navItemCorrection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.Correction, ref DatasReceived), "Correction Tabular");
+            AddDockPanel(new TabularControl(Items, TabularMode.Correction, ref DatasReceived), "Correction Tabular - " + CurrentModule.ToString());
         }
 
         private void AddDockPanel(XtraUserControl control, string text)

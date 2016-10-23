@@ -7,6 +7,7 @@ namespace NCCCommon.ModuleProtocol.WifiProtocol
 {
     public class WifiModule
     {
-
+        public string Ip { get; set; }
+        public int Port { get; set; }
     }
 }

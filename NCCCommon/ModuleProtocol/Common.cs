@@ -27,8 +27,9 @@ namespace NCCCommon.ModuleProtocol
 
     public interface IModuleConfig
     {
-        int AsyncFMax{get;}
-        int AsyncLine{get;}
+        int ChannelCount { get; }
+        int AsyncFMax{ get; }
+        int AsyncLine{ get; }
     }
 
     public class WaveData : IReceiveData
@@ -72,21 +73,25 @@ namespace NCCCommon.ModuleProtocol
         int ChannelId { get; }
         float Scalar { get; }
         DateTime TimeStamp { get; }
+        float Rpm { get; }
     }
 
     public class Measure_P2P : IMeasuredData
     {
+        private float WaveRpm { get; set; }
         private int Ch { get; set; }
         public float Value { get; set; }
         public DateTime Time { get; set; }
 
         public Measure_P2P(WaveData wave)
         {
+            WaveRpm = wave.Rpm;
             Ch = wave.ChannelId;
             Value = wave.AsyncData.Max() - wave.AsyncData.Min();
             Time = wave.DateTime;
         }
 
+        public float Rpm { get { return WaveRpm; } }
         public int ChannelId { get { return Ch; } }
         public float Scalar { get { return Value; } }
         public DateTime TimeStamp { get { return Time; } }
@@ -95,17 +100,20 @@ namespace NCCCommon.ModuleProtocol
 
     public class Measure_Peak : IMeasuredData
     {
+        private float WaveRpm { get; set; }
         private int Ch { get; set; }
         public float Value { get; set; }
         public DateTime Time { get; set; }
 
         public Measure_Peak(WaveData wave)
         {
+            WaveRpm = wave.Rpm;
             Ch = wave.ChannelId;
             Value = wave.AsyncData.Max();
             Time = wave.DateTime;
         }
 
+        public float Rpm { get { return WaveRpm; } }
         public int ChannelId { get { return Ch; } }
         public float Scalar { get { return Value; } }
         public DateTime TimeStamp { get { return Time; } }
@@ -117,11 +125,13 @@ namespace NCCCommon.ModuleProtocol
         private int Ch { get; set; }
         public float Value { get; set; }
         public DateTime Time { get; set; }
+        private float WaveRpm { get; set; }
 
         public Measure_RMS() { }
 
         public Measure_RMS(SpectrumData spectrum, int low = 20, int high = 3200)
         {
+            WaveRpm = spectrum.WaveRpm;
             Ch = spectrum.ChannelId;
             double sum = 0;
             int lo = Convert.ToInt32(low*spectrum.Resolution);
@@ -132,6 +142,7 @@ namespace NCCCommon.ModuleProtocol
             Time = spectrum.TimeStamp;
         }
 
+        public float Rpm { get { return WaveRpm; } }
         public int ChannelId { get { return Ch; } }
         public float Scalar { get { return Value; } }
         public DateTime TimeStamp { get { return Time; } }
@@ -145,9 +156,11 @@ namespace NCCCommon.ModuleProtocol
         public DateTime TimeStamp { get; set; }
         public float[] XValues { get; set; }
         public float[] YValues { get; set; }
+        public float WaveRpm { get; set; }
 
         public SpectrumData(float res, WaveData wave)
         {
+            WaveRpm = wave.Rpm;
             Resolution = res;
             ChannelId = wave.ChannelId;
             YValues = Array.ConvertAll(NadaMath.PositiveFFT(wave.AsyncData), x => (float)x);

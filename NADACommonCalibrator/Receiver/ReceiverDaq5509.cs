@@ -14,11 +14,17 @@ namespace NADACommonCalibrator.Receiver
     {
         public DaqModule Module = new DaqModule();
         private DaqClient Daq;
-
+  
         public int AsyncFMax { get { return Module.AsyncFMax; } }
         public int AsyncLine { get { return Module.AsyncLine; } }
+        public int ChannelCount { get { return 8; } }
 
         public event Action<IReceiveData[]> DatasReceived;
+
+        public override string ToString()
+        {
+            return "ReceiverDaq5509";
+        }
 
         protected override void OnNewTask(CancellationToken token)
         {
@@ -46,7 +52,7 @@ namespace NADACommonCalibrator.Receiver
         {
             CloseDaq();
 
-            for (int i = 0; i < 5; i++)    //Connect 실패가 잦으니 여러번 시도
+            for (int i = 0; i < 100; i++)    //Connect 실패가 잦으니 여러번 시도
             {
                 try
                 {
@@ -56,7 +62,7 @@ namespace NADACommonCalibrator.Receiver
                     Daq = _daq;
                     break;
                 }
-                catch (Exception) { Thread.Sleep(500); }
+                catch { Thread.Sleep(100); }
             }
             if (Daq == null)
                 throw new Exception("Connect Failed - IP:" + Module.Ip);

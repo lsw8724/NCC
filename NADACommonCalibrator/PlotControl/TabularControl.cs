@@ -37,7 +37,7 @@ namespace NADACommonCalibrator.PlotControl
         private object ColumnObj { get; set; }
         private TabularMode Mode { get; set; }
         private System.Reflection.MemberInfo[] Members { get; set; }
-        private float[] SWCorrectionValues { get; set; }
+        private static float[] SWCorrectionValues { get; set; }
         public static int CorrectionValueCalcRowCount = 5;
         private int RcvCount = 0;
 
@@ -61,6 +61,7 @@ namespace NADACommonCalibrator.PlotControl
                 {
                     case TabularMode.RealTime:
                         gvTable.Columns.Add(new GridColumn() { Caption = "Time Stamp", FieldName = "TimeStamp", Visible = true });
+                        gvTable.Columns.Add(new GridColumn() { Caption = "RPM", FieldName = "Rpm", Visible = true });
                         Members = chMembers;
                         foreach (var member in Members)
                             gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
@@ -117,6 +118,7 @@ namespace NADACommonCalibrator.PlotControl
                 case TabularMode.RealTime:
                     Dictionary<string, object> dic_rt = new Dictionary<string, object>();
                     dic_rt.Add("TimeStamp", data[0].TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
+                    dic_rt.Add("Rpm", data[0].Rpm);
                     for (int ch = 0; ch < data.Length; ch++)
                     {
                         string memberName = "Ch" + (ch + 1);

@@ -16,6 +16,7 @@ namespace NADACommonCalibrator.PlotControl
 {
     public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl
     {
+        public static Color[] colors = new Color[] { Color.Yellow, Color.Pink, Color.YellowGreen, Color.Aqua, Color.Purple };
         private float Resolutions = 1;
         public TimeBaseControl(int count, ref Action<IReceiveData[]> datasRcv)
         {
@@ -23,7 +24,7 @@ namespace NADACommonCalibrator.PlotControl
             datasRcv += Datas_Received;
             Cursor = new ChartCursor(tChart_timeBase);
             for (int i = 0; i < count; i++)
-                tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i>0? false:true });
+                tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true, Color = colors[i] });
 
             tChart_timeBase.MouseWheel += (s, e) =>
                 {

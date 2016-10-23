@@ -12,3 +12,4 @@ D:\Project\NADACommonCalibrator\NCCCommon\obj\Release\NCCCommon.dll
 D:\Project\NADACommonCalibrator\NCCCommon\obj\Release\NCCCommon.pdb
 D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Ivi.Visa.Interop.dll
 D:\Project\NADACommonCalibrator\NCCCommon\bin\Release\Ivi.Visa.Interop.xml
+D:\Project\NADACommonCalibrator\NCCCommon\obj\Release\NCCCommon.csprojResolveAssemblyReference.cache

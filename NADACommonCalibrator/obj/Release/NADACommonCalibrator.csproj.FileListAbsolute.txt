@@ -176,6 +176,7 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleC
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.exe.licenses
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.xml
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Calc Correction Value.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.xml
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectWifi.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectVirtualModule.cs
