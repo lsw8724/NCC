@@ -17,6 +17,7 @@ namespace NADACommonCalibrator.PlotControl
     public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl
     {
         public static Color[] colors = new Color[] { Color.Yellow, Color.Pink, Color.YellowGreen, Color.Aqua, Color.Purple };
+        private int wheelAccum;
         private float Resolutions = 1;
         public TimeBaseControl(int count, ref Action<IReceiveData[]> datasRcv)
         {
@@ -28,18 +29,16 @@ namespace NADACommonCalibrator.PlotControl
 
             tChart_timeBase.MouseWheel += (s, e) =>
                 {
+                    wheelAccum += e.Delta;
+                    if (Math.Abs(wheelAccum) > 200)
                     tChart_timeBase.Axes.Left.Automatic = false;
-                    tChart_timeBase.Axes.Left.AutomaticMaximum = false;
-                    if (e.Delta < 0)
-                    {
-                        tChart_timeBase.Axes.Left.Maximum += 2;
-                        tChart_timeBase.Axes.Left.Minimum -= 2;
-                    }
-                    else
-                    {
-                        tChart_timeBase.Axes.Left.Maximum -= 2;
-                        tChart_timeBase.Axes.Left.Minimum += 2;
-                    }
+                    var left = tChart_timeBase.Axes.Left.Position;
+                    var top = tChart_timeBase.Axes.Left.IStartPos + (wheelAccum > 0 ? 10 : -10);
+                    var right = tChart_timeBase.Axes.Bottom.IEndPos;
+                    var bottom = tChart_timeBase.Axes.Bottom.Position + (wheelAccum > 0 ? -10 : 10);
+
+                    tChart_timeBase.Zoom.ZoomRect(new Rectangle(left, top, right - left, bottom- top));
+                    wheelAccum = 0;
                 };
         }
 

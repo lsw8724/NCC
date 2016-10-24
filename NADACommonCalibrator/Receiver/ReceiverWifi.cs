@@ -19,8 +19,9 @@ namespace NADACommonCalibrator.Receiver
         public TcpClient WfsClient = new TcpClient();
         List<float> RxDatas = new List<float>();
 
-        public int AsyncFMax { get { return 3200; } }
-        public int AsyncLine { get { return 3200; } }
+        public int AsyncFMax { get { return Module.AsyncFMax; } }
+        public int AsyncLine { get { return Module.AsyncLine; } }
+        private int DataCount;
         public int ChannelCount { get { return 1; } }
 
         public event Action<IReceiveData[]> DatasReceived;
@@ -32,17 +33,14 @@ namespace NADACommonCalibrator.Receiver
 
         protected override void OnNewTask(CancellationToken token)
         {
-            //Module.Init();
-            Module.Ip = "192.168.7.1";
-            Module.Port = 25000;
-
             while (!token.IsCancellationRequested)
             {
                 try
                 {
                     Connect(Module.Ip, Module.Port, 5000);
+                    SendConfig();
                     SendCmd("AT+START");
-
+                    
                     ReadLoop(token);
 
                     SendCmd("AT+STOP");
@@ -52,9 +50,27 @@ namespace NADACommonCalibrator.Receiver
                 {
                     Console.WriteLine("Error - " + ex);
                     Thread.Sleep(100);
+                    throw ex;
                 }
             }
         }
+
+        private void SendConfig()
+        {
+            int rateIdx = (int)Math.Log(AsyncFMax/100,2)+1;
+            Console.WriteLine(rateIdx);
+            SendCmd(string.Format("AT+SETRATE={0}", rateIdx));
+            var buf = new byte[10];
+            WfsClient.GetStream().Read(buf, 0, buf.Length);
+            string receiveString = ToString(buf);
+            if (!receiveString.Equals("\r\nOK\r\n"))
+                throw new Exception("SendConfig Error - ReceiveMsg:" + receiveString);
+            else
+                Console.WriteLine("SendConfig - OK ReceiveMsg:" + receiveString);
+            DataCount = (int)(Module.AsyncFMax * 2.56);
+        }
+
+
 
         private void DisConnect()
         {
@@ -116,22 +132,21 @@ namespace NADACommonCalibrator.Receiver
                 try
                 {
                     var packet = ReceivePacket();
-                    RxDatas.AddRange(Array.ConvertAll(packet.Payload, x => (float)x - 22000));
+                    RxDatas.AddRange(Array.ConvertAll(packet.Payload, x => (float)x/25000f));
 
-                    if (RxDatas.Count >= 8192)
+                    if (RxDatas.Count >= DataCount)
                     {
-                        WaveData wave = new WaveData();
-                        wave.DateTime = DateTime.Now;
-                        wave.AsyncDataCount = 8192;
-                        wave.AsyncData = RxDatas.Where((x,i) => i < 8192).ToArray();
-                        RxDatas.Clear();
+                        WaveData wave = new WaveData()
+                        {
+                            DateTime = DateTime.Now,
+                            AsyncDataCount = DataCount,
+                            AsyncData = RxDatas.Where((x,i)=>i<DataCount).ToArray()
+                        };
                         DatasReceived(new WaveData[] { wave });
-                        Thread.Sleep(1000);
+                        RxDatas.RemoveRange(0, DataCount);
                     }
                 }
-                catch
-                {
-                }
+                catch{}
             }
         }
     }

@@ -19,30 +19,29 @@ namespace NADACommonCalibrator.PlotControl
     public partial class SpectrumControl : DevExpress.XtraEditors.XtraUserControl
     {
         private int FMax;
+        private int wheelAccum;
         public SpectrumControl(int count,int fMax, ref Action<SpectrumData[]> fftCalc)
         {
             InitializeComponent();
             fftCalc += FFTData_Received;
             Cursor = new ChartCursor(tChart_Spectrum);
             for (int i = 0; i < count; i++)
-                tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true });
+                tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true, Color = TimeBaseControl.colors[i] });
 
             FMax = fMax;
             tChart_Spectrum.MouseWheel += (s, e) =>
-                {                    
+            {
+                wheelAccum += e.Delta;
+                if (Math.Abs(wheelAccum) > 200)
                     tChart_Spectrum.Axes.Left.Automatic = false;
-                    tChart_Spectrum.Axes.Left.AutomaticMaximum = false;
-                    if (e.Delta < 0)
-                    {
-                        tChart_Spectrum.Axes.Left.Maximum += 5;
-                        tChart_Spectrum.Axes.Left.Minimum -= 5;
-                    }
-                    else
-                    {
-                        tChart_Spectrum.Axes.Left.Maximum -= 5;
-                        tChart_Spectrum.Axes.Left.Minimum += 5;
-                    }
-                };
+                var left = tChart_Spectrum.Axes.Left.Position;
+                var top = tChart_Spectrum.Axes.Left.IStartPos + (wheelAccum > 0 ? 10 : -10);
+                var right = tChart_Spectrum.Axes.Bottom.IEndPos;
+                var bottom = tChart_Spectrum.Axes.Bottom.Position + (wheelAccum > 0 ? -10 : 10);
+
+                tChart_Spectrum.Zoom.ZoomRect(new Rectangle(left, top, right - left, bottom - top));
+                wheelAccum = 0;
+            };
         }
 
         private void FFTData_Received(SpectrumData[] fftData)

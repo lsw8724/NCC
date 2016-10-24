@@ -129,7 +129,7 @@ namespace NCCCommon.ModuleProtocol
 
         public Measure_RMS() { }
 
-        public Measure_RMS(SpectrumData spectrum, int low = 20, int high = 3200)
+        public Measure_RMS(SpectrumData spectrum, int low = 20, int high = 50)
         {
             WaveRpm = spectrum.WaveRpm;
             Ch = spectrum.ChannelId;
