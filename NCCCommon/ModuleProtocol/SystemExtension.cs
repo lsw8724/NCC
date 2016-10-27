@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NCCCommon
+namespace NCCCommon.ModuleProtocol
 {
     public static class SystemExtension
     {
@@ -20,5 +20,4 @@ namespace NCCCommon
             return (int)diff.TotalSeconds;
         }
     }
-
 }

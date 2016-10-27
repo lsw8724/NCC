@@ -1,8 +1,4 @@
-﻿using NADACommonCalibrator;
-using NADACommonCalibrator.Receiver;
-using NCCCommon;
-using NCCCommon.ModuleProtocol;
-using NCCCommon.ModuleProtocol.WifiProtocol;
+﻿using NCCCommon.ModuleProtocol.Wifi;
 using NADACommonCalibrator.PlotControl;
 
 public class Items
@@ -22,8 +18,8 @@ public class NCCScript
     public NCCScript()
     {
         Ip = "192.168.7.1";
-        AsyncLine = 25600;
-        AsyncFMax = 25600;
+        AsyncLine = 3200;
+        AsyncFMax = 3200;
     }
 
     public void Run()

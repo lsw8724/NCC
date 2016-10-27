@@ -10,9 +10,17 @@ namespace NCCCommon.ModuleProtocol
 {
     public enum DataType
     {
-        WaveData,
+        WaveDatas,
         VectorData,
-        MeasureData
+        MeasureData,
+        FFTDatas,
+    }
+
+    public enum MeasureCalcType
+    {
+        RMS,
+        PP,
+        PK,
     }
 
     public interface IWavesReceiver : IModuleConfig, ICancelableTask
@@ -27,6 +35,7 @@ namespace NCCCommon.ModuleProtocol
 
     public interface IModuleConfig
     {
+        object Module { get; }
         int ChannelCount { get; }
         int AsyncFMax{ get; }
         int AsyncLine{ get; }
@@ -44,7 +53,7 @@ namespace NCCCommon.ModuleProtocol
         public float[] SyncData;
         public float[] AsyncData;
 
-        public DataType Type { get { return DataType.WaveData; } }
+        public DataType Type { get { return DataType.WaveDatas; } }
     }
 
     public class VectorData : IReceiveData
@@ -149,7 +158,7 @@ namespace NCCCommon.ModuleProtocol
         public DataType Type { get { return DataType.MeasureData; } }
     }
 
-    public class SpectrumData
+    public class SpectrumData : IReceiveData
     {
         public float Resolution { get; set; }
         public int ChannelId { get; set; }
@@ -167,6 +176,7 @@ namespace NCCCommon.ModuleProtocol
             XValues = YValues.Select((x, i) => (float)i / res).ToArray();
             TimeStamp = wave.DateTime;
         }
+        public DataType Type { get { return DataType.FFTDatas; } }
     }
 
     public interface ICancelableTask : IDisposable

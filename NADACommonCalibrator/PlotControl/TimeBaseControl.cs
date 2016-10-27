@@ -9,14 +9,13 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using NCCCommon.ModuleProtocol;
 using Steema.TeeChart.Styles;
-using NADACommonCalibrator.Receiver;
 using System.Diagnostics;
 
 namespace NADACommonCalibrator.PlotControl
 {
     public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl
     {
-        public static Color[] colors = new Color[] { Color.Yellow, Color.Pink, Color.YellowGreen, Color.Aqua, Color.Purple };
+        public static Color[] colors = new Color[] { Color.Yellow, Color.Pink, Color.YellowGreen, Color.Aqua, Color.Purple,Color.Lime,Color.White, Color.Red };
         private int wheelAccum;
         private float Resolutions = 1;
         public TimeBaseControl(int count, ref Action<IReceiveData[]> datasRcv)
@@ -47,7 +46,7 @@ namespace NADACommonCalibrator.PlotControl
             try
             {
                 var first = datas.FirstOrDefault();
-                if (first == null ||first.Type != DataType.WaveData ) return;
+                if (first == null ||first.Type != DataType.WaveDatas ) return;
                 var waves = datas as WaveData[];
                 foreach (var serise in tChart_timeBase.Series)
                     (serise as FastLine).Clear();

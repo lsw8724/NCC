@@ -43,7 +43,21 @@ namespace NCCCommon
             {
                 VisaIo = new FormattedIO488();
                 VisaRM = new ResourceManager();
-                VisaIo = new FormattedIO488() { IO = (IMessage)VisaRM.Open(usbId, AccessMode.NO_LOCK, 0, "") };
+                VisaIo.IO = (IMessage)VisaRM.Open(usbId, AccessMode.NO_LOCK, 0, "");
+            }
+            catch (Exception e)
+            {
+                Console.Out.WriteLine("An error occurred: " + e.Message);
+            }
+        }
+
+        public void OpenByLANPort(string Ip)
+        {
+            try
+            {
+                VisaIo = new FormattedIO488();
+                VisaRM = new ResourceManager();
+                VisaIo.IO = (IMessage)VisaRM.Open("TCPIP0::"+Ip);
             }
             catch (Exception e)
             {

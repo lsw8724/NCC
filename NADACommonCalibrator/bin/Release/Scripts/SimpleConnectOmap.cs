@@ -1,8 +1,4 @@
-﻿using NADACommonCalibrator;
-using NADACommonCalibrator.Receiver;
-using NCCCommon;
-using NCCCommon.ModuleProtocol;
-using NCCCommon.ModuleProtocol.OmapProtocol;
+﻿using NCCCommon.ModuleProtocol.Omap;
 using NADACommonCalibrator.PlotControl;
 
 public class Items

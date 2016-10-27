@@ -180,3 +180,5 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectWifi.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectVirtualModule.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FunctionTestByLAN.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FunctionTestUSB.cs

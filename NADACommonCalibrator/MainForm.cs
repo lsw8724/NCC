@@ -1,93 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
-using DevExpress.Skins;
-using DevExpress.LookAndFeel;
-using DevExpress.UserSkins;
 using DevExpress.XtraBars.Docking;
 using NADACommonCalibrator.PlotControl;
 using NCCCommon.ModuleProtocol;
-using NCCCommon.ModuleProtocol.Daq5509Protocol;
-using NCCCommon.ModuleProtocol.OmapProtocol;
+using NCCCommon.ModuleProtocol.Virtual;
 using System.IO;
 using CSScriptLibrary;
 using DevExpress.XtraBars;
 using System.Linq;
-using NCCCommon;
-using NADACommonCalibrator.Receiver;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Dynamic;
 
 namespace NADACommonCalibrator
 {
     public partial class MainForm : XtraForm
     {
         private IWavesReceiver CurrentReceiver;
-        private IModuleConfig CurrentModule 
-        {
-            get 
-            { 
-                return CurrentReceiver==null? new ReceiverVirtual() : CurrentReceiver as IModuleConfig; 
-            } 
-        }
-        public event Action<IReceiveData[]> DatasReceived;
-        public event Action<SpectrumData[]> FFTCalculated;
+        private IModuleConfig CurrentModule {get { return CurrentReceiver==null? new ReceiverVirtual() : CurrentReceiver as IModuleConfig;}}
+        private ReceivedDatasControl RcvDatasCtrl = new ReceivedDatasControl();
         private int FMax;
         private float SpectrumRes;
-        
         private object Items;
+        public event Action<IReceiveData[]> DatasReceived;
+        public event Action<SpectrumData[]> FFTCalculated;
 
         private List<XtraUserControl> OpenedPlotControls = new List<XtraUserControl>();
 
+        private void ProcessFFTDatas(SpectrumData[] fftDatas)
+        {
+            try
+            {
+                switch (TabularControl.MeasureType)
+                {
+                    case MeasureCalcType.RMS:
+                        DatasReceived(fftDatas.Select(x => new Measure_RMS(x)).ToArray());
+                        break;
+                    default: break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+        }
+
+        private void ProcessRcvDatas(IReceiveData[] datas)
+        {
+            try
+            {
+                var first = datas.FirstOrDefault();
+                if (first != null)
+                {
+                    switch (first.Type)
+                    {
+                        case DataType.WaveDatas:
+                            if (FFTCalculated == null) break;
+                            var waves = datas as WaveData[];
+                            FFTCalculated(waves.Select(x => new SpectrumData(SpectrumRes, x)).ToArray());
+                            switch (TabularControl.MeasureType)
+                            {
+                                case MeasureCalcType.PK:
+                                    DatasReceived(waves.Select(x => new Measure_Peak(x)).ToArray());
+                                    break;
+                                case MeasureCalcType.PP:
+                                    DatasReceived(waves.Select(x => new Measure_P2P(x)).ToArray());
+                                    break;
+                                default: break;
+                            }
+                            break;
+                        case DataType.VectorData: break;
+                        case DataType.MeasureData: break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+        }
+            
         public MainForm()
         {
             InitializeComponent();
             InitializeThemeItem();
             InitializeScriptItem();
 
-            DatasReceived += (datas) =>
-            {
-                try
-                {
-                    var first = datas.FirstOrDefault();
-                    if (first != null)
-                    {
-                        switch (first.Type)
-                        {
-                            case DataType.WaveData:
-                                if (FFTCalculated == null) break;  
-                                var waves = datas as WaveData[];
-                                FFTCalculated(waves.Select(x => new SpectrumData(SpectrumRes, x)).ToArray());
-                                break;
-                            case DataType.VectorData: break;
-                            case DataType.MeasureData: break;
-                        }
-                      
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.Write(ex.Message);
-                }
-            };
-
-            FFTCalculated += (fft) =>
-            {
-                try
-                {
-                    DatasReceived(fft.Select(x => new Measure_RMS(x)).ToArray());
-                }
-                catch (Exception ex)
-                {
-                    Console.Write(ex.Message);
-                }
-            };
+            DatasReceived += (datas) =>{ProcessRcvDatas(datas);};
+            FFTCalculated += (fft) => {ProcessFFTDatas(fft);};
         }
 
         private void InitializeThemeItem()
@@ -136,6 +137,7 @@ namespace NADACommonCalibrator
                     };
                 link.Item.Caption = instance.Description;
                 link.Item.Tag = instance;
+                if ((instance as object).GetType().GetMember("Receiver").Length == 0) continue;
                 (instance.Receiver as IWavesReceiver).DatasReceived += (waves) =>
                 {
                     if (DatasReceived != null)
@@ -153,9 +155,6 @@ namespace NADACommonCalibrator
                 pgcScriptConfig.Invalidate();
                 pgcScriptConfig.SelectedObject = null;
                 pgcScriptConfig.SelectedObject = obj;
-                CurrentReceiver = (IWavesReceiver)obj.Receiver;
-                FMax = obj.AsyncFMax;
-                SpectrumRes = obj.AsyncLine / (float)obj.AsyncFMax;
             }
             catch(Exception ex)
             {
@@ -215,18 +214,33 @@ namespace NADACommonCalibrator
         {
             try
             {
-                var script = pgcScriptConfig.SelectedObject as dynamic;
+                dynamic dyn = null;
+                var script = pgcScriptConfig.SelectedObject;
                 if (script == null) return;
-
-                var scrProps = (script as object).GetType().GetProperties().ToList();
-                var module = (script.Receiver.Module as object);
-                foreach (var prop in scrProps)
+                if (script.GetType().GetProperty("AsyncFMax") != null && script.GetType().GetProperty("AsyncLine") != null)
                 {
-                    var validProp = module.GetType().GetProperty(prop.Name);
-                    if (validProp == null) continue;
-                    validProp.SetValue(module, prop.GetValue(script));
+                    dyn = script as dynamic;
+                    FMax = dyn.AsyncFMax;
+                    SpectrumRes = dyn.AsyncLine / (float)dyn.AsyncFMax;
                 }
-                Task.Run(() => { script.Run(); });
+
+                var scrProps = script.GetType().GetProperties().ToList();
+                if (script.GetType().GetMember("Receiver").Length != 0)
+                {
+
+                    dyn = script as dynamic;
+                    CurrentReceiver = (IWavesReceiver)dyn.Receiver;
+                    var module = dyn.Receiver.Module;
+
+                    foreach (var prop in scrProps)
+                    {
+                        var validProp = module.GetType().GetProperty(prop.Name);
+                        if (validProp == null) continue;
+                        validProp.SetValue(module, prop.GetValue(script));
+                    }
+                }
+
+                Task.Run(() => { (script as dynamic).Run(); });
             }
             catch (Exception ex)
             {

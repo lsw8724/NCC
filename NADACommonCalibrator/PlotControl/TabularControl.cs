@@ -30,6 +30,7 @@ namespace NADACommonCalibrator.PlotControl
 
     public partial class TabularControl : DevExpress.XtraEditors.XtraUserControl
     {
+        public static MeasureCalcType MeasureType = MeasureCalcType.RMS;
         private static Queue<object[]> ParamQueue = new Queue<object[]>();
         private Queue<float[]> CorrectionQueue = new Queue<float[]>();
         delegate void DataRefreshCallback(List<object> items);
@@ -101,7 +102,7 @@ namespace NADACommonCalibrator.PlotControl
                         Time = x.DateTime.ToLocalDateTime()
                     }).ToArray();
                     break;
-                case DataType.WaveData:
+                case DataType.WaveDatas:
                     break;
             }
             return data;
@@ -160,7 +161,7 @@ namespace NADACommonCalibrator.PlotControl
                        
                         Dictionary<string, object> dic_cr = new Dictionary<string, object>();
                         dic_cr.Add("Ch", data[ch].ChannelId);
-                        dic_cr.Add("Direct", data[ch].Scalar);
+                        dic_cr.Add("Direct",Math.Round(data[ch].Scalar,3));
                         dic_cr.Add("CV", Math.Round(SWCorrectionValues[ch],3));
                         TableItems.Add(Expando(dic_cr));
                     }

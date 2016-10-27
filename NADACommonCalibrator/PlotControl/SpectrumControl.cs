@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using NCCCommon.ModuleProtocol;
 using Steema.TeeChart.Styles;
-using NCCCommon.ModuleProtocol.Daq5509Protocol;
+using NCCCommon.ModuleProtocol.Daq5509;
 using NCCCommon;
 using Steema.TeeChart;
 using System.Diagnostics;
