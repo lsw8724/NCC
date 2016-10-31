@@ -9,7 +9,8 @@ public class Items
 
 public class NCCScript
 {
-    public string Description { get { return "Wfs Connect Test"; } }
+    public PlotType[] PlotGroup = new PlotType[] { PlotType.TimeBase, PlotType.Spectrum, PlotType.RealTime };
+    public string Description { get { return "Wifi Connect Test"; } }
     public string Ip { get; set; }
     public int AsyncFMax { get; set; }
     public int AsyncLine { get; set; }

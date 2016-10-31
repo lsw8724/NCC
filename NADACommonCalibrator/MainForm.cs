@@ -12,6 +12,7 @@ using DevExpress.XtraBars;
 using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace NADACommonCalibrator
 {
@@ -19,7 +20,6 @@ namespace NADACommonCalibrator
     {
         private IWavesReceiver CurrentReceiver;
         private IModuleConfig CurrentModule {get { return CurrentReceiver==null? new ReceiverVirtual() : CurrentReceiver as IModuleConfig;}}
-        private ReceivedDatasControl RcvDatasCtrl = new ReceivedDatasControl();
         private int FMax;
         private float SpectrumRes;
         private object Items;
@@ -122,13 +122,12 @@ namespace NADACommonCalibrator
                 var link = navAutomationGroup.AddItem();
                 link.Item.LinkClicked += (s, e) =>
                     {
-                        for (int i = snapDockManager.Panels.Count - 1; i > 1; i--)
-                            snapDockManager.RemovePanel(snapDockManager.Panels[i]);
-
-                        OnOpenScript(e.Link.Item.Tag, path);
                         try
                         {
+                            for (int i = snapDockManager.Panels.Count - 1; i > 1; i--)
+                                snapDockManager.RemovePanel(snapDockManager.Panels[i]);
                             Items = assembly.CreateInstance("Items");
+                            OnOpenScript(e.Link.Item.Tag, path);
                         }
                         catch (Exception ex)
                         {
@@ -137,13 +136,24 @@ namespace NADACommonCalibrator
                     };
                 link.Item.Caption = instance.Description;
                 link.Item.Tag = instance;
-                if ((instance as object).GetType().GetMember("Receiver").Length == 0) continue;
+                if (!CheckExistMember(instance,"Receiver"))
+                    continue;
                 (instance.Receiver as IWavesReceiver).DatasReceived += (waves) =>
                 {
                     if (DatasReceived != null)
                         DatasReceived(waves);
                 };
             }
+        }
+
+        private bool CheckExistMember(object obj, string memberName)
+        {
+            return obj.GetType().GetMember(memberName).Length != 0;
+        }
+
+        private bool CheckExistProperty(object obj, string propertyName)
+        {
+            return obj.GetType().GetProperty(propertyName) != null;
         }
 
         private void OnOpenScript(dynamic obj, string path)
@@ -155,6 +165,14 @@ namespace NADACommonCalibrator
                 pgcScriptConfig.Invalidate();
                 pgcScriptConfig.SelectedObject = null;
                 pgcScriptConfig.SelectedObject = obj;
+                if (CheckExistMember(obj, "Receiver"))
+                    CurrentReceiver = (IWavesReceiver)obj.Receiver;
+                else
+                    CurrentReceiver = null;
+
+                if (CheckExistMember(obj, "PlotGroup"))
+                    foreach (var plot in obj.PlotGroup)
+                        OpenPlot(plot);
             }
             catch(Exception ex)
             {
@@ -162,28 +180,47 @@ namespace NADACommonCalibrator
             }
         }
 
+        public void OpenPlot(PlotType type)
+        {
+            switch (type)
+            {
+                case PlotType.TimeBase :
+                    AddDockPanel(new TimeBaseControl(CurrentModule.ChannelCount, ref DatasReceived), "TimeBase - " + CurrentModule.ToString());
+                    break;
+                case PlotType.Spectrum:
+                    AddDockPanel(new SpectrumControl(CurrentModule.ChannelCount, FMax, ref FFTCalculated), "Spectrum - " + CurrentModule.ToString());
+                    break;
+                case PlotType.WorkSheet:
+                    AddDockPanel(new TabularControl(Items, PlotType.WorkSheet, ref DatasReceived), "Work Sheet - " + CurrentModule.ToString());
+                    break;
+                case PlotType.RealTime:
+                    AddDockPanel(new TabularControl(Items, PlotType.RealTime, ref DatasReceived), "RealTime Tabular - " + CurrentModule.ToString());
+                    break;
+                case PlotType.Correction:
+                    AddDockPanel(new TabularControl(Items, PlotType.Correction, ref DatasReceived), "Correction Tabular - " + CurrentModule.ToString());
+                    break;
+            }
+        }
+
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TimeBaseControl(CurrentModule.ChannelCount, ref DatasReceived), "TimeBase - " + CurrentModule.ToString());
+            OpenPlot(PlotType.TimeBase);
         }
-
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new SpectrumControl(CurrentModule.ChannelCount, FMax, ref FFTCalculated), "Spectrum - " + CurrentModule.ToString());
+            OpenPlot(PlotType.Spectrum);
         }
-
         private void navItemTable_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.RealTime, ref DatasReceived), "RealTime Tabular - " + CurrentModule.ToString());
+            OpenPlot(PlotType.RealTime);
         }
-
         private void navItemWorkSheet_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.WorkSheet, ref DatasReceived), "Work Sheet - " + CurrentModule.ToString());
+            OpenPlot(PlotType.WorkSheet);
         }
         private void navItemCorrection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            AddDockPanel(new TabularControl(Items, TabularMode.Correction, ref DatasReceived), "Correction Tabular - " + CurrentModule.ToString());
+            OpenPlot(PlotType.Correction);
         }
 
         private void AddDockPanel(XtraUserControl control, string text)
@@ -217,7 +254,7 @@ namespace NADACommonCalibrator
                 dynamic dyn = null;
                 var script = pgcScriptConfig.SelectedObject;
                 if (script == null) return;
-                if (script.GetType().GetProperty("AsyncFMax") != null && script.GetType().GetProperty("AsyncLine") != null)
+                if (CheckExistProperty(script,"AsyncFMax") && CheckExistProperty(script,"AsyncLine"))
                 {
                     dyn = script as dynamic;
                     FMax = dyn.AsyncFMax;
@@ -225,11 +262,9 @@ namespace NADACommonCalibrator
                 }
 
                 var scrProps = script.GetType().GetProperties().ToList();
-                if (script.GetType().GetMember("Receiver").Length != 0)
+                if(CheckExistMember(script,"Receiver"))
                 {
-
                     dyn = script as dynamic;
-                    CurrentReceiver = (IWavesReceiver)dyn.Receiver;
                     var module = dyn.Receiver.Module;
 
                     foreach (var prop in scrProps)

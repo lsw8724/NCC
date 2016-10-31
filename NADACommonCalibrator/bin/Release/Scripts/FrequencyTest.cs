@@ -14,13 +14,12 @@ public class Items
     public float? Ch6 { get; set; }
     public float? Ch7 { get; set; }
     public float? Ch8 { get; set; }
-    public float? Rpm { get; set; }
 }
 
 public class NCCScript
 {
     public string Description { get { return "주파수 검사"; } }
-    public string USBId { get; set; }
+    public string ConnectionStr { get; set; }
     public DaqGain HWGain { get; set; }
     public DaqSamplingRate SamplingRate { get; set; }
     public DaqInputType InputType { get; set; }
@@ -35,7 +34,7 @@ public class NCCScript
 
     public NCCScript()
     {
-        USBId = "USB0::2391::10759::MY52600381::0::INSTR";
+        ConnectionStr = "USB0::2391::10759::MY52600381::0::INSTR";
         Ip = "192.168.0.14";
         AsyncLine = 3200;
         AsyncFMax = 3200;
@@ -48,47 +47,38 @@ public class NCCScript
 
     public void Run()
     {
-        //Receiver.Start();
+        Receiver.Start();
+        System.Threading.Thread.Sleep(5000);
 
-        Visa.OpenByUSBPort(USBId);
+        Visa.Open(ConnectionStr);
 
         Visa.Send("Output:SYNC On");
         Visa.Send("Output1 ON");
         Visa.Send("Output1:Load INF");
         Visa.Send("SOURCE1:Function Sin");
-        Visa.Send("SOURCE1:Volt:Offset 4.7");
         Visa.Send("SOURCE1:Volt:Unit Vpp");
 
+        Visa.Send("SOURCE1:Volt:Offset 4.7");
+        Visa.Send("SOURCE1:Volt 0.787");
 
+        SetFreq(20);
+        SetFreq(40);
+        SetFreq(80);
+        SetFreq(100);
+        SetFreq(160);
+        SetFreq(320);
+        SetFreq(640);
+        SetFreq(1280);
+        SetFreq(2560);
 
-        System.Threading.Thread.Sleep(2000);
-        TabularControl.InsertRow(20, 40);
+        Visa.Close();
 
-        System.Threading.Thread.Sleep(2000);
-        TabularControl.InsertRow(520, 450);
+        Receiver.Stop();
+    }
 
-        System.Threading.Thread.Sleep(2000);
-        TabularControl.InsertRow(220, 340);
-
-
-        //var millisec = 2000;
-        //Visa.Send("SOURCE1:Freq 60");
-        //Visa.Send("SOURCE1:Volt 100", millisec);
-
-        //Visa.Send("SOURCE1:Freq 80");
-        //Visa.Send("SOURCE1:Volt 100", millisec);
-
-        //Visa.Send("SOURCE1:Freq 100");
-        //Visa.Send("SOURCE1:Volt 100", millisec);
-
-        //Visa.Send("SOURCE1:Freq 120");
-        //Visa.Send("SOURCE1:Volt 100", millisec);
-
-        //Visa.Send("SOURCE1:Freq 140");
-        //Visa.Send("SOURCE1:Volt 100", millisec);
-
-        //Visa.Close();
-
-        //Receiver.Stop();
+    private void SetFreq(int freq)
+    {
+        Visa.Send("SOURCE1:Freq " + freq, 5000);
+        TabularControl.InsertRow(freq, 787);
     }
 }

@@ -18,16 +18,10 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.IO;
 using System.Diagnostics;
+using NADACommonCalibrator;
 
 namespace NADACommonCalibrator.PlotControl
 {
-    public enum TabularMode
-    {
-        RealTime,
-        WorkSheet,
-        Correction,
-    }
-
     public partial class TabularControl : DevExpress.XtraEditors.XtraUserControl
     {
         public static MeasureCalcType MeasureType = MeasureCalcType.RMS;
@@ -35,14 +29,15 @@ namespace NADACommonCalibrator.PlotControl
         private Queue<float[]> CorrectionQueue = new Queue<float[]>();
         delegate void DataRefreshCallback(List<object> items);
         public List<object> TableItems = new List<object>();
+        public static List<object> XlsItems = new List<object>();
         private object ColumnObj { get; set; }
-        private TabularMode Mode { get; set; }
+        private PlotType TableType { get; set; }
         private System.Reflection.MemberInfo[] Members { get; set; }
         private static float[] SWCorrectionValues { get; set; }
         public static int CorrectionValueCalcRowCount = 5;
         private int RcvCount = 0;
 
-        public TabularControl(object columns, TabularMode mode, ref Action<IReceiveData[]> datasRcv)
+        public TabularControl(object columns, PlotType type, ref Action<IReceiveData[]> datasRcv)
         {
             InitializeComponent();
 
@@ -57,28 +52,30 @@ namespace NADACommonCalibrator.PlotControl
                     SWCorrectionValues[ch] = 1.0f;
 
                 ColumnObj = columns;
-                this.Mode = mode;
-                switch (Mode)
+                this.TableType = type;
+                switch (type)
                 {
-                    case TabularMode.RealTime:
+                    case PlotType.RealTime:
                         gvTable.Columns.Add(new GridColumn() { Caption = "Time Stamp", FieldName = "TimeStamp", Visible = true });
-                        gvTable.Columns.Add(new GridColumn() { Caption = "RPM", FieldName = "Rpm", Visible = true });
+                        gvTable.Columns.Add(new GridColumn() { Caption = "Kp1", FieldName = "Kp1", Visible = true });
+                        gvTable.Columns.Add(new GridColumn() { Caption = "Kp2", FieldName = "Kp2", Visible = true });
                         Members = chMembers;
                         foreach (var member in Members)
                             gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
 
                         break;
-                    case TabularMode.WorkSheet:
+                    case PlotType.WorkSheet:
                         Members = columns.GetType().GetProperties().ToArray();
                         foreach (var member in Members)
                             gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
                         break;
-                    case TabularMode.Correction:
+                    case PlotType.Correction:
                         Members = Members = chMembers;
                         gvTable.Columns.Add(new GridColumn() { Caption = "Ch", FieldName = "Ch", Visible = true });
                         gvTable.Columns.Add(new GridColumn() { Caption = "Direct", FieldName = "Direct", Visible = true });
                         gvTable.Columns.Add(new GridColumn() { Caption = "Correction Value", FieldName = "CV", Visible = true});
                         break;
+                    default: break;
                 }
             }
         }
@@ -114,12 +111,13 @@ namespace NADACommonCalibrator.PlotControl
             if (data == null) return;
 
             if (ColumnObj == null) return;
-            switch (Mode)
+            switch (TableType)
             {
-                case TabularMode.RealTime:
+                case PlotType.RealTime:
                     Dictionary<string, object> dic_rt = new Dictionary<string, object>();
                     dic_rt.Add("TimeStamp", data[0].TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
-                    dic_rt.Add("Rpm", data[0].Rpm);
+                    dic_rt.Add("Kp1", data[0].Rpm);
+                    dic_rt.Add("Kp2", data[4].Rpm);
                     for (int ch = 0; ch < data.Length; ch++)
                     {
                         string memberName = "Ch" + (ch + 1);
@@ -129,7 +127,7 @@ namespace NADACommonCalibrator.PlotControl
                     }
                     TableItems.Add(Expando(dic_rt));
                     break;
-                case TabularMode.WorkSheet:
+                case PlotType.WorkSheet:
                     Dictionary<string, object> dic_ws = new Dictionary<string, object>();
                     if (ParamQueue.Count == 0) return;
                     object[] param = null;
@@ -152,13 +150,23 @@ namespace NADACommonCalibrator.PlotControl
                         if (property == null) continue;
                         dic_ws.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
                     }
-                    TableItems.Add(Expando(dic_ws));
+
+                    for (int kpId = 0; kpId < 2; kpId++)
+                    {
+                        string memberName = "Kp" + (kpId + 1);
+                        var property = ColumnObj.GetType().GetProperty(memberName);
+                        if (property == null) continue;
+                        dic_ws.Add(memberName, data[kpId*4].Rpm);
+                    }
+                   
+                    var obj = Expando(dic_ws);
+                    TableItems.Add(obj);
+                    XlsItems.Add(obj);
                     break;
-                case TabularMode.Correction:
+                case PlotType.Correction:
                     TableItems.Clear();
                     for (int ch = 0; ch < data.Length; ch++)
                     {
-                       
                         Dictionary<string, object> dic_cr = new Dictionary<string, object>();
                         dic_cr.Add("Ch", data[ch].ChannelId);
                         dic_cr.Add("Direct",Math.Round(data[ch].Scalar,3));
@@ -202,11 +210,9 @@ namespace NADACommonCalibrator.PlotControl
 
         private void gcTable_Click(object sender, EventArgs e)
         {
-            string DownloadedFile = Path.Combine("D:\\문서\\test.csv");
-
-            gvTable.ExportToCsv(DownloadedFile);
-
-            Process.Start(DownloadedFile);
+            var mouseEA = e as MouseEventArgs;
+            if (mouseEA.Button == MouseButtons.Left) return;
+            popupMenu1.ShowPopup(PointToScreen(new Point(mouseEA.X,mouseEA.Y)));
         }
 
         public static void InsertRow(params object[] p)
@@ -233,6 +239,43 @@ namespace NADACommonCalibrator.PlotControl
                 sumValues = sumValues.Select((x, ch) => CorrectionQueue.Sum(m => m[ch])).ToArray();
                 SWCorrectionValues = sumValues.Select(x => x / (float)CorrectionQueue.Count).ToArray();
             }
+        }
+
+        private void barBtn_saveCSV_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.DefaultExt = ".csv";
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            string destFileName = Path.Combine(sfd.FileName);
+            gvTable.ExportToCsv(destFileName);
+            if (File.Exists(destFileName))
+                Process.Start(destFileName);
+        }
+
+        private void barBtn_saveXLS_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.DefaultExt = ".xlsx";
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+            string destFileName = Path.Combine(sfd.FileName);
+            SaveXLS("DAQ & Omap Template.xlsx", destFileName);
+            if (File.Exists(destFileName))
+                Process.Start(destFileName);
+        }
+
+        private void barBtn_copy_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+        }
+
+        public static void SaveXLS(string templateFileName, string saveFileName)
+        {
+            var xlsManager = new ExcelIOManager();
+
+            var sheetItems = new SheetItems(XlsItems);
+            xlsManager.CreateExcel(templateFileName, saveFileName, sheetItems);
+            if (File.Exists(saveFileName))
+                Process.Start(saveFileName);
         }
     }
 

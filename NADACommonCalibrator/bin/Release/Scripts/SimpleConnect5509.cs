@@ -16,6 +16,7 @@ public class Items
 
 public class NCCScript
 {
+    public PlotType[] PlotGroup = new PlotType[] { PlotType.TimeBase, PlotType.Spectrum, PlotType.RealTime };
     public string Description { get { return "5509 Connect Test"; } }
     public DaqGain HWGain { get; set; }
     public DaqSamplingRate SamplingRate { get; set; }

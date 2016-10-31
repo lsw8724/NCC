@@ -13,6 +13,7 @@ using NCCCommon.ModuleProtocol.Daq5509;
 using NCCCommon;
 using Steema.TeeChart;
 using System.Diagnostics;
+using NADACommonCalibrator;
 
 namespace NADACommonCalibrator.PlotControl
 {
@@ -26,7 +27,7 @@ namespace NADACommonCalibrator.PlotControl
             fftCalc += FFTData_Received;
             Cursor = new ChartCursor(tChart_Spectrum);
             for (int i = 0; i < count; i++)
-                tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true, Color = TimeBaseControl.colors[i] });
+                tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true, Color = PlotControl.colors[i] });
 
             FMax = fMax;
             tChart_Spectrum.MouseWheel += (s, e) =>

@@ -16,6 +16,7 @@ public class Items
 
 public class NCCScript
 {
+    public PlotType[] PlotGroup = new PlotType[] { PlotType.TimeBase, PlotType.Spectrum, PlotType.RealTime };
     public string Description { get { return "Omap Connect Test"; } }
     public int HWGain { get; set; }
     public string Ip { get; set; }

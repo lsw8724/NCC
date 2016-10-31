@@ -37,27 +37,13 @@ namespace NCCCommon
             Thread.Sleep(miliseconds);
         }
 
-        public void OpenByUSBPort(string usbId)
+        public void Open(string connectionStr)
         {
             try
             {
                 VisaIo = new FormattedIO488();
                 VisaRM = new ResourceManager();
-                VisaIo.IO = (IMessage)VisaRM.Open(usbId, AccessMode.NO_LOCK, 0, "");
-            }
-            catch (Exception e)
-            {
-                Console.Out.WriteLine("An error occurred: " + e.Message);
-            }
-        }
-
-        public void OpenByLANPort(string Ip)
-        {
-            try
-            {
-                VisaIo = new FormattedIO488();
-                VisaRM = new ResourceManager();
-                VisaIo.IO = (IMessage)VisaRM.Open("TCPIP0::"+Ip);
+                VisaIo.IO = (IMessage)VisaRM.Open(connectionStr, AccessMode.NO_LOCK, 0, "");
             }
             catch (Exception e)
             {

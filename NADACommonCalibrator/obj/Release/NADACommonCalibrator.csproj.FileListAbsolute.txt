@@ -11,7 +11,6 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\NCCCommon.pdb
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\CSScriptLibrary.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Sasa.Binary.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.csprojResolveAssemblyReference.cache
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.MainForm.resources
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.PlotControl.SpectrumControl.resources
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.PlotControl.TimeBaseControl.resources
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.Properties.Resources.resources
@@ -180,5 +179,11 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectWifi.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectVirtualModule.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FunctionTestByLAN.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FunctionTestUSB.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\TotalTest.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\RPMTest.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\AmplitudeTest.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FunctionTestLAN.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\XlsSaveTest.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\ReportTemplate\DAQ & Omap Template.xlsx
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.MainForm.resources
