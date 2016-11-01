@@ -20,6 +20,7 @@ public class Items
 
 public class NCCScript
 {
+    public PlotType[] PlotGroup = new PlotType[] { PlotType.WorkSheet, PlotType.Correction };
     public string Description { get { return "종합 검사"; } }
     public string ConnectionStr { get; set; }
     public DaqGain HWGain { get; set; }

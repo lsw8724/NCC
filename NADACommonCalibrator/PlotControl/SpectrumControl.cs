@@ -17,14 +17,13 @@ using NADACommonCalibrator;
 
 namespace NADACommonCalibrator.PlotControl
 {
-    public partial class SpectrumControl : DevExpress.XtraEditors.XtraUserControl
+    public partial class SpectrumControl : DevExpress.XtraEditors.XtraUserControl,IPlotControl
     {
         private int FMax;
         private int wheelAccum;
-        public SpectrumControl(int count,int fMax, ref Action<SpectrumData[]> fftCalc)
+        public SpectrumControl(int count,int fMax)
         {
             InitializeComponent();
-            fftCalc += FFTData_Received;
             Cursor = new ChartCursor(tChart_Spectrum);
             for (int i = 0; i < count; i++)
                 tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true, Color = PlotControl.colors[i] });
@@ -45,8 +44,22 @@ namespace NADACommonCalibrator.PlotControl
             };
         }
 
-        private void FFTData_Received(SpectrumData[] fftData)
+        private void tChart_Spectrum_Click(object sender, EventArgs e)
         {
+            List<KeyValuePair<int, bool>> activePair = new List<KeyValuePair<int, bool>>();
+            for (int i = 0; i < tChart_Spectrum.Series.Count; i++)
+                activePair.Add(new KeyValuePair<int, bool>(i, tChart_Spectrum.Series[i].Active));
+            if (activePair.Where(x => x.Value).Count() == 1)
+                Cursor.SetRefSerise(tChart_Spectrum.Series[activePair.Where(x => x.Value).First().Key]);
+            else
+                Cursor.SetRefSerise();
+        }
+
+        public void ProcessData(IReceiveData[] rcvData)
+        {
+            var first = rcvData.FirstOrDefault();
+            if (first == null || first.Type != DataType.FFTDatas) return;
+            var fftData = rcvData as SpectrumData[];
             try
             {
                 int limit = Convert.ToInt32(fftData.First().Resolution * FMax);
@@ -65,17 +78,6 @@ namespace NADACommonCalibrator.PlotControl
             {
                 Debug.WriteLine(ex.Message);
             }
-        }
-
-        private void tChart_Spectrum_Click(object sender, EventArgs e)
-        {
-            List<KeyValuePair<int, bool>> activePair = new List<KeyValuePair<int, bool>>();
-            for (int i = 0; i < tChart_Spectrum.Series.Count; i++)
-                activePair.Add(new KeyValuePair<int, bool>(i, tChart_Spectrum.Series[i].Active));
-            if (activePair.Where(x => x.Value).Count() == 1)
-                Cursor.SetRefSerise(tChart_Spectrum.Series[activePair.Where(x => x.Value).First().Key]);
-            else
-                Cursor.SetRefSerise();
         }
     }
 

@@ -22,29 +22,28 @@ using NADACommonCalibrator;
 
 namespace NADACommonCalibrator.PlotControl
 {
-    public partial class TabularControl : DevExpress.XtraEditors.XtraUserControl
+    public partial class TabularControl : DevExpress.XtraEditors.XtraUserControl,IPlotControl
     {
         public static MeasureCalcType MeasureType = MeasureCalcType.RMS;
         private static Queue<object[]> ParamQueue = new Queue<object[]>();
-        private Queue<float[]> CorrectionQueue = new Queue<float[]>();
-        delegate void DataRefreshCallback(List<object> items);
-        public List<object> TableItems = new List<object>();
         public static List<object> XlsItems = new List<object>();
+        private static float[] SWCorrectionValues { get; set; }
+        public static int CorrectionValueCalcRowCount = 5;
+
+        private Queue<float[]> CorrectionQueue = new Queue<float[]>();
+        public List<object> TableItems = new List<object>();
         private object ColumnObj { get; set; }
         private PlotType TableType { get; set; }
         private System.Reflection.MemberInfo[] Members { get; set; }
-        private static float[] SWCorrectionValues { get; set; }
-        public static int CorrectionValueCalcRowCount = 5;
         private int RcvCount = 0;
+        delegate void DataRefreshCallback(List<object> items);
 
-        public TabularControl(object columns, PlotType type, ref Action<IReceiveData[]> datasRcv)
+        public TabularControl(object columns, PlotType type)
         {
             InitializeComponent();
 
             if (columns != null)
             {
-                datasRcv += MeasureData_Received;
-
                 var chMembers = columns.GetType().GetProperties().Where(x => x.Name.Contains("Ch")).ToArray();
                 SWCorrectionValues = new float[chMembers.Length];
 
@@ -103,80 +102,6 @@ namespace NADACommonCalibrator.PlotControl
                     break;
             }
             return data;
-        }
-
-        private void MeasureData_Received(IReceiveData[] rcvDatas)
-        {
-            var data = ParseDatas(rcvDatas);
-            if (data == null) return;
-
-            if (ColumnObj == null) return;
-            switch (TableType)
-            {
-                case PlotType.RealTime:
-                    Dictionary<string, object> dic_rt = new Dictionary<string, object>();
-                    dic_rt.Add("TimeStamp", data[0].TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
-                    dic_rt.Add("Kp1", data[0].Rpm);
-                    dic_rt.Add("Kp2", data[4].Rpm);
-                    for (int ch = 0; ch < data.Length; ch++)
-                    {
-                        string memberName = "Ch" + (ch + 1);
-                        var property = ColumnObj.GetType().GetProperty(memberName);
-                        if (property == null) continue;
-                        dic_rt.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
-                    }
-                    TableItems.Add(Expando(dic_rt));
-                    break;
-                case PlotType.WorkSheet:
-                    Dictionary<string, object> dic_ws = new Dictionary<string, object>();
-                    if (ParamQueue.Count == 0) return;
-                    object[] param = null;
-
-                    lock (((ICollection)ParamQueue).SyncRoot)
-                    {
-                        param = ParamQueue.Dequeue();
-                    }
-                        
-                    for (int i = 0; i < param.Length; i++)
-                    {
-                        var prop = ColumnObj.GetType().GetProperties();
-                        dic_ws.Add(prop[i].Name, param[i]);
-                    }
-
-                    for (int ch = 0; ch < data.Length; ch++)
-                    {
-                        string memberName = "Ch" + (ch + 1);
-                        var property = ColumnObj.GetType().GetProperty(memberName);
-                        if (property == null) continue;
-                        dic_ws.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
-                    }
-
-                    for (int kpId = 0; kpId < 2; kpId++)
-                    {
-                        string memberName = "Kp" + (kpId + 1);
-                        var property = ColumnObj.GetType().GetProperty(memberName);
-                        if (property == null) continue;
-                        dic_ws.Add(memberName, data[kpId*4].Rpm);
-                    }
-                   
-                    var obj = Expando(dic_ws);
-                    TableItems.Add(obj);
-                    XlsItems.Add(obj);
-                    break;
-                case PlotType.Correction:
-                    TableItems.Clear();
-                    for (int ch = 0; ch < data.Length; ch++)
-                    {
-                        Dictionary<string, object> dic_cr = new Dictionary<string, object>();
-                        dic_cr.Add("Ch", data[ch].ChannelId);
-                        dic_cr.Add("Direct",Math.Round(data[ch].Scalar,3));
-                        dic_cr.Add("CV", Math.Round(SWCorrectionValues[ch],3));
-                        TableItems.Add(Expando(dic_cr));
-                    }
-                    break;
-            }
-            UpdateCorrectionValue(data);
-            DataRefresh(TableItems);
         }
 
         private void DataRefresh(List<object> items)
@@ -276,6 +201,80 @@ namespace NADACommonCalibrator.PlotControl
             xlsManager.CreateExcel(templateFileName, saveFileName, sheetItems);
             if (File.Exists(saveFileName))
                 Process.Start(saveFileName);
+        }
+
+        public void ProcessData(IReceiveData[] rcvData)
+        {
+            var data = ParseDatas(rcvData);
+            if (data == null) return;
+
+            if (ColumnObj == null) return;
+            switch (TableType)
+            {
+                case PlotType.RealTime:
+                    Dictionary<string, object> dic_rt = new Dictionary<string, object>();
+                    dic_rt.Add("TimeStamp", data[0].TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
+                    dic_rt.Add("Kp1", data[0].Rpm);
+                    dic_rt.Add("Kp2", data[4].Rpm);
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                        string memberName = "Ch" + (ch + 1);
+                        var property = ColumnObj.GetType().GetProperty(memberName);
+                        if (property == null) continue;
+                        dic_rt.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
+                    }
+                    TableItems.Add(Expando(dic_rt));
+                    break;
+                case PlotType.WorkSheet:
+                    Dictionary<string, object> dic_ws = new Dictionary<string, object>();
+                    if (ParamQueue.Count == 0) return;
+                    object[] param = null;
+
+                    lock (((ICollection)ParamQueue).SyncRoot)
+                    {
+                        param = ParamQueue.Dequeue();
+                    }
+
+                    for (int i = 0; i < param.Length; i++)
+                    {
+                        var prop = ColumnObj.GetType().GetProperties();
+                        dic_ws.Add(prop[i].Name, param[i]);
+                    }
+
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                        string memberName = "Ch" + (ch + 1);
+                        var property = ColumnObj.GetType().GetProperty(memberName);
+                        if (property == null) continue;
+                        dic_ws.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
+                    }
+
+                    for (int kpId = 0; kpId < 2; kpId++)
+                    {
+                        string memberName = "Kp" + (kpId + 1);
+                        var property = ColumnObj.GetType().GetProperty(memberName);
+                        if (property == null) continue;
+                        dic_ws.Add(memberName, data[kpId * 4].Rpm);
+                    }
+
+                    var obj = Expando(dic_ws);
+                    TableItems.Add(obj);
+                    XlsItems.Add(obj);
+                    break;
+                case PlotType.Correction:
+                    TableItems.Clear();
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                        Dictionary<string, object> dic_cr = new Dictionary<string, object>();
+                        dic_cr.Add("Ch", data[ch].ChannelId);
+                        dic_cr.Add("Direct", Math.Round(data[ch].Scalar, 3));
+                        dic_cr.Add("CV", Math.Round(SWCorrectionValues[ch], 3));
+                        TableItems.Add(Expando(dic_cr));
+                    }
+                    break;
+            }
+            UpdateCorrectionValue(data);
+            DataRefresh(TableItems);
         }
     }
 

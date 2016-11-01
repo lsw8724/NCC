@@ -65,20 +65,13 @@ public class NCCScript
         TabularControl.SaveXLS("DAQ & Omap Template.xlsx", "D:\\문서\\Result.xlsx");
     }
 
-    private void Sleep(int millisec)
-    {
-        System.Threading.Thread.Sleep(millisec);
-    }
-
     private void SetAmp(float amp)
     {
-        //Sleep(1000);
         TabularControl.InsertRow(100, amp);
     }
 
     private void SetFreq(int freq)
     {
-        //Sleep(1000);
         TabularControl.InsertRow(freq, 787);
     }
 }

@@ -14,12 +14,13 @@ public class Items
     public float? Ch6 { get; set; }
     public float? Ch7 { get; set; }
     public float? Ch8 { get; set; }
-    public float? Rpm1 { get; set; }
-    public float? Rpm2 { get; set; }
+    public float? Kp1 { get; set; }
+    public float? Kp2 { get; set; }
 }
 
 public class NCCScript
 {
+    public PlotType[] PlotGroup = new PlotType[] { PlotType.WorkSheet, PlotType.Correction };
     public string Description { get { return "종합 검사"; } }
     public string ConnectionStr { get; set; }
     public DaqGain HWGain { get; set; }

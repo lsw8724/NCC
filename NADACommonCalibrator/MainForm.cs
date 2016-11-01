@@ -13,82 +13,31 @@ using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Drawing;
+using DevExpress.XtraNavBar;
+using System.Threading;
 
 namespace NADACommonCalibrator
 {
     public partial class MainForm : XtraForm
     {
+        private List<NavBarItemLink> AutomationList = new List<NavBarItemLink>();
         private IWavesReceiver CurrentReceiver;
         private IModuleConfig CurrentModule {get { return CurrentReceiver==null? new ReceiverVirtual() : CurrentReceiver as IModuleConfig;}}
         private int FMax;
         private float SpectrumRes;
         private object Items;
-        public event Action<IReceiveData[]> DatasReceived;
-        public event Action<SpectrumData[]> FFTCalculated;
+        private List<IPlotControl> OpenedPlotControls = new List<IPlotControl>();
+        private RcvDataController RDC;
 
-        private List<XtraUserControl> OpenedPlotControls = new List<XtraUserControl>();
+        CancellationTokenSource RunScriptTS;
+        CancellationToken RunScriptCT;
 
-        private void ProcessFFTDatas(SpectrumData[] fftDatas)
-        {
-            try
-            {
-                switch (TabularControl.MeasureType)
-                {
-                    case MeasureCalcType.RMS:
-                        DatasReceived(fftDatas.Select(x => new Measure_RMS(x)).ToArray());
-                        break;
-                    default: break;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-            }
-        }
-
-        private void ProcessRcvDatas(IReceiveData[] datas)
-        {
-            try
-            {
-                var first = datas.FirstOrDefault();
-                if (first != null)
-                {
-                    switch (first.Type)
-                    {
-                        case DataType.WaveDatas:
-                            if (FFTCalculated == null) break;
-                            var waves = datas as WaveData[];
-                            FFTCalculated(waves.Select(x => new SpectrumData(SpectrumRes, x)).ToArray());
-                            switch (TabularControl.MeasureType)
-                            {
-                                case MeasureCalcType.PK:
-                                    DatasReceived(waves.Select(x => new Measure_Peak(x)).ToArray());
-                                    break;
-                                case MeasureCalcType.PP:
-                                    DatasReceived(waves.Select(x => new Measure_P2P(x)).ToArray());
-                                    break;
-                                default: break;
-                            }
-                            break;
-                        case DataType.VectorData: break;
-                        case DataType.MeasureData: break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Write(ex.Message);
-            }
-        }
-            
         public MainForm()
         {
             InitializeComponent();
             InitializeThemeItem();
             InitializeScriptItem();
-
-            DatasReceived += (datas) =>{ProcessRcvDatas(datas);};
-            FFTCalculated += (fft) => {ProcessFFTDatas(fft);};
+            RDC = new RcvDataController(OpenedPlotControls);
         }
 
         private void InitializeThemeItem()
@@ -120,6 +69,7 @@ namespace NADACommonCalibrator
                 var assembly = CSScript.Load(path);
                 dynamic instance = assembly.CreateInstance("NCCScript");
                 var link = navAutomationGroup.AddItem();
+                AutomationList.Add(link);
                 link.Item.LinkClicked += (s, e) =>
                     {
                         try
@@ -140,8 +90,8 @@ namespace NADACommonCalibrator
                     continue;
                 (instance.Receiver as IWavesReceiver).DatasReceived += (waves) =>
                 {
-                    if (DatasReceived != null)
-                        DatasReceived(waves);
+                    if (RDC.DatasReceived != null)
+                        RDC.DatasReceived(waves);
                 };
             }
         }
@@ -185,19 +135,19 @@ namespace NADACommonCalibrator
             switch (type)
             {
                 case PlotType.TimeBase :
-                    AddDockPanel(new TimeBaseControl(CurrentModule.ChannelCount, ref DatasReceived), "TimeBase - " + CurrentModule.ToString());
+                    AddDockPanel(new TimeBaseControl(CurrentModule.ChannelCount), "TimeBase - " + CurrentModule.ToString());
                     break;
                 case PlotType.Spectrum:
-                    AddDockPanel(new SpectrumControl(CurrentModule.ChannelCount, FMax, ref FFTCalculated), "Spectrum - " + CurrentModule.ToString());
+                    AddDockPanel(new SpectrumControl(CurrentModule.ChannelCount, FMax), "Spectrum - " + CurrentModule.ToString());
                     break;
                 case PlotType.WorkSheet:
-                    AddDockPanel(new TabularControl(Items, PlotType.WorkSheet, ref DatasReceived), "Work Sheet - " + CurrentModule.ToString());
+                    AddDockPanel(new TabularControl(Items, PlotType.WorkSheet), "Work Sheet - " + CurrentModule.ToString());
                     break;
                 case PlotType.RealTime:
-                    AddDockPanel(new TabularControl(Items, PlotType.RealTime, ref DatasReceived), "RealTime Tabular - " + CurrentModule.ToString());
+                    AddDockPanel(new TabularControl(Items, PlotType.RealTime), "RealTime Tabular - " + CurrentModule.ToString());
                     break;
                 case PlotType.Correction:
-                    AddDockPanel(new TabularControl(Items, PlotType.Correction, ref DatasReceived), "Correction Tabular - " + CurrentModule.ToString());
+                    AddDockPanel(new TabularControl(Items, PlotType.Correction), "Correction Tabular - " + CurrentModule.ToString());
                     break;
             }
         }
@@ -230,9 +180,11 @@ namespace NADACommonCalibrator
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
             dockPanel.Text = text;
             dockPanel.Controls.Add(plot);
-            dockPanel.ClosedPanel += (s, de) => OpenedPlotControls.Remove(plot);
+            var ipc = plot as IPlotControl;
+            dockPanel.HandleDestroyed += (s, de) => OpenedPlotControls.Remove(ipc);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControls.Remove(ipc);
             dockPanel.Height = 300;
-            OpenedPlotControls.Add(plot);
+            OpenedPlotControls.Add(ipc);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -243,14 +195,26 @@ namespace NADACommonCalibrator
 
         private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
+            if(RunScriptTS != null)
+                RunScriptTS.Cancel();
             if (CurrentReceiver != null)
+            {
                 CurrentReceiver.Stop();
+                barBtn_runScript.Enabled = true;
+                barBtn_StopScript.Enabled = false;
+                foreach (var link in AutomationList)
+                    link.Item.Enabled = true;
+            }
         }
 
         private void barBtn_runScript_ItemClick(object sender, ItemClickEventArgs e)
         {
             try
             {
+                barBtn_runScript.Enabled = false;
+                barBtn_StopScript.Enabled = true;
+                foreach (var link in AutomationList)
+                    link.Item.Enabled = false;
                 dynamic dyn = null;
                 var script = pgcScriptConfig.SelectedObject;
                 if (script == null) return;
@@ -274,8 +238,9 @@ namespace NADACommonCalibrator
                         validProp.SetValue(module, prop.GetValue(script));
                     }
                 }
-
-                Task.Run(() => { (script as dynamic).Run(); });
+                RunScriptTS = new CancellationTokenSource();
+                RunScriptCT = RunScriptTS.Token;
+                Task.Factory.StartNew(() => {(script as dynamic).Run();}, RunScriptCT);
             }
             catch (Exception ex)
             {

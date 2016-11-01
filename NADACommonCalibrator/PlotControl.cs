@@ -4,9 +4,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NCCCommon.ModuleProtocol;
 
 namespace NADACommonCalibrator.PlotControl
 {
+    public interface IPlotControl
+    {
+        void ProcessData(IReceiveData[] rcvData);
+    }
+
     public class PlotControl
     {
         public static Color[] colors = new Color[] { Color.Pink, Color.YellowGreen, Color.Aqua, Color.Purple, Color.Lime, Color.White, Color.Red, Color.Yellow };

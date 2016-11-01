@@ -14,14 +14,13 @@ using NADACommonCalibrator;
 
 namespace NADACommonCalibrator.PlotControl
 {
-    public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl
+    public partial class TimeBaseControl : DevExpress.XtraEditors.XtraUserControl,IPlotControl
     {
         private int wheelAccum;
         private float Resolutions = 1;
-        public TimeBaseControl(int count, ref Action<IReceiveData[]> datasRcv)
+        public TimeBaseControl(int count)
         {
             InitializeComponent();
-            datasRcv += Datas_Received;
             Cursor = new ChartCursor(tChart_timeBase);
             for (int i = 0; i < count; i++)
                 tChart_timeBase.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true, Color = PlotControl.colors[i] });
@@ -43,11 +42,27 @@ namespace NADACommonCalibrator.PlotControl
 
         private void Datas_Received(IReceiveData[] datas)
         {
+           
+        }
+
+        private void tChart_timeBase_Click(object sender, EventArgs e)
+        {
+            List<KeyValuePair<int,bool>> activePair = new List<KeyValuePair<int,bool>>();
+            for (int i = 0; i < tChart_timeBase.Series.Count; i++)
+                activePair.Add(new KeyValuePair<int,bool>(i,tChart_timeBase.Series[i].Active));
+            if (activePair.Where(x => x.Value).Count() == 1)
+                Cursor.SetRefSerise(tChart_timeBase.Series[activePair.Where(x => x.Value).First().Key]);
+            else
+                Cursor.SetRefSerise();
+        }
+
+        public void ProcessData(IReceiveData[] rcvData)
+        {
             try
             {
-                var first = datas.FirstOrDefault();
-                if (first == null ||first.Type != DataType.WaveDatas ) return;
-                var waves = datas as WaveData[];
+                var first = rcvData.FirstOrDefault();
+                if (first == null || first.Type != DataType.WaveDatas) return;
+                var waves = rcvData as WaveData[];
                 foreach (var serise in tChart_timeBase.Series)
                     (serise as FastLine).Clear();
 
@@ -64,16 +79,5 @@ namespace NADACommonCalibrator.PlotControl
                 Debug.WriteLine(ex.Message);
             }
         }
-
-        private void tChart_timeBase_Click(object sender, EventArgs e)
-        {
-            List<KeyValuePair<int,bool>> activePair = new List<KeyValuePair<int,bool>>();
-            for (int i = 0; i < tChart_timeBase.Series.Count; i++)
-                activePair.Add(new KeyValuePair<int,bool>(i,tChart_timeBase.Series[i].Active));
-            if (activePair.Where(x => x.Value).Count() == 1)
-                Cursor.SetRefSerise(tChart_timeBase.Series[activePair.Where(x => x.Value).First().Key]);
-            else
-                Cursor.SetRefSerise();
-        }       
     }
 }

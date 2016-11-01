@@ -224,7 +224,7 @@ namespace NCCCommon.ModuleProtocol
             if (task != null)
             {
                 if (!task.IsCompleted)
-                    task.Wait();
+                    task.Wait(5000);
                 task = null;
             }
         }

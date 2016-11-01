@@ -4,7 +4,6 @@ using NADACommonCalibrator.PlotControl;
 public class Items
 {
     public float? Ch1 { get; set; }
-    public float? Rpm { get; set; }
 }
 
 public class NCCScript
