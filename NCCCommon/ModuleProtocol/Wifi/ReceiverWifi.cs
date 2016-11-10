@@ -15,7 +15,7 @@ namespace NCCCommon.ModuleProtocol.Wifi
         private WifiConnection Conn;
         List<float> RxDatas = new List<float>();
 
-        object IModuleConfig.Module { get { return this.Module; } }
+        object IGetterRcvProperty.Module { get { return this.Module; } }
         public int AsyncFMax { get { return Module.AsyncFMax; } }
         public int AsyncLine { get { return Module.AsyncLine; } }
         public int ChannelCount { get { return 1; } }
@@ -74,6 +74,14 @@ namespace NCCCommon.ModuleProtocol.Wifi
                     }
                 }
                 catch{}
+            }
+        }
+
+        public Dictionary<string, int> KpMap
+        {
+            get
+            {
+                return null;
             }
         }
     }

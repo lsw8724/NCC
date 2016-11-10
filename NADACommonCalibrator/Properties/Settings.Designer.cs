@@ -22,5 +22,17 @@ namespace NADACommonCalibrator.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sharp Plus")]
+        public string ThemeName {
+            get {
+                return ((string)(this["ThemeName"]));
+            }
+            set {
+                this["ThemeName"] = value;
+            }
+        }
     }
 }

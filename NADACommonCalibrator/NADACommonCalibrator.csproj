@@ -163,7 +163,8 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TeeChart">
+    <Reference Include="TeeChart, Version=4.1.2014.12153, Culture=neutral, PublicKeyToken=9c8126276c77bdb7, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files (x86)\Steema Software\Steema TeeChart for .NET 2014 4.1.2014.12150\net45\x86\TeeChart.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -175,7 +176,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PlotControl.cs" />
+    <Compile Include="PlotControl\PlotControl.cs" />
     <Compile Include="PlotControl\TabularControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -203,38 +204,29 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RcvDataController.cs" />
-    <Content Include="Scripts\XlsSaveTest.cs">
+    <Content Include="Scripts\Connect Virtual.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\TotalTest.cs">
+    <Content Include="Scripts\Xls Save Test.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\RPMTest.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AmplitudeTest.cs">
+    <Content Include="Scripts\Total Test.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="nada-flatlogo_399.ico" />
-    <Content Include="Scripts\FunctionTestLAN.cs">
+    <Content Include="Scripts\Auto Function LAN.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\FunctionTestUSB.cs">
+    <Content Include="Scripts\Auto Function USB.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\SimpleConnectVirtualModule.cs">
+    <Content Include="Scripts\Connect Wifi.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\SimpleConnectWifi.cs">
+    <Content Include="Scripts\Connect Omap.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\FrequencyTest.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\SimpleConnectOmap.cs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\SimpleConnect5509.cs">
+    <Content Include="Scripts\Connect 5509.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="MainForm.resx">
@@ -274,6 +266,9 @@
     <None Include="ReportTemplate\DAQ &amp; Omap Template.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ReportTemplate\DAQ &amp; Omap Template_Rev.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -298,7 +293,9 @@
       <Name>NCCCommon</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

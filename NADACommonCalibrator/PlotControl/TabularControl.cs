@@ -24,55 +24,68 @@ namespace NADACommonCalibrator.PlotControl
 {
     public partial class TabularControl : DevExpress.XtraEditors.XtraUserControl,IPlotControl
     {
-        public static MeasureCalcType MeasureType = MeasureCalcType.RMS;
-        private static Queue<object[]> ParamQueue = new Queue<object[]>();
-        public static List<object> XlsItems = new List<object>();
+        public MeasureCalcType MeasureType = MeasureCalcType.RMS;
+        public int LowFreq { get; set; }
+        public int HighFreq { get; set; }
+        public static int CorrectionValueCalcRowCount = -1;
         private static float[] SWCorrectionValues { get; set; }
-        public static int CorrectionValueCalcRowCount = 5;
 
+        private Queue<object[]> ParamQueue;
         private Queue<float[]> CorrectionQueue = new Queue<float[]>();
         public List<object> TableItems = new List<object>();
         private object ColumnObj { get; set; }
-        private PlotType TableType { get; set; }
+        public PlotType Type { get; set; }
         private System.Reflection.MemberInfo[] Members { get; set; }
         private int RcvCount = 0;
         delegate void DataRefreshCallback(List<object> items);
+        private Dictionary<string, int> KeyphasorMap;
 
-        public TabularControl(object columns, PlotType type)
+        public TabularControl(PlotType type)
         {
             InitializeComponent();
+            this.Type = type;
+            LowFreq = 90;
+            HighFreq = 110;
+            ParamQueue = new Queue<object[]>();
+        }
 
-            if (columns != null)
+        public void ControlInit(PlotConfig config)
+        {
+            KeyphasorMap = config.KeyphasorMap;
+            if (config.Columns != null)
             {
-                var chMembers = columns.GetType().GetProperties().Where(x => x.Name.Contains("Ch")).ToArray();
+                var chMembers = config.Columns.GetType().GetProperties().Where(x => x.Name.Contains("Ch")).ToArray();
                 SWCorrectionValues = new float[chMembers.Length];
 
                 for (int ch = 0; ch < SWCorrectionValues.Length; ch++)
                     SWCorrectionValues[ch] = 1.0f;
 
-                ColumnObj = columns;
-                this.TableType = type;
-                switch (type)
+                ColumnObj = config.Columns;
+                switch (config.Type)
                 {
                     case PlotType.RealTime:
                         gvTable.Columns.Add(new GridColumn() { Caption = "Time Stamp", FieldName = "TimeStamp", Visible = true });
-                        gvTable.Columns.Add(new GridColumn() { Caption = "Kp1", FieldName = "Kp1", Visible = true });
-                        gvTable.Columns.Add(new GridColumn() { Caption = "Kp2", FieldName = "Kp2", Visible = true });
+                        if (KeyphasorMap != null)
+                        {
+                            foreach (var p in KeyphasorMap)
+                                gvTable.Columns.Add(new GridColumn() { Caption = p.Key, FieldName = p.Key, Visible = true });
+                        }
                         Members = chMembers;
                         foreach (var member in Members)
                             gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
 
                         break;
                     case PlotType.WorkSheet:
-                        Members = columns.GetType().GetProperties().ToArray();
+                        Members = config.Columns.GetType().GetProperties().ToArray();
                         foreach (var member in Members)
                             gvTable.Columns.Add(new GridColumn() { Caption = member.Name, FieldName = member.Name, Visible = true });
                         break;
                     case PlotType.Correction:
                         Members = Members = chMembers;
                         gvTable.Columns.Add(new GridColumn() { Caption = "Ch", FieldName = "Ch", Visible = true });
-                        gvTable.Columns.Add(new GridColumn() { Caption = "Direct", FieldName = "Direct", Visible = true });
+                        gvTable.Columns.Add(new GridColumn() { Caption = "Before", FieldName = "Before", Visible = true });
                         gvTable.Columns.Add(new GridColumn() { Caption = "Correction Value", FieldName = "CV", Visible = true});
+                        gvTable.Columns.Add(new GridColumn() { Caption = "After", FieldName = "After", Visible = true });
                         break;
                     default: break;
                 }
@@ -82,13 +95,13 @@ namespace NADACommonCalibrator.PlotControl
         private IMeasuredData[] ParseDatas(IReceiveData[] rcvDatas)
         {
             IMeasuredData[] data = null;
-
-            var first = rcvDatas.FirstOrDefault();
+             var first = rcvDatas.FirstOrDefault();
             if (first == null) return null;
             switch (first.Type)
             {
-                case  DataType.MeasureData :
-                    data = rcvDatas as IMeasuredData[];
+                case DataType.FFTDatas:
+                    var fftDatas = rcvDatas as SpectrumData[];
+                    data = fftDatas.Select(x => new Measure_RMS(x, LowFreq, HighFreq)).ToArray();
                     break;
                 case DataType.VectorData:
                     var vec = rcvDatas as VectorData[];
@@ -102,6 +115,82 @@ namespace NADACommonCalibrator.PlotControl
                     break;
             }
             return data;
+        }
+
+        public void ProcessData(IReceiveData[] rcvData)
+        {
+            var data = ParseDatas(rcvData);
+            if (data == null) return;
+
+            if (ColumnObj == null) return;
+            switch (Type)
+            {
+                case PlotType.RealTime:
+                    Dictionary<string, object> dic_rt = new Dictionary<string, object>();
+                    dic_rt.Add("TimeStamp", data[0].TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
+                    if (KeyphasorMap != null)
+                    {
+                        foreach (var p in KeyphasorMap)
+                            dic_rt.Add(p.Key, data[p.Value].Rpm);
+                    }
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                        string memberName = "Ch" + (ch + 1);
+                        var property = ColumnObj.GetType().GetProperty(memberName);
+                        if (property == null) continue;
+                        dic_rt.Add(memberName, Math.Round(data[ch].Scalar, 3));
+                    }
+                    TableItems.Add(Expando(dic_rt));
+                    break;
+                case PlotType.WorkSheet:
+                    Dictionary<string, object> dic_ws = new Dictionary<string, object>();
+                    if (ParamQueue.Count == 0) return;
+                    object[] param = null;
+
+                    lock (((ICollection)ParamQueue).SyncRoot)
+                    {
+                        param = ParamQueue.Dequeue();
+                    }
+
+                    for (int i = 0; i < param.Length; i++)
+                    {
+                        var prop = ColumnObj.GetType().GetProperties();
+                        dic_ws.Add(prop[i].Name, param[i]);
+                    }
+
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                        string memberName = "Ch" + (ch + 1);
+                        var property = ColumnObj.GetType().GetProperty(memberName);
+                        if (property == null) continue;
+                        dic_ws.Add(memberName, Math.Round(data[ch].Scalar, 3));
+                    }
+
+                    foreach (var p in KeyphasorMap)
+                    {
+                        var prop = ColumnObj.GetType().GetProperty(p.Key);
+                        if (prop == null) continue;
+                        dic_ws.Add(p.Key, data[p.Value].Rpm);
+                    }
+
+                    var obj = Expando(dic_ws);
+                    TableItems.Add(obj);
+                    break;
+                case PlotType.Correction:
+                    TableItems.Clear();
+                    for (int ch = 0; ch < data.Length; ch++)
+                    {
+                        Dictionary<string, object> dic_cr = new Dictionary<string, object>();
+                        dic_cr.Add("Ch", data[ch].ChannelId);
+                        dic_cr.Add("Before", Math.Round(data[ch].Scalar, 3));
+                        dic_cr.Add("After", Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
+                        dic_cr.Add("CV", Math.Round(SWCorrectionValues[ch], 3));
+                        TableItems.Add(Expando(dic_cr));
+                    }
+                    break;
+            }
+            UpdateCorrectionValue(data);
+            DataRefresh(TableItems);
         }
 
         private void DataRefresh(List<object> items)
@@ -140,7 +229,7 @@ namespace NADACommonCalibrator.PlotControl
             popupMenu1.ShowPopup(PointToScreen(new Point(mouseEA.X,mouseEA.Y)));
         }
 
-        public static void InsertRow(params object[] p)
+        public void InsertRow(params object[] p)
         {
             lock (((ICollection)ParamQueue).SyncRoot)
             {
@@ -153,6 +242,7 @@ namespace NADACommonCalibrator.PlotControl
 
         private void UpdateCorrectionValue(IMeasuredData[] data)
         {
+            if (CorrectionValueCalcRowCount == -1) return;
             if (RcvCount < CorrectionValueCalcRowCount)
             {
                 CorrectionQueue.Enqueue(data.Select(x => x.Scalar).ToArray());
@@ -162,7 +252,7 @@ namespace NADACommonCalibrator.PlotControl
             {
                 var sumValues = new float[data.Length];
                 sumValues = sumValues.Select((x, ch) => CorrectionQueue.Sum(m => m[ch])).ToArray();
-                SWCorrectionValues = sumValues.Select(x => x / (float)CorrectionQueue.Count).ToArray();
+                SWCorrectionValues = sumValues.Select(x => (float)RcvCount/x).ToArray();
             }
         }
 
@@ -193,88 +283,15 @@ namespace NADACommonCalibrator.PlotControl
 
         }
 
-        public static void SaveXLS(string templateFileName, string saveFileName)
+        public void SaveXLS(string templateFileName, string saveFileName)
         {
             var xlsManager = new ExcelIOManager();
-
-            var sheetItems = new SheetItems(XlsItems);
+            var item1 = TableItems.Where((x, i) => i <= 14).ToList();
+            var item2 = TableItems.Where((x, i) => i > 14).ToList();
+            var sheetItems = new SheetItems(item1,item2);
             xlsManager.CreateExcel(templateFileName, saveFileName, sheetItems);
             if (File.Exists(saveFileName))
                 Process.Start(saveFileName);
-        }
-
-        public void ProcessData(IReceiveData[] rcvData)
-        {
-            var data = ParseDatas(rcvData);
-            if (data == null) return;
-
-            if (ColumnObj == null) return;
-            switch (TableType)
-            {
-                case PlotType.RealTime:
-                    Dictionary<string, object> dic_rt = new Dictionary<string, object>();
-                    dic_rt.Add("TimeStamp", data[0].TimeStamp.ToString("yyyy-MM-dd HH:mm:ss"));
-                    dic_rt.Add("Kp1", data[0].Rpm);
-                    dic_rt.Add("Kp2", data[4].Rpm);
-                    for (int ch = 0; ch < data.Length; ch++)
-                    {
-                        string memberName = "Ch" + (ch + 1);
-                        var property = ColumnObj.GetType().GetProperty(memberName);
-                        if (property == null) continue;
-                        dic_rt.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
-                    }
-                    TableItems.Add(Expando(dic_rt));
-                    break;
-                case PlotType.WorkSheet:
-                    Dictionary<string, object> dic_ws = new Dictionary<string, object>();
-                    if (ParamQueue.Count == 0) return;
-                    object[] param = null;
-
-                    lock (((ICollection)ParamQueue).SyncRoot)
-                    {
-                        param = ParamQueue.Dequeue();
-                    }
-
-                    for (int i = 0; i < param.Length; i++)
-                    {
-                        var prop = ColumnObj.GetType().GetProperties();
-                        dic_ws.Add(prop[i].Name, param[i]);
-                    }
-
-                    for (int ch = 0; ch < data.Length; ch++)
-                    {
-                        string memberName = "Ch" + (ch + 1);
-                        var property = ColumnObj.GetType().GetProperty(memberName);
-                        if (property == null) continue;
-                        dic_ws.Add(memberName, Math.Round(data[ch].Scalar * SWCorrectionValues[ch], 3));
-                    }
-
-                    for (int kpId = 0; kpId < 2; kpId++)
-                    {
-                        string memberName = "Kp" + (kpId + 1);
-                        var property = ColumnObj.GetType().GetProperty(memberName);
-                        if (property == null) continue;
-                        dic_ws.Add(memberName, data[kpId * 4].Rpm);
-                    }
-
-                    var obj = Expando(dic_ws);
-                    TableItems.Add(obj);
-                    XlsItems.Add(obj);
-                    break;
-                case PlotType.Correction:
-                    TableItems.Clear();
-                    for (int ch = 0; ch < data.Length; ch++)
-                    {
-                        Dictionary<string, object> dic_cr = new Dictionary<string, object>();
-                        dic_cr.Add("Ch", data[ch].ChannelId);
-                        dic_cr.Add("Direct", Math.Round(data[ch].Scalar, 3));
-                        dic_cr.Add("CV", Math.Round(SWCorrectionValues[ch], 3));
-                        TableItems.Add(Expando(dic_cr));
-                    }
-                    break;
-            }
-            UpdateCorrectionValue(data);
-            DataRefresh(TableItems);
         }
     }
 

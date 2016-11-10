@@ -19,7 +19,7 @@ namespace NCCCommon.ModuleProtocol.Omap
         public int DataPort = 4511;
         public int CommandPort = 4510;
 
-        public void Init()
+        public void Init(Dictionary<string, int> kpMap)
         {
             for (int i = 0; i < KeyPhasors.Length; i++)
             {
@@ -50,7 +50,7 @@ namespace NCCCommon.ModuleProtocol.Omap
                     TransducerUnit = (int)Unit1Type.g,
                     TransducerUnit2 = (int)Unit2Type.rms,
                     DisplayUnit = (int)Unit1Type.g,
-                    KeyphasorId = i < 4? 1 : 2,  //1,2,3,4 채널은 Kp1  5,6,7,8 채널은 Kp2
+                    KeyphasorId = i < kpMap["Kp2"]? 1 : 2,  //1,2,3,4 채널은 Kp1  5,6,7,8 채널은 Kp2
                     Integral = 0,
                     Sensitivity = Sensitivity,
                     HWGain = HWGain,

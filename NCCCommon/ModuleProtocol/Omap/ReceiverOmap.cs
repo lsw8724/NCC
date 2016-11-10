@@ -17,7 +17,7 @@ namespace NCCCommon.ModuleProtocol.Omap
         private Queue<WaveData> WavesQueue = new Queue<WaveData>();
         private Queue<VectorData> VectorsQueue = new Queue<VectorData>();
 
-        object IModuleConfig.Module { get { return this.Module; } }
+        object IGetterRcvProperty.Module { get { return this.Module; } }
         public int AsyncFMax { get { return Module.AsyncFMax; } }
         public int AsyncLine { get { return Module.AsyncLine; } }
         public int ChannelCount { get { return 8; } }
@@ -65,7 +65,7 @@ namespace NCCCommon.ModuleProtocol.Omap
             {
                 try
                 {
-                    Module.Init();
+                    Module.Init(KpMap);
                     var vectorReceiver = new OmapDataReceiver(Module, SessionType.SessionType_Vector, Module.DataPort);
                     var waveReceiver = new OmapDataReceiver(Module, SessionType.SessionType_Wave, Module.DataPort + 1);
                     Conn = new ModuleCommandConnection(Module, Module.CommandPort);
@@ -97,6 +97,18 @@ namespace NCCCommon.ModuleProtocol.Omap
             {
                 Thread.Sleep(1000);
                 Conn.Send(MsgType.MsgType_Cmd_RealTime);
+            }
+        }
+
+        public Dictionary<string, int> KpMap
+        {
+            get
+            {
+                return new Dictionary<string, int>()
+                {
+                    {"Kp1",0},
+                    {"Kp2",4}
+                };
             }
         }
     } 

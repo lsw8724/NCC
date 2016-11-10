@@ -382,7 +382,6 @@
             // 
             // 
             this.tChart_timeBase.Zoom.Direction = Steema.TeeChart.ZoomDirections.Horizontal;
-            this.tChart_timeBase.Click += new System.EventHandler(this.tChart_timeBase_Click);
             // 
             // TimeBaseControl
             // 
@@ -392,7 +391,7 @@
             this.Name = "TimeBaseControl";
             this.Size = new System.Drawing.Size(654, 307);
             this.ResumeLayout(false);
-
+            this.Cursor = new ChartCursor(tChart_timeBase);
         }
 
         #endregion

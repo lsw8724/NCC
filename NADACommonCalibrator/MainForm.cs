@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using DevExpress.XtraNavBar;
 using System.Threading;
+using System.Reflection;
+using NADACommonCalibrator.Properties;
 
 namespace NADACommonCalibrator
 {
@@ -22,21 +24,18 @@ namespace NADACommonCalibrator
     {
         private List<NavBarItemLink> AutomationList = new List<NavBarItemLink>();
         private IWavesReceiver CurrentReceiver;
-        private IModuleConfig CurrentModule {get { return CurrentReceiver==null? new ReceiverVirtual() : CurrentReceiver as IModuleConfig;}}
         private int FMax;
-        private float SpectrumRes;
         private object Items;
         private List<IPlotControl> OpenedPlotControls = new List<IPlotControl>();
         private RcvDataController RDC;
-
-        CancellationTokenSource RunScriptTS;
-        CancellationToken RunScriptCT;
+        private CancellationTokenSource Cts;
 
         public MainForm()
         {
             InitializeComponent();
             InitializeThemeItem();
             InitializeScriptItem();
+            Cts = new CancellationTokenSource();
             RDC = new RcvDataController(OpenedPlotControls);
         }
 
@@ -48,14 +47,29 @@ namespace NADACommonCalibrator
                 new BarCheckItem(){Caption = "Whiteprint"},
                 new BarCheckItem(){Caption = "Money Twins"},
                 new BarCheckItem(){Caption = "Foggy"},
+                new BarCheckItem(){Caption = "Valentine"},
+                new BarCheckItem(){Caption = "DevExpress Style"},
+                new BarCheckItem(){Caption = "DevExpress Dark Style"},
+                new BarCheckItem(){Caption = "VS2010"},
+                new BarCheckItem(){Caption = "Seven Classic"},
+                new BarCheckItem(){Caption = "Office 2010 Blue"},
+                new BarCheckItem(){Caption = "Office 2010 Black"},
+                new BarCheckItem(){Caption = "Office 2010 Silver"},
+                new BarCheckItem(){Caption = "Office 2013"},
+                new BarCheckItem(){Caption = "Coffee"},
             };
 
-            var themeString = "Sharp Plus";
+            var themeString = Settings.Default.ThemeName;
             defaultLookAndFeel.LookAndFeel.SkinName = themeString;
             barItems.Where(x => x.Caption.Equals(themeString)).First().Checked = true;
             foreach (var item in barItems)
             {
-                item.ItemClick += (s, e) => defaultLookAndFeel.LookAndFeel.SkinName = e.Item.Caption;
+                item.ItemClick += (s, e) =>
+                    {
+                        defaultLookAndFeel.LookAndFeel.SkinName = e.Item.Caption;
+                        Settings.Default.ThemeName = e.Item.Caption;
+                        Settings.Default.Save();
+                    };
                 item.GroupIndex = 1;
             }
             barItem_theme.ItemLinks.AddRange(barItems);
@@ -66,33 +80,25 @@ namespace NADACommonCalibrator
             var paths = Directory.GetFiles("Scripts", "*.cs");
             foreach (var path in paths)
             {
-                var assembly = CSScript.Load(path);
-                dynamic instance = assembly.CreateInstance("NCCScript");
                 var link = navAutomationGroup.AddItem();
                 AutomationList.Add(link);
                 link.Item.LinkClicked += (s, e) =>
                     {
                         try
                         {
+                            string code = File.ReadAllText(path);
+                            var assembly = CSScript.LoadCode(code);
                             for (int i = snapDockManager.Panels.Count - 1; i > 1; i--)
                                 snapDockManager.RemovePanel(snapDockManager.Panels[i]);
                             Items = assembly.CreateInstance("Items");
-                            OnOpenScript(e.Link.Item.Tag, path);
+                            OnOpenScript(assembly.CreateInstance("NCCScript"), path);
                         }
                         catch (Exception ex)
                         {
-                            Debug.WriteLine(ex.Message);
+                            Console.WriteLine(ex.Message);
                         }
                     };
-                link.Item.Caption = instance.Description;
-                link.Item.Tag = instance;
-                if (!CheckExistMember(instance,"Receiver"))
-                    continue;
-                (instance.Receiver as IWavesReceiver).DatasReceived += (waves) =>
-                {
-                    if (RDC.DatasReceived != null)
-                        RDC.DatasReceived(waves);
-                };
+                link.Item.Caption = Path.GetFileNameWithoutExtension(path);
             }
         }
 
@@ -110,19 +116,41 @@ namespace NADACommonCalibrator
         {
             try
             {
+                barBtn_runScript.Enabled = true;
+                pgcScriptConfig.Tag = path;
                 pgcScriptConfig.Rows.Clear();
                 dockPanel_scriptInfo.Show();
                 pgcScriptConfig.Invalidate();
                 pgcScriptConfig.SelectedObject = null;
                 pgcScriptConfig.SelectedObject = obj;
                 if (CheckExistMember(obj, "Receiver"))
+                {
                     CurrentReceiver = (IWavesReceiver)obj.Receiver;
+                    CurrentReceiver.DatasReceived += (waves) =>
+                    {
+                        if (RDC.DatasReceived != null)
+                            RDC.DatasReceived(waves);
+                    };
+                }
                 else
                     CurrentReceiver = null;
 
-                if (CheckExistMember(obj, "PlotGroup"))
-                    foreach (var plot in obj.PlotGroup)
-                        OpenPlot(plot);
+                if (CheckExistProperty(obj, "AsyncFMax") && CheckExistProperty(obj, "AsyncLine"))
+                {
+                    var dyn = obj as dynamic;
+                    FMax = dyn.AsyncFMax;
+                    RDC.SpectrumRes = dyn.AsyncLine / (float)dyn.AsyncFMax;
+                }
+
+                var props = (obj as object).GetType().GetProperties();
+                var plotProps = props.Where(x => x.GetCustomAttributes<PlotControlAttribute>(true).Count() != 0);
+                foreach (var p in plotProps)
+                {
+                    var plot = p.GetValue(obj) as IPlotControl;
+                    int h = p.GetCustomAttribute<PlotControlAttribute>().Height;
+                    AddDockPanel(plot, plot.Type.ToString(),h);
+                }
+                
             }
             catch(Exception ex)
             {
@@ -130,61 +158,51 @@ namespace NADACommonCalibrator
             }
         }
 
-        public void OpenPlot(PlotType type)
-        {
-            switch (type)
-            {
-                case PlotType.TimeBase :
-                    AddDockPanel(new TimeBaseControl(CurrentModule.ChannelCount), "TimeBase - " + CurrentModule.ToString());
-                    break;
-                case PlotType.Spectrum:
-                    AddDockPanel(new SpectrumControl(CurrentModule.ChannelCount, FMax), "Spectrum - " + CurrentModule.ToString());
-                    break;
-                case PlotType.WorkSheet:
-                    AddDockPanel(new TabularControl(Items, PlotType.WorkSheet), "Work Sheet - " + CurrentModule.ToString());
-                    break;
-                case PlotType.RealTime:
-                    AddDockPanel(new TabularControl(Items, PlotType.RealTime), "RealTime Tabular - " + CurrentModule.ToString());
-                    break;
-                case PlotType.Correction:
-                    AddDockPanel(new TabularControl(Items, PlotType.Correction), "Correction Tabular - " + CurrentModule.ToString());
-                    break;
-            }
-        }
-
         private void navItem_timeBase_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            OpenPlot(PlotType.TimeBase);
+            var plot = new TimeBaseControl();
+            AddDockPanel(plot, plot.Type.ToString());
         }
         private void navItem_spectrum_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            OpenPlot(PlotType.Spectrum);
+            var plot =new SpectrumControl();
+            AddDockPanel(plot, plot.ToString());
         }
         private void navItemTable_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            OpenPlot(PlotType.RealTime);
-        }
-        private void navItemWorkSheet_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            OpenPlot(PlotType.WorkSheet);
-        }
-        private void navItemCorrection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
-        {
-            OpenPlot(PlotType.Correction);
+            var plot = new TabularControl(PlotType.RealTime);
+            AddDockPanel(plot, plot.Type.ToString());
         }
 
-        private void AddDockPanel(XtraUserControl control, string text)
+        private void navItemCorrection_LinkClicked(object sender, DevExpress.XtraNavBar.NavBarLinkEventArgs e)
         {
-            control.Dock = DockStyle.Fill;
-            var plot = control;
+            var plot = new TabularControl(PlotType.Correction);
+            AddDockPanel(plot, plot.Type.ToString());
+        }
+
+        private void AddDockPanel(IPlotControl control, string text, int height = 300)
+        {
+            if (CurrentReceiver == null) return;
+            var xtraUC = control as XtraUserControl;
+            xtraUC.Dock = DockStyle.Fill;
+            var config = new PlotConfig()
+            {
+                Type = control.Type,
+                ChCount = (CurrentReceiver as IGetterRcvProperty).ChannelCount,
+                FMax = this.FMax,
+                Columns = Items,
+                KeyphasorMap = (CurrentReceiver as IKeyphasorMapper).KpMap
+            };
+            control.ControlInit(config);
             DockPanel dockPanel = snapDockManager.AddPanel(DockingStyle.Top);
-            dockPanel.Text = text;
-            dockPanel.Controls.Add(plot);
-            var ipc = plot as IPlotControl;
-            dockPanel.HandleDestroyed += (s, de) => OpenedPlotControls.Remove(ipc);
-            dockPanel.ClosedPanel += (s, de) => OpenedPlotControls.Remove(ipc);
-            dockPanel.Height = 300;
-            OpenedPlotControls.Add(ipc);
+            dockPanel.Text = text + " - " + CurrentReceiver.ToString();
+            dockPanel.Controls.Add(xtraUC);
+            dockPanel.HandleDestroyed += (s, de) => OpenedPlotControls.Remove(control);
+            dockPanel.ClosedPanel += (s, de) => OpenedPlotControls.Remove(control);
+            var heigh = control.GetType().CustomAttributes;
+            heigh.GetType();
+            dockPanel.Height = height;
+            OpenedPlotControls.Add(control);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -195,10 +213,9 @@ namespace NADACommonCalibrator
 
         private void barButtonItem1_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if(RunScriptTS != null)
-                RunScriptTS.Cancel();
             if (CurrentReceiver != null)
             {
+                Cts = new CancellationTokenSource();
                 CurrentReceiver.Stop();
                 barBtn_runScript.Enabled = true;
                 barBtn_StopScript.Enabled = false;
@@ -218,12 +235,6 @@ namespace NADACommonCalibrator
                 dynamic dyn = null;
                 var script = pgcScriptConfig.SelectedObject;
                 if (script == null) return;
-                if (CheckExistProperty(script,"AsyncFMax") && CheckExistProperty(script,"AsyncLine"))
-                {
-                    dyn = script as dynamic;
-                    FMax = dyn.AsyncFMax;
-                    SpectrumRes = dyn.AsyncLine / (float)dyn.AsyncFMax;
-                }
 
                 var scrProps = script.GetType().GetProperties().ToList();
                 if(CheckExistMember(script,"Receiver"))
@@ -238,14 +249,27 @@ namespace NADACommonCalibrator
                         validProp.SetValue(module, prop.GetValue(script));
                     }
                 }
-                RunScriptTS = new CancellationTokenSource();
-                RunScriptCT = RunScriptTS.Token;
-                Task.Factory.StartNew(() => {(script as dynamic).Run();}, RunScriptCT);
+                Task.Factory.StartNew(() => {
+                    (script as dynamic).Run();
+                }, Cts.Token);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
+        }
+
+        private void barBtn_editScript_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (pgcScriptConfig.Tag == null) return;
+            var path = pgcScriptConfig.Tag.ToString();
+            Process.Start("Notepad2.exe", path);
+        }
+
+        private void btn_allClose_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            for (int i = snapDockManager.Panels.Count - 1; i > 1; i--)
+                snapDockManager.RemovePanel(snapDockManager.Panels[i]);
         }
     }
 }

@@ -388,7 +388,6 @@
             // 
             // 
             this.tChart_Spectrum.Zoom.Direction = Steema.TeeChart.ZoomDirections.Horizontal;
-            this.tChart_Spectrum.Click += new System.EventHandler(this.tChart_Spectrum_Click);
             // 
             // SpectrumControl
             // 
@@ -397,9 +396,8 @@
             this.Controls.Add(this.tChart_Spectrum);
             this.Name = "SpectrumControl";
             this.Size = new System.Drawing.Size(654, 307);
-            this.Click += new System.EventHandler(this.tChart_Spectrum_Click);
             this.ResumeLayout(false);
-
+            Cursor = new ChartCursor(tChart_Spectrum);
         }
 
         #endregion

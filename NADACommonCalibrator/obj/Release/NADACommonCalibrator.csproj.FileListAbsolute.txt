@@ -168,22 +168,20 @@ D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\de\DevExpress.X
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\es\DevExpress.XtraVerticalGrid.v12.2.resources.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\ja\DevExpress.XtraVerticalGrid.v12.2.resources.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\ru\DevExpress.XtraVerticalGrid.v12.2.resources.dll
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FrequencyTest.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnect5509.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.PlotControl.TabularControl.resources
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectOmap.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.exe.licenses
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Ivi.Visa.Interop.xml
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.dll
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\TeeChart.xml
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectWifi.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\SimpleConnectVirtualModule.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FunctionTestUSB.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\TotalTest.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\RPMTest.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\AmplitudeTest.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\FunctionTestLAN.cs
-D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\XlsSaveTest.cs
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\ReportTemplate\DAQ & Omap Template.xlsx
 D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.MainForm.resources
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\ReportTemplate\DAQ & Omap Template_Rev.xlsx
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\obj\Release\NADACommonCalibrator.exe.licenses
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Connect Virtual.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Xls Save Test.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Total Test.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Auto Function LAN.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Auto Function USB.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Connect Wifi.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Connect Omap.cs
+D:\Project\NADACommonCalibrator\NADACommonCalibrator\bin\Release\Scripts\Connect 5509.cs

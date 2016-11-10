@@ -31,14 +31,25 @@ namespace NCCCommon.ModuleProtocol.Virtual
         public VirtualModule Module = new VirtualModule();
         public event Action<IReceiveData[]> DatasReceived;
         public List<SinWave> SinWaves = new List<SinWave>();
-        object IModuleConfig.Module { get { return this.Module; } }
+        object IGetterRcvProperty.Module { get { return this.Module; } }
         public int AsyncFMax { get { return Module.AsyncFMax; } }
         public int AsyncLine { get { return Module.AsyncFMax; } }
-        public int ChannelCount { get { return 4; } }
+        public int ChannelCount { get { return 8; } }
 
         public void AddSinWaves(float freq, float amp)
         {
             SinWaves.Add(new SinWave(freq,amp));
+        }
+
+        public void SingleSinWave(float freq, float amp)
+        {
+            SinWaves.Clear();
+            SinWaves.Add(new SinWave(freq, amp));
+        }
+
+        public void ClearSinWaves()
+        {
+            SinWaves.Clear();
         }
 
         public override string ToString()
@@ -66,11 +77,13 @@ namespace NCCCommon.ModuleProtocol.Virtual
         {
             while (!token.IsCancellationRequested)
             {
-                WaveData[] waves = new WaveData[8];
+                WaveData[] waves = new WaveData[ChannelCount];
+                var testData = SinWaves.FirstOrDefault();
+                var testRPM = testData != null ? testData.Freq * 60 : 0;
                 for (int i = 0; i < waves.Length; i++)
                 {
                     waves[i] = new WaveData();
-                    waves[i].Rpm = 3600;
+                    waves[i].Rpm = i < KpMap["Kp2"] ? testRPM : testRPM;
                     waves[i].ChannelId = i + 1;
                     waves[i].DateTime = DateTime.UtcNow;
                     waves[i].AsyncDataCount = Module.DataCount;
@@ -103,6 +116,18 @@ namespace NCCCommon.ModuleProtocol.Virtual
                 dataArr[i] = Convert.ToSingle(sinSum);
             }
             return dataArr;
+        }
+
+        public Dictionary<string, int> KpMap
+        {
+            get
+            {
+                return new Dictionary<string,int>()
+                {
+                    {"Kp1",0},
+                    {"Kp2",2}
+                };
+            }
         }
     }
 }

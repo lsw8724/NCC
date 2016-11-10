@@ -12,7 +12,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509
         public DaqModule Module = new DaqModule();
         private DaqClient Daq;
 
-        object IModuleConfig.Module { get { return this.Module; } }
+        object IGetterRcvProperty.Module { get { return this.Module; } }
         public int AsyncFMax { get { return Module.AsyncFMax; } }
         public int AsyncLine { get { return Module.AsyncLine; } }
         public int ChannelCount { get { return 8; } }
@@ -111,7 +111,7 @@ namespace NCCCommon.ModuleProtocol.Daq5509
                     var wave = new WaveData();
                     wave.ChannelId = ch.Id;
                     wave.DateTime = now;
-                    wave.Rpm = i<4? data.Rpm1 : data.Rpm2;
+                    wave.Rpm = i < KpMap["Kp2"] ? data.Rpm1 : data.Rpm2;
                     wave.AsyncData = asyncs;
                     wave.AsyncDataCount = asyncs.Length;
                     waves[i] = wave;
@@ -122,6 +122,18 @@ namespace NCCCommon.ModuleProtocol.Daq5509
 
             NEXT_READ:
                 continue;
+            }
+        }
+
+        public Dictionary<string, int> KpMap
+        {
+            get
+            {
+                return new Dictionary<string, int>()
+                {
+                    {"Kp1",0},
+                    {"Kp2",4}
+                };
             }
         }
     }

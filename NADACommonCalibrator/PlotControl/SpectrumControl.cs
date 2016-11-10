@@ -14,6 +14,7 @@ using NCCCommon;
 using Steema.TeeChart;
 using System.Diagnostics;
 using NADACommonCalibrator;
+using System.Threading.Tasks;
 
 namespace NADACommonCalibrator.PlotControl
 {
@@ -21,14 +22,20 @@ namespace NADACommonCalibrator.PlotControl
     {
         private int FMax;
         private int wheelAccum;
-        public SpectrumControl(int count,int fMax)
+        public PlotType Type { get; set; }
+
+        public SpectrumControl()
         {
             InitializeComponent();
-            Cursor = new ChartCursor(tChart_Spectrum);
-            for (int i = 0; i < count; i++)
+            Type = PlotType.Spectrum;
+        }
+
+        public void ControlInit(PlotConfig config)
+        {
+            for (int i = 0; i < config.ChCount; i++)
                 tChart_Spectrum.Series.Add(new FastLine() { Title = "CH " + (i + 1), Active = i > 0 ? false : true, Color = PlotControl.colors[i] });
 
-            FMax = fMax;
+            FMax = config.FMax;
             tChart_Spectrum.MouseWheel += (s, e) =>
             {
                 wheelAccum += e.Delta;
@@ -44,22 +51,16 @@ namespace NADACommonCalibrator.PlotControl
             };
         }
 
-        private void tChart_Spectrum_Click(object sender, EventArgs e)
-        {
-            List<KeyValuePair<int, bool>> activePair = new List<KeyValuePair<int, bool>>();
-            for (int i = 0; i < tChart_Spectrum.Series.Count; i++)
-                activePair.Add(new KeyValuePair<int, bool>(i, tChart_Spectrum.Series[i].Active));
-            if (activePair.Where(x => x.Value).Count() == 1)
-                Cursor.SetRefSerise(tChart_Spectrum.Series[activePair.Where(x => x.Value).First().Key]);
-            else
-                Cursor.SetRefSerise();
-        }
-
         public void ProcessData(IReceiveData[] rcvData)
         {
             var first = rcvData.FirstOrDefault();
             if (first == null || first.Type != DataType.FFTDatas) return;
             var fftData = rcvData as SpectrumData[];
+            Task.Run(()=>SpectrumChartUpdate(fftData));
+        }
+
+        private void SpectrumChartUpdate(SpectrumData[] fftData)
+        {
             try
             {
                 int limit = Convert.ToInt32(fftData.First().Resolution * FMax);

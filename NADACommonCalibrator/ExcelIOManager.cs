@@ -16,18 +16,43 @@ namespace NADACommonCalibrator
     public class SheetItems
     {
         public string RecommandNextCalibDate;
-        public List<object[]> Items = new List<object[]>();
+        public List<List<object[]>> ItemsList = new List<List<object[]>>();
 
-        public SheetItems(List<object> items)
+        public SheetItems(params List<object>[] items)
         {
             RecommandNextCalibDate =  "※ 권장 차기 교정일 : " + DateTime.Now.AddYears(1).ToString("yyyy.MM.dd");
-            foreach (var obj in items)
+ 
+            var item_list = new List<object[]>();
+            foreach (var obj in items[0])
             {
-                ExpandoObject expandObj = obj as ExpandoObject;
+                var expandObj = obj as ExpandoObject;
                 List<object> objs = new List<object>();
                 foreach (var e in expandObj)
                     objs.Add(e.Value);
-                Items.Add(objs.ToArray());
+                item_list.Add(objs.ToArray());
+            }
+            ItemsList.Add(item_list);
+
+            if (items.Length > 1)
+            {
+                item_list = new List<object[]>();
+                foreach (var obj in items[1])
+                {
+                    var expandObj = obj as ExpandoObject;
+                    List<object> objs = new List<object>();
+                    var freq = (int)expandObj.Where(x => x.Key.Equals("Frequency")).First().Value;
+                    objs.Add(freq);
+                    objs.Add(freq * 60);
+                    var kp1 = expandObj.Where(x => x.Key.Equals("Kp1")).First().Value;
+                    objs.Add(kp1);
+                    objs.Add(null);
+                    objs.Add(null);
+                    objs.Add(null);
+                    var kp2 = expandObj.Where(x => x.Key.Equals("Kp2")).First().Value;
+                    objs.Add(kp2);
+                    item_list.Add(objs.ToArray());
+                }
+                ItemsList.Add(item_list);
             }
         }
     }
@@ -44,11 +69,10 @@ namespace NADACommonCalibrator
                 workbook = excel.Workbooks.Open(Application.StartupPath+"\\ReportTemplate\\"+templateFileName);
                 GenerateReport(workbook, items);
                 workbook.SaveAs(savePath);
-                
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                Console.WriteLine(ex.Message);
             }
             finally
             {
@@ -66,18 +90,23 @@ namespace NADACommonCalibrator
             var cell_recommandDate = worksheet.Cells.Find("$RecommandNextClaibDate");
             if (cell_recommandDate != null) cell_recommandDate.Value = sheetItems.RecommandNextCalibDate;
 
-            var cell_dataArea1 = worksheet.Cells.Find("$DataArea");
-            if (cell_dataArea1 != null)
-            {
-                int num = 12;
-                foreach (var item in sheetItems.Items)
-                {
-                    var range2 = worksheet.get_Range("D" + num, "M" + num++);
-                    range2.Value2 = item;
-                    ReleaseObject(ref range2);
-                }
-            }
+            BulkInsertRow(sheetItems.ItemsList[0], "$DataArea", worksheet);
+            BulkInsertRow(sheetItems.ItemsList[1],"$DataArea2",worksheet);
+
             ReleaseObject(ref worksheet);
+        }
+
+        private void BulkInsertRow(List<object[]> items, string tag ,Excel.Worksheet ws)
+        {
+            var cell_dataArea = ws.Cells.Find(tag);
+            if (cell_dataArea == null) return;
+            int num = cell_dataArea.Row;
+            foreach (var item in items)
+            {
+                var range = ws.get_Range("D" + num, "M" + num++);
+                range.Value2 = item;
+                ReleaseObject(ref range);
+            }
         }
 
         private static void ReleaseObject<T>(ref T obj) where T : class

@@ -23,9 +23,14 @@ namespace NCCCommon.ModuleProtocol
         PK,
     }
 
-    public interface IWavesReceiver : IModuleConfig, ICancelableTask
+    public interface IWavesReceiver : IGetterRcvProperty, ICancelableTask, IKeyphasorMapper
     {
         event Action<IReceiveData[]> DatasReceived;
+    }
+
+    public interface IKeyphasorMapper
+    {
+        Dictionary<string, int> KpMap { get; }
     }
 
     public interface IReceiveData
@@ -33,7 +38,7 @@ namespace NCCCommon.ModuleProtocol
         DataType Type { get;}
     }
 
-    public interface IModuleConfig
+    public interface IGetterRcvProperty
     {
         object Module { get; }
         int ChannelCount { get; }
@@ -138,16 +143,19 @@ namespace NCCCommon.ModuleProtocol
 
         public Measure_RMS() { }
 
-        public Measure_RMS(SpectrumData spectrum, int low = 20, int high = 50)
+        public Measure_RMS(SpectrumData spectrum, int low = 90, int high = 110)
         {
             WaveRpm = spectrum.WaveRpm;
             Ch = spectrum.ChannelId;
-            double sum = 0;
+            double max = 0;
             int lo = Convert.ToInt32(low*spectrum.Resolution);
             int hi = Convert.ToInt32(high*spectrum.Resolution);
             for (int i = lo; i < hi; i++)
-                sum += spectrum.YValues[i] * spectrum.YValues[i];
-            Value = (float)Math.Sqrt(sum / spectrum.XValues.Length);
+            {
+                if(max <= spectrum.YValues[i])
+                    max = spectrum.YValues[i];
+            }
+            Value = (float)max;
             Time = spectrum.TimeStamp;
         }
 
@@ -190,11 +198,6 @@ namespace NCCCommon.ModuleProtocol
         protected Task task = null;
         protected CancellationTokenSource cancelSource;
 
-        public SingleTask()
-        {
-            this.cancelSource = new CancellationTokenSource();
-        }
-
         public void Dispose()
         {
         }
@@ -209,22 +212,19 @@ namespace NCCCommon.ModuleProtocol
             WriteLog("Start");
             if (task != null)
                 return;
-
+            this.cancelSource = new CancellationTokenSource();
             task = Task.Factory.StartNew(OnStart, cancelSource.Token);
         }
 
         public virtual void Stop()
         {
             WriteLog("Stop");
-            if (!cancelSource.IsCancellationRequested)
-            {
+            if(cancelSource != null)
                 cancelSource.Cancel();
-                cancelSource = new CancellationTokenSource();
-            }
             if (task != null)
             {
                 if (!task.IsCompleted)
-                    task.Wait(5000);
+                    task.Wait(2000);
                 task = null;
             }
         }
